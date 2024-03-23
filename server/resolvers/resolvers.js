@@ -1,5 +1,6 @@
 import TopPlayer from '../models/TopPlayerModel.js'
 
+// based on sortBy value will this output top scorers or top assists by changing values like endpoint to either players/topscorers or players/topassists.
 export const resolvers = {
   Query: {
     topScorers: async (_, { league, limit = 20, sortBy }) => {
