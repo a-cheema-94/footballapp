@@ -1,7 +1,14 @@
-import { ApolloServer } from '@apollo/server';
-import { startStandaloneServer } from '@apollo/server/standalone';
-import { typeDefs } from './schema';
-import { resolvers } from './resolvers';
+import * as dotenv  from 'dotenv'
+dotenv.config({ path: '../.env' })
+import { ApolloServer } from '@apollo/server'
+import { startStandaloneServer } from '@apollo/server/standalone'
+import { typeDefs } from './schema/schema.js'
+import { resolvers } from './resolvers/resolvers.js'
+// const connectDB = require('./config/database.js/index.js');
+import connectDB from './config/database.js'
+
+// connect to database
+connectDB();
 
 
 const server = new ApolloServer({
