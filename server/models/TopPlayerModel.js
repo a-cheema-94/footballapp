@@ -72,14 +72,8 @@ const PlayerStatisticsSchema = new mongoose.Schema({
 const TopPlayerSchema = new mongoose.Schema({
   league: String,
   general: GeneralPlayerSchema,
-  statistics: PlayerStatisticsSchema
+  statistics: PlayerStatisticsSchema,
 })
-
-TopPlayerSchema.virtual('totalGoalsScored').get(function() {
-  return this.statistics.goals.total
-})
-
-TopPlayerSchema.index({ totalGoalsScored: 1 });
 
 const TopPlayer = mongoose.model('Top Player', TopPlayerSchema);
 export default TopPlayer

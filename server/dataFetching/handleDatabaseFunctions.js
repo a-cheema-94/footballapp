@@ -20,3 +20,12 @@ export function inputDataInDatabase(data, endpoint) {
 }
 
 export function getDataFromDatabase(endpoint) {}
+
+// RENAMING OBJECT KEYS
+
+// const myObject = { oldKey: 'value' };  
+
+// const { oldKey: newKey, ...rest } = myObject; 
+// const updatedObject = { newKey, ...rest };
+
+// console.log(updatedObject); // { newKey: 'value' }

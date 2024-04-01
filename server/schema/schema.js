@@ -99,7 +99,7 @@ export const typeDefs = `#graphql
   }
 
   type Query {
-    topScorers(league: String!, limit: Int = 20, sortBy: String = "totalGoalsScored"): [PlayerData!]!
+    topPlayers(league: String!, limit: Int = 20, sortBy: String!): [PlayerData!]!
   }
 `
 
