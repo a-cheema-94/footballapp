@@ -1,7 +1,7 @@
+import { shouldMakeApiCall } from '../dataFetching/fetchData.js';
 import TopPlayer from '../models/TopPlayerModel.js'
 
-// based on sortBy value will this output top scorers or top assists by changing values like endpoint to either players/topscorers or players/topassists.
-// sortBy = goals or assists
+// sortBy = goals or assists => specify endpoint based off this
 export const resolvers = {
   Query: {
     topPlayers: async (_, { league, limit = 20, sortBy }) => {
@@ -9,8 +9,14 @@ export const resolvers = {
             // TRUE: make Api call, 
                   // then sort data to match mongoose schema
                   // input data in database i.e. add as new document
-                  // then continue with below
-            // FALSE: continue with below
+      let endpoint = ''
+      if(sortBy === 'goals') endpoint = 'players/topscorers'
+      if(sortBy === 'assists') endpoint = 'players/topassists'
+
+      if(shouldMakeApiCall('daily', endpoint)) {
+        // make api call then format data to match database schema
+        // get data from database
+      }
 
       try {
         let sortingInformation = {};

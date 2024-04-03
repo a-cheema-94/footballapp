@@ -1,8 +1,11 @@
 import axios from "axios";
+import * as dotenv  from 'dotenv'
+import { inputDataInDatabase, manipulateData } from "./handleDatabaseFunctions.js";
+dotenv.config({ path: '../.env' })
 
 const footballApiKey = process.env.FOOTBALL_API_KEY;
 
-export async function makeApiCall(endpoint, params) {
+export async function makeApiCall(endpoint, params, league) {
   const footballApiClient = axios.create(); // create axios instance
   footballApiClient.interceptors.request.use(options => {
     const headers = options.headers;
@@ -17,14 +20,31 @@ export async function makeApiCall(endpoint, params) {
 
     return options;
   })
-  // make api call with right params and api key
-  const apiRes = await footballApiClient.get(`https://v3.football.api-sports.io/${endpoint}`, {
-    params,
-    headers: {
-      "x-apisports-key": footballApiKey
-    }
-  });
-  return apiRes;
+
+  try {
+    const apiRes = await footballApiClient.get(`https://v3.football.api-sports.io/${endpoint}`, {
+      params,
+      headers: {
+        "x-apisports-key": footballApiKey
+      }
+    })
+    
+    const sortedData = manipulateData(apiRes.data.response, endpoint, league);
+    console.log(sortedData[3])
+    // TODO => test and then use in graph ql server
+    // inputDataInDatabase(sortedData, endpoint)
+    
+  } catch (error) {
+    console.log(error)
+  }
+
 }
 
 // url = "https://v3.football.api-sports.io/"
+
+const params = {
+  league: 39,
+  season: 2023
+}
+
+makeApiCall('players/topscorers', params, 'Premier League')

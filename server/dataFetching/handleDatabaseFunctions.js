@@ -1,25 +1,6 @@
-import TopPlayer from "../models/TopPlayerModel";
-
-function manipulateData(data, endpoint) {
-  
-  switch(endpoint) {
-    case 'players/topscorers':
-      return 'sorted array of top scorers matching the schemas'
-  }
-}
-
-export function inputDataInDatabase(data, endpoint) {
-  switch(endpoint) {
-    case 'player/topscorers':
-      const filteredData = manipulateData(data.response, 'player/topscorers');
-      const topScorersData = new TopPlayer(filteredData);
-      topScorersData.save()
-    default:
-      throw new Error('invalid endpoint');
-  }
-}
-
-export function getDataFromDatabase(endpoint) {}
+import { propsToFilter } from "../fixedData/fixedData.js";
+import TopPlayer from "../models/TopPlayerModel.js";
+import { filterObj } from "../utils/filterData.js";
 
 // RENAMING OBJECT KEYS
 
@@ -29,3 +10,45 @@ export function getDataFromDatabase(endpoint) {}
 // const updatedObject = { newKey, ...rest };
 
 // console.log(updatedObject); // { newKey: 'value' }
+
+export function manipulateData(data, endpoint, league) {
+  let final;
+
+  switch(endpoint) {
+    case 'players/topscorers':
+    case 'players/topassists':
+      final = data.map(player => {
+        const { player: general, statistics } = player;
+
+        const updatedPlayer = { league, general: filterObj(general, propsToFilter.topPlayers.general), statistics: filterObj(statistics[0], propsToFilter.topPlayers.statistics) };
+        return updatedPlayer;
+      })
+    }
+    
+  return final;
+
+}
+// final.forEach(player => {
+//   const newPlayer = new TopPlayer(player);
+//   newPlayer.save((error, footballer) => {
+//     if(error) {
+//       console.log(error)
+//     } else {
+//       console.log(`${footballer} successfully added to database`)
+//     }
+//   })
+// })
+
+export function inputDataInDatabase(data, endpoint) {
+  switch(endpoint) {
+    case 'player/topscorers':
+    case 'player/topassists':
+      const newPlayer = new TopPlayer(data);
+      newPlayer.save()
+    default:
+      throw new Error('invalid endpoint');
+  }
+}
+
+// export function getDataFromDatabase(endpoint) {}
+
