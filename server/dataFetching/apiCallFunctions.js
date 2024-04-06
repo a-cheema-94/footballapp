@@ -32,7 +32,7 @@ export async function makeApiCall(endpoint, params, league) {
     const sortedData = manipulateData(apiRes.data.response, endpoint, league);
     console.log(sortedData[3])
     // TODO => test and then use in graph ql server
-    // inputDataInDatabase(sortedData, endpoint)
+    await inputDataInDatabase(sortedData, endpoint)
     
   } catch (error) {
     console.log(error)
@@ -47,4 +47,4 @@ const params = {
   season: 2023
 }
 
-makeApiCall('players/topscorers', params, 'Premier League')
+// makeApiCall('players/topscorers', params, 'Premier League')

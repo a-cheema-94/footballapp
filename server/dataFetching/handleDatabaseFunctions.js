@@ -28,27 +28,32 @@ export function manipulateData(data, endpoint, league) {
   return final;
 
 }
-// final.forEach(player => {
-//   const newPlayer = new TopPlayer(player);
-//   newPlayer.save((error, footballer) => {
-//     if(error) {
-//       console.log(error)
-//     } else {
-//       console.log(`${footballer} successfully added to database`)
-//     }
-//   })
-// })
 
-export function inputDataInDatabase(data, endpoint) {
+export async function inputDataInDatabase(data, endpoint) {
   switch(endpoint) {
-    case 'player/topscorers':
-    case 'player/topassists':
-      const newPlayer = new TopPlayer(data);
-      newPlayer.save()
-    default:
-      throw new Error('invalid endpoint');
+    case 'players/topscorers':
+    case 'players/topassists':
+      try {
+        for (let player of data) {
+          // todo: sort out league!!!
+          await TopPlayer.findOneAndUpdate({ 'general.id': player.general.id }, player, { upsert: true });
+        }
+
+        console.log('players now in database')
+      } catch (error) {
+        console.error('Error: unable to insert data: ', error);
+      }
   }
 }
 
+// await TopPlayer.findOneAndUpdate('query criteria', player, { upsert: true, new: true });
 // export function getDataFromDatabase(endpoint) {}
 
+export async function clearMongoCollection(mongoModel) {
+  try {
+    const output = await mongoModel.deleteMany({});
+    console.log('successfully cleared collection', mongoModel)
+  } catch (error) {
+    console.error(`unable to clear collection: ${error}`);
+  }
+}

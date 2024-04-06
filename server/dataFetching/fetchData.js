@@ -1,5 +1,4 @@
-import { getDataFromDatabase, inputDataInDatabase } from "./handleDatabaseFunctions";
-import { makeApiCall } from "./apiCallFunctions";
+import LastApiCallTimes from "../models/LastApiCallTimesModel.js";
 
 const apiCallFrequencies = {
   MINUTE: 60 * 1000,
@@ -8,50 +7,52 @@ const apiCallFrequencies = {
   YEARLY: 365 * 24 * 60 * 60 * 1000,
 }
 
-const lastApiCallTimes = {};
-
-export const shouldMakeApiCall = (freq, endpoint) => {
+export const shouldMakeApiCall = async (freq, endpoint) => {
   const apiFreq = apiCallFrequencies[freq.toUpperCase()];
   const currentTime = Date.now();
 
   // cache freq for an endpoint
   // initialize lastApiCallTimes[endpoint] prop
-  lastApiCallTimes[endpoint] = lastApiCallTimes[endpoint] || {};
-  const cachedFreq = lastApiCallTimes[endpoint][freq];
-
+  let lastApiCallTimes;
+  let cachedFreq;
+  try {
+    lastApiCallTimes = await LastApiCallTimes.findOne({ endpoint });
+    
+  } catch (error) {
+    console.error('An error occurred getting lastApiCallTimes: ', error);
+    return true
+  }
+  
+  console.log(freq)
+  cachedFreq = lastApiCallTimes?.freq[freq];
   if(cachedFreq && currentTime - cachedFreq < apiFreq) {
+    console.log('call time is cached and NOT expired')
     return false
   }
 
-  lastApiCallTimes[endpoint][freq] = currentTime;
-  return true;
+  // now api call time is not cached or expired.
 
-}
-// reminder: in resolver change 'freq' based on query
-
-const fetchData = async (freq, endpoint, params) => {
-  const apiFreq = apiCallFrequencies[freq.toUpperCase()];
-  const currentTime = Date.now();
-
-  // no call or the specified time has passed since last call
-  if(!lastApiCallTimes[endpoint] || currentTime - lastApiCallTimes[endpoint] >= apiFreq) {
-    // make api call
-    const apiRes = await makeApiCall(endpoint, params);
-    // update last call time
-    lastApiCallTimes[endpoint] = currentTime;
-    // put data in database
-    inputDataInDatabase(apiRes, endpoint);
-    // return api response
-    return apiRes;
+  try {
+    if(!lastApiCallTimes) {
+      lastApiCallTimes = new LastApiCallTimes({
+        endpoint,
+        freq: {}
+      })
+    }
+    lastApiCallTimes.freq[freq] = currentTime;
+    await lastApiCallTimes.save()
+    
+  } catch (error) {
+    console.error(`An error occurred when saving latest call time to database: ${error}`)
   }
+  console.log('call time is not cached and expired')
 
-  const footballData = getDataFromDatabase(endpoint)
-  
-  return footballData
-
+  return true;
 }
+
+
+//TODO reminder: in resolver change 'freq' based on query
+
 
 // milliseconds since Date.now() is in milliseconds
-// fixture frequency special case => TODO
-
-
+// TODO => fixture frequency special case => 
