@@ -30,11 +30,11 @@ export async function makeApiCall(endpoint, params, league) {
     })
     
     const sortedData = manipulateData(apiRes.data.response, endpoint, league);
-    console.log(sortedData[3])
+    // console.log(sortedData[3])
     await inputDataInDatabase(sortedData, endpoint)
     
   } catch (error) {
-    console.log(error)
+    console.error(`Error fetching data from football api: ${error}`)
   }
 
 }

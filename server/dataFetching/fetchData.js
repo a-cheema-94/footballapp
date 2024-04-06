@@ -1,4 +1,5 @@
 import LastApiCallTimes from "../models/LastApiCallTimesModel.js";
+import chalk from 'chalk'
 
 const apiCallFrequencies = {
   MINUTE: 60 * 1000,
@@ -23,7 +24,7 @@ export const shouldMakeApiCall = async (freq, endpoint, league) => {
     return true
   }
   
-  console.log(freq)
+  console.log(chalk.black.bgYellow(freq, endpoint, league))
   cachedFreq = lastApiCallTimes?.freq[freq];
   if(cachedFreq && currentTime - cachedFreq < apiFreq) {
     console.log('call time is cached and NOT expired')
@@ -46,7 +47,7 @@ export const shouldMakeApiCall = async (freq, endpoint, league) => {
   } catch (error) {
     console.error(`An error occurred when saving latest call time to database: ${error}`)
   }
-  console.log('call time is not cached and expired')
+  console.log(chalk.bgGreen('call time is not cached and expired'))
 
   return true;
 }

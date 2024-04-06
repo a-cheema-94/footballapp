@@ -4,6 +4,7 @@ import { clearMongoCollection } from '../dataFetching/handleDatabaseFunctions.js
 import { LEAGUES, SEASON } from '../fixedData/fixedData.js';
 import LastApiCallTimes from '../models/LastApiCallTimesModel.js';
 import TopPlayer from '../models/TopPlayerModel.js'
+import chalk from 'chalk'
 
 // sortBy = goals or assists => specify endpoint based off this
 export const resolvers = {
@@ -22,15 +23,14 @@ export const resolvers = {
       
       try {
         if( await shouldMakeApiCall('daily', endpoint, league)) {
-          console.log(endpoint)
-          console.log('Call Api!!!')
+          console.log(chalk.bold(endpoint))
+          console.log(chalk.green('Call Api!!!'))
           await makeApiCall(endpoint, { league: LEAGUES[league], season: SEASON }, league)
-          console.log('async happening')
+          console.log(chalk.green('async happening'))
         }
       } catch (error) {
         throw new Error(`Top Players failed to fetch: ${error.message}`)
       }
-      console.log('start of rest')
       let sortingInformation = {};
       let category = 'total';
       if (sortBy === 'assists') {
@@ -42,8 +42,7 @@ export const resolvers = {
         
         topPlayers = await TopPlayer.find({ league }).sort(sortingInformation).limit(limit).exec();
         
-        console.log('finding player')
-        console.log('data finalised')
+        console.log(chalk.green('data finalised'))
         console.log(topPlayers.length)
       } catch (error) {
         console.error(`some error occurred when fetching players from database: ${error}`)

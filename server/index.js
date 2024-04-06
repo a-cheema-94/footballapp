@@ -6,6 +6,7 @@ import { typeDefs } from './schema/schema.js'
 import { resolvers } from './resolvers/resolvers.js'
 // const connectDB = require('./config/database.js/index.js');
 import connectDB from './config/database.js'
+import chalk from 'chalk'
 
 // connect to database
 connectDB();
@@ -20,4 +21,4 @@ const { url } = await startStandaloneServer(server, {
   listen: { port: 4000 }
 });
 
-console.log('graphql server ready at port: ', 4000);
+console.log(chalk.magenta.bold('graphql server ready at port: ', 4000));

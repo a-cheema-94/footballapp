@@ -1,6 +1,7 @@
 import { PROPS_TO_FILTER } from "../fixedData/fixedData.js";
 import TopPlayer from "../models/TopPlayerModel.js";
 import { filterObj } from "../utils/filterData.js";
+import chalk from 'chalk'
 
 // RENAMING OBJECT KEYS
 
@@ -39,7 +40,7 @@ export async function inputDataInDatabase(data, endpoint) {
           await TopPlayer.findOneAndUpdate({ 'general.id': player.general.id }, player, { upsert: true });
         }
 
-        console.log('players now in database')
+        console.log(chalk.bgGreen('players now in database'))
       } catch (error) {
         console.error('Error: unable to insert data: ', error);
       }
@@ -52,7 +53,7 @@ export async function inputDataInDatabase(data, endpoint) {
 export async function clearMongoCollection(mongoModel) {
   try {
     const output = await mongoModel.deleteMany({});
-    console.log('successfully cleared collection', mongoModel)
+    console.log(chalk.bgGreen('successfully cleared collection', mongoModel))
   } catch (error) {
     console.error(`unable to clear collection: ${error}`);
   }
