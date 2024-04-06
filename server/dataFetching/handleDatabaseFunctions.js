@@ -1,4 +1,4 @@
-import { propsToFilter } from "../fixedData/fixedData.js";
+import { PROPS_TO_FILTER } from "../fixedData/fixedData.js";
 import TopPlayer from "../models/TopPlayerModel.js";
 import { filterObj } from "../utils/filterData.js";
 
@@ -20,7 +20,7 @@ export function manipulateData(data, endpoint, league) {
       final = data.map(player => {
         const { player: general, statistics } = player;
 
-        const updatedPlayer = { league, general: filterObj(general, propsToFilter.topPlayers.general), statistics: filterObj(statistics[0], propsToFilter.topPlayers.statistics) };
+        const updatedPlayer = { league, general: filterObj(general, PROPS_TO_FILTER.topPlayers.general), statistics: filterObj(statistics[0], PROPS_TO_FILTER.topPlayers.statistics) };
         return updatedPlayer;
       })
     }

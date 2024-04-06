@@ -7,7 +7,7 @@ const apiCallFrequencies = {
   YEARLY: 365 * 24 * 60 * 60 * 1000,
 }
 
-export const shouldMakeApiCall = async (freq, endpoint) => {
+export const shouldMakeApiCall = async (freq, endpoint, league) => {
   const apiFreq = apiCallFrequencies[freq.toUpperCase()];
   const currentTime = Date.now();
 
@@ -16,7 +16,7 @@ export const shouldMakeApiCall = async (freq, endpoint) => {
   let lastApiCallTimes;
   let cachedFreq;
   try {
-    lastApiCallTimes = await LastApiCallTimes.findOne({ endpoint });
+    lastApiCallTimes = await LastApiCallTimes.findOne({ endpoint, league });
     
   } catch (error) {
     console.error('An error occurred getting lastApiCallTimes: ', error);
@@ -36,6 +36,7 @@ export const shouldMakeApiCall = async (freq, endpoint) => {
     if(!lastApiCallTimes) {
       lastApiCallTimes = new LastApiCallTimes({
         endpoint,
+        league,
         freq: {}
       })
     }
@@ -49,10 +50,6 @@ export const shouldMakeApiCall = async (freq, endpoint) => {
 
   return true;
 }
-
-
-//TODO reminder: in resolver change 'freq' based on query
-
 
 // milliseconds since Date.now() is in milliseconds
 // TODO => fixture frequency special case => 

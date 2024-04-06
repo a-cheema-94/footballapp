@@ -1,6 +1,8 @@
 import { makeApiCall } from '../dataFetching/apiCallFunctions.js';
 import { shouldMakeApiCall } from '../dataFetching/fetchData.js';
 import { clearMongoCollection } from '../dataFetching/handleDatabaseFunctions.js';
+import { LEAGUES, SEASON } from '../fixedData/fixedData.js';
+import LastApiCallTimes from '../models/LastApiCallTimesModel.js';
 import TopPlayer from '../models/TopPlayerModel.js'
 
 // sortBy = goals or assists => specify endpoint based off this
@@ -13,16 +15,16 @@ export const resolvers = {
       // clearMongoCollection(LastApiCallTimes);
       
       
-      let endpoint = ''
-      if(sortBy === 'goals') endpoint = 'players/topscorers'
+      let endpoint = 'players/topscorers'
       if(sortBy === 'assists') endpoint = 'players/topassists'
 
+      if(!Object.keys(LEAGUES).includes(league)) league = 'Premier League';
       
       try {
-        if( await shouldMakeApiCall('daily', endpoint)) {
+        if( await shouldMakeApiCall('daily', endpoint, league)) {
           console.log(endpoint)
           console.log('Call Api!!!')
-          await makeApiCall(endpoint, { league: 39, season: 2023 }, league)
+          await makeApiCall(endpoint, { league: LEAGUES[league], season: SEASON }, league)
           console.log('async happening')
         }
       } catch (error) {

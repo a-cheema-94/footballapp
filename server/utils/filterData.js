@@ -1,7 +1,5 @@
 // filter Objects => 3rd party API to database schema.
 
-// TODO
-// new case where prop to remove insides arr1 is an object.
 
 export const filterObj = (obj1, arr1) => {
   const filteredObj = {};

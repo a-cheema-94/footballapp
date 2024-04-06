@@ -31,7 +31,6 @@ export async function makeApiCall(endpoint, params, league) {
     
     const sortedData = manipulateData(apiRes.data.response, endpoint, league);
     console.log(sortedData[3])
-    // TODO => test and then use in graph ql server
     await inputDataInDatabase(sortedData, endpoint)
     
   } catch (error) {
