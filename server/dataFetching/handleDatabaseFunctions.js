@@ -1,4 +1,5 @@
 import { PROPS_TO_FILTER } from "../fixedData/fixedData.js";
+import TeamStanding from "../models/TeamStandingModel.js";
 import TopPlayer from "../models/TopPlayerModel.js";
 import { filterObj } from "../utils/filterData.js";
 import chalk from 'chalk'
@@ -12,8 +13,12 @@ import chalk from 'chalk'
 
 // console.log(updatedObject); // { newKey: 'value' }
 
+// TODO: adapt functions for new endpoint: Standings
+
 export function manipulateData(data, endpoint, league) {
   let final;
+  // console.log(data[0].league.standings)
+  console.log(endpoint)
 
   switch(endpoint) {
     case 'players/topscorers':
@@ -24,8 +29,17 @@ export function manipulateData(data, endpoint, league) {
         const updatedPlayer = { league, general: filterObj(general, PROPS_TO_FILTER.topPlayers.general), statistics: filterObj(statistics[0], PROPS_TO_FILTER.topPlayers.statistics) };
         return updatedPlayer;
       })
+    case 'standings':
+      let newData = data[0].league.standings[0];
+      // console.log(newData[0])
+      final = newData.map(teamInfo => {
+        const updatedStanding = { league, ...filterObj(teamInfo, PROPS_TO_FILTER.standings) };
+        // console.log(updatedStanding)
+        return updatedStanding
+      })
     }
     
+  
   return final;
 
 }
@@ -36,7 +50,6 @@ export async function inputDataInDatabase(data, endpoint) {
     case 'players/topassists':
       try {
         for (let player of data) {
-          // todo: sort out league!!!
           await TopPlayer.findOneAndUpdate({ 'general.id': player.general.id }, player, { upsert: true });
         }
 
@@ -44,6 +57,18 @@ export async function inputDataInDatabase(data, endpoint) {
       } catch (error) {
         console.error('Error: unable to insert data: ', error);
       }
+      case 'standings':
+        try {
+          for (let teamStanding of data) {
+            // console.log(teamStanding)
+            // TODO: put each 'team' in Team collection
+            await TeamStanding.findOneAndUpdate({ 'team.id': teamStanding.team.id }, teamStanding, { upsert: true });
+          }
+  
+          console.log(chalk.bgGreen('team standings now in database'))
+        } catch (error) {
+          console.error('Error: unable to insert data: ', error);
+        }
   }
 }
 

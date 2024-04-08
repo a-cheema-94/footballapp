@@ -1,4 +1,6 @@
 export const typeDefs = `#graphql
+  #Top Player types
+
   type PlayerData {
     league: String!
     general: GeneralPlayerInfo!
@@ -98,8 +100,43 @@ export const typeDefs = `#graphql
     saved: Int
   }
 
+  #Standings Types
+
+  type TableStatGoals {
+    for: Int
+    against: Int
+  }
+
+  type TableStats {
+    played: Int
+    win: Int
+    draw: Int
+    lose: Int
+    goals: TableStatGoals
+  }
+
+  type TeamStanding {
+    league: String!
+    rank: Int
+    team: Team
+    points: Int
+    goalsDiff: Int
+    form: String
+    all: TableStats
+  }
+
+  type SquadMember {
+    id: Int,
+    name: String,
+    age: Int,
+    position: String,
+    team: String
+  }
+
   type Query {
     topPlayers(league: String!, limit: Int = 20, sortBy: String!): [PlayerData!]!
+    leagueStandings(league: String!, limit: Int = 20): [TeamStanding!]!
+    playerSquads(team: String!): [SquadMember!]!
   }
 `
 
