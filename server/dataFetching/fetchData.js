@@ -8,7 +8,7 @@ const apiCallFrequencies = {
   YEARLY: 365 * 24 * 60 * 60 * 1000,
 }
 
-export const shouldMakeApiCall = async (freq, endpoint, league) => {
+export const shouldMakeApiCall = async (freq, endpoint, parameter) => {
   const apiFreq = apiCallFrequencies[freq.toUpperCase()];
   const currentTime = Date.now();
 
@@ -17,14 +17,14 @@ export const shouldMakeApiCall = async (freq, endpoint, league) => {
   let lastApiCallTimes;
   let cachedFreq;
   try {
-    lastApiCallTimes = await LastApiCallTimes.findOne({ endpoint, league });
+    lastApiCallTimes = await LastApiCallTimes.findOne({ endpoint, parameter });
     
   } catch (error) {
     console.error('An error occurred getting lastApiCallTimes: ', error);
     return true
   }
   
-  console.log(chalk.black.bgYellow(freq, endpoint, league))
+  console.log(chalk.black.bgYellow(freq, endpoint, parameter))
   cachedFreq = lastApiCallTimes?.freq[freq];
   if(cachedFreq && currentTime - cachedFreq < apiFreq) {
     console.log('call time is cached and NOT expired')
@@ -37,7 +37,7 @@ export const shouldMakeApiCall = async (freq, endpoint, league) => {
     if(!lastApiCallTimes) {
       lastApiCallTimes = new LastApiCallTimes({
         endpoint,
-        league,
+        parameter,
         freq: {}
       })
     }

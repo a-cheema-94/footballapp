@@ -129,14 +129,16 @@ export const typeDefs = `#graphql
     id: Int,
     name: String,
     age: Int,
+    number: Int,
     position: String,
-    team: String
+    team: String,
+    league: String
   }
 
   type Query {
     topPlayers(league: String!, limit: Int = 20, sortBy: String!): [PlayerData!]!
     leagueStandings(league: String!, limit: Int = 20): [TeamStanding!]!
-    playerSquads(team: String!): [SquadMember!]!
+    playerSquads(team: String!, league: String!): [SquadMember!]!
   }
 `
 

@@ -3,6 +3,7 @@ import { shouldMakeApiCall } from '../dataFetching/fetchData.js';
 import { clearMongoCollection } from '../dataFetching/handleDatabaseFunctions.js';
 import { LEAGUES, SEASON } from '../fixedData/fixedData.js';
 import LastApiCallTimes from '../models/LastApiCallTimesModel.js';
+import SquadMember from '../models/SquadMemberModel.js';
 import TeamStanding from '../models/TeamStandingModel.js';
 import TopPlayer from '../models/TopPlayerModel.js'
 import chalk from 'chalk'
@@ -53,6 +54,7 @@ export const resolvers = {
     },
 
     leagueStandings: async (_, { league, limit = 20 }) => {
+      
       // clearMongoCollection(TeamStanding)
 
       let endpoint = 'standings'
@@ -86,9 +88,40 @@ export const resolvers = {
     }, 
 
     // TODO:
-    playerSquads: async (_, { team }) => {
+    playerSquads: async (_, { team, league }) => {
       let endpoint = 'players/squads';
-      
+      // teamId
+      let teamStanding = await TeamStanding.findOne({ 'team.name': team });
+      let teamId = teamStanding?.team.id
+      console.log(chalk.yellow(team, ': ', teamId))
+      try {
+        if( await shouldMakeApiCall('weekly', endpoint, team)) {
+          console.log(chalk.bold(endpoint))
+          console.log(chalk.green('Call Api!!!'))
+          await makeApiCall(endpoint, { team: teamId }, league)
+          console.log(chalk.green('async happening'))
+        }
+      } catch (error) {
+        throw new Error(`Squad Members failed to fetch: ${error.message}`)
+      }
+
+      // let sortingInformation = {};
+      // sortingInformation[`rank`] = 1
+      // .sort(sortingInformation)
+      // .limit(limit)
+
+
+      let squad;
+      try {
+        
+        squad = await SquadMember.find({ team }).exec();
+        
+        console.log(chalk.green('data finalized'))
+        
+      } catch (error) {
+        console.error(`some error occurred when fetching squad members from database: ${error}`)
+      }
+      return squad
     }
   }
 }

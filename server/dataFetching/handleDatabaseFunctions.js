@@ -1,4 +1,5 @@
 import { PROPS_TO_FILTER } from "../fixedData/fixedData.js";
+import SquadMember from "../models/SquadMemberModel.js";
 import TeamStanding from "../models/TeamStandingModel.js";
 import TopPlayer from "../models/TopPlayerModel.js";
 import { filterObj } from "../utils/filterData.js";
@@ -13,7 +14,6 @@ import chalk from 'chalk'
 
 // console.log(updatedObject); // { newKey: 'value' }
 
-// TODO: adapt functions for new endpoint: Standings
 
 export function manipulateData(data, endpoint, league) {
   let final;
@@ -36,6 +36,13 @@ export function manipulateData(data, endpoint, league) {
         const updatedStanding = { league, ...filterObj(teamInfo, PROPS_TO_FILTER.standings) };
         // console.log(updatedStanding)
         return updatedStanding
+      })
+    case 'players/squads':
+      let playerRoster = data[0].players;
+      let team = data[0].team.name
+      final = playerRoster.map(player => {
+        const updatedPlayer = { league, team, ...filterObj(player, PROPS_TO_FILTER.squads) };
+        return updatedPlayer
       })
     }
     
@@ -60,8 +67,6 @@ export async function inputDataInDatabase(data, endpoint) {
       case 'standings':
         try {
           for (let teamStanding of data) {
-            // console.log(teamStanding)
-            // TODO: put each 'team' in Team collection
             await TeamStanding.findOneAndUpdate({ 'team.id': teamStanding.team.id }, teamStanding, { upsert: true });
           }
   
@@ -69,11 +74,18 @@ export async function inputDataInDatabase(data, endpoint) {
         } catch (error) {
           console.error('Error: unable to insert data: ', error);
         }
+      case 'players/squads':
+        try {
+          for (let squadMember of data) {
+            await SquadMember.findOneAndUpdate({ id: squadMember.id }, squadMember, { upsert: true });
+          }
+  
+          console.log(chalk.bgGreen('Squad Members now in database'))
+        } catch (error) {
+          console.error('Error: unable to insert data: ', error);
+        }
   }
 }
-
-// await TopPlayer.findOneAndUpdate('query criteria', player, { upsert: true, new: true });
-// export function getDataFromDatabase(endpoint) {}
 
 export async function clearMongoCollection(mongoModel) {
   try {

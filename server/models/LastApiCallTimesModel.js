@@ -5,7 +5,7 @@ const LastApiCallTimesSchema = new mongoose.Schema({
     type: String,
     require: true
   },
-  league: {
+  parameter: {
     type: String,
     require: true
   },

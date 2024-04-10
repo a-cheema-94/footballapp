@@ -11,6 +11,7 @@ export const filterObj = (obj1, arr1) => {
       if(filteredSet.has(key)) continue
       const nestedPropsToFilter = [...filteredSet].filter(prop => {
         const splitProp = prop.split('.');
+        // console.log(splitProp)
         if(splitProp.length > 1 && splitProp[0] === key) {
           return true
         } else {
@@ -18,10 +19,16 @@ export const filterObj = (obj1, arr1) => {
         }
       });
 
+      console.log('nested props to filter: ')
+      console.log(nestedPropsToFilter)
+      console.log('---------------------------------')
 
       if(nestedPropsToFilter.length > 0) {
         // extract nested property name
         const nestedProp = nestedPropsToFilter.map(prop => prop.split('.').slice(1).join(''));
+        console.log('nested prop: ')
+        console.log(nestedProp)
+        console.log('-----------')
         // recursively call function to handle all of the nested props
         filteredObj[key] = filterObj(obj1[key], nestedProp);
       } else {
@@ -37,3 +44,25 @@ export const filterObj = (obj1, arr1) => {
 
   return filteredObj
 }
+
+// const example = {
+//   name: 'calis',
+//   job: {
+//     overseas: {
+//       london: {
+//         southall: 'ok',
+//         harrow: 'nowowow',
+//       },
+//       southAfrica: {
+//         capeTown: 'ok'
+//       }
+//     },
+//     home: {
+//       losAngeles: 'ok',
+//       washington: 'saldkfj'
+//     }
+//   }
+// }
+
+// const filteredObject = filterObj(example, [ 'job.home.washington' ]);
+// console.log(filteredObject.job.overseas.home)
