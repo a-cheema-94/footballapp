@@ -5,7 +5,8 @@ export const PROPS_TO_FILTER = {
     
   },
   standings: ["team.logo", "group", "status", "description", "home", "away", "update"],
-  squads: ["photo"]
+  squads: ["photo"],
+  teamStats: ["league", "team.logo", "fixtures.played.home", "fixtures.played.away", "fixtures.wins.home", "fixtures.wins.away", "fixtures.draws.home", "fixtures.draws.away", "fixtures.loses.home" , "fixtures.loses.away", "goals.for.total.home", "goals.for.total.away", "goals.for.average.home", "goals.for.average.away", "goals.for.minute", "goals.against.total.home", "goals.against.total.away", "goals.against.average.home", "goals.against.average.away", "goals.against.minute", "biggest.goals", "failed_to_score", "cards"]
 }
 
 export const LEAGUES = {

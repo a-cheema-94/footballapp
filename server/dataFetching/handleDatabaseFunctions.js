@@ -29,6 +29,7 @@ export function manipulateData(data, endpoint, league) {
         const updatedPlayer = { league, general: filterObj(general, PROPS_TO_FILTER.topPlayers.general), statistics: filterObj(statistics[0], PROPS_TO_FILTER.topPlayers.statistics) };
         return updatedPlayer;
       })
+      break
     case 'standings':
       let newData = data[0].league.standings[0];
       // console.log(newData[0])
@@ -37,6 +38,7 @@ export function manipulateData(data, endpoint, league) {
         // console.log(updatedStanding)
         return updatedStanding
       })
+      break
     case 'players/squads':
       let playerRoster = data[0].players;
       let team = data[0].team.name
@@ -44,6 +46,7 @@ export function manipulateData(data, endpoint, league) {
         const updatedPlayer = { league, team, ...filterObj(player, PROPS_TO_FILTER.squads) };
         return updatedPlayer
       })
+      break
     }
     
   
@@ -64,26 +67,29 @@ export async function inputDataInDatabase(data, endpoint) {
       } catch (error) {
         console.error('Error: unable to insert data: ', error);
       }
-      case 'standings':
-        try {
-          for (let teamStanding of data) {
-            await TeamStanding.findOneAndUpdate({ 'team.id': teamStanding.team.id }, teamStanding, { upsert: true });
-          }
-  
-          console.log(chalk.bgGreen('team standings now in database'))
-        } catch (error) {
-          console.error('Error: unable to insert data: ', error);
+      break
+    case 'standings':
+      try {
+        for (let teamStanding of data) {
+          await TeamStanding.findOneAndUpdate({ 'team.id': teamStanding.team.id }, teamStanding, { upsert: true });
         }
-      case 'players/squads':
-        try {
-          for (let squadMember of data) {
-            await SquadMember.findOneAndUpdate({ id: squadMember.id }, squadMember, { upsert: true });
-          }
-  
-          console.log(chalk.bgGreen('Squad Members now in database'))
-        } catch (error) {
-          console.error('Error: unable to insert data: ', error);
+
+        console.log(chalk.bgGreen('team standings now in database'))
+      } catch (error) {
+        console.error('Error: unable to insert data: ', error);
+      }
+      break
+    case 'players/squads':
+      try {
+        for (let squadMember of data) {
+          await SquadMember.findOneAndUpdate({ id: squadMember.id }, squadMember, { upsert: true });
         }
+
+        console.log(chalk.bgGreen('Squad Members now in database'))
+      } catch (error) {
+        console.error('Error: unable to insert data: ', error);
+      }
+      break
   }
 }
 

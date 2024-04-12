@@ -6,6 +6,8 @@ dotenv.config({ path: '../.env' })
 const footballApiKey = process.env.FOOTBALL_API_KEY;
 
 export async function makeApiCall(endpoint, params, league) {
+  // console.log(endpoint)
+  // console.log(params)
   const footballApiClient = axios.create(); // create axios instance
   footballApiClient.interceptors.request.use(options => {
     const headers = options.headers;
@@ -28,9 +30,9 @@ export async function makeApiCall(endpoint, params, league) {
         "x-apisports-key": footballApiKey
       }
     })
-    
+    // console.log(apiRes.data.response)
     const sortedData = manipulateData(apiRes.data.response, endpoint, league);
-    // console.log(sortedData[3])
+    // console.log(sortedData[3].statistics)
     await inputDataInDatabase(sortedData, endpoint)
     
   } catch (error) {

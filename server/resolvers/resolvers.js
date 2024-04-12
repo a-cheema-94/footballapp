@@ -56,6 +56,7 @@ export const resolvers = {
     leagueStandings: async (_, { league, limit = 20 }) => {
       
       // clearMongoCollection(TeamStanding)
+      // clearMongoCollection(LastApiCallTimes);
 
       let endpoint = 'standings'
       if(!Object.keys(LEAGUES).includes(league)) league = 'Premier League';
@@ -87,7 +88,6 @@ export const resolvers = {
       return teamStandings
     }, 
 
-    // TODO:
     playerSquads: async (_, { team, league }) => {
       let endpoint = 'players/squads';
       // teamId
@@ -104,13 +104,7 @@ export const resolvers = {
       } catch (error) {
         throw new Error(`Squad Members failed to fetch: ${error.message}`)
       }
-
-      // let sortingInformation = {};
-      // sortingInformation[`rank`] = 1
-      // .sort(sortingInformation)
-      // .limit(limit)
-
-
+      
       let squad;
       try {
         
