@@ -1,7 +1,8 @@
 import { PROPS_TO_FILTER } from "../fixedData/fixedData.js";
 import SquadMember from "../models/SquadMemberModel.js";
 import TeamStanding from "../models/TeamStandingModel.js";
-import TopPlayer from "../models/TopPlayerModel.js";
+import TeamStats from "../models/TeamStatsModel.js";
+import Player from "../models/TopPlayerModel.js";
 import { filterObj } from "../utils/filterData.js";
 import chalk from 'chalk'
 
@@ -17,7 +18,6 @@ import chalk from 'chalk'
 
 export function manipulateData(data, endpoint, league) {
   let final;
-  // console.log(data[0].league.standings)
   console.log(endpoint)
 
   switch(endpoint) {
@@ -32,10 +32,8 @@ export function manipulateData(data, endpoint, league) {
       break
     case 'standings':
       let newData = data[0].league.standings[0];
-      // console.log(newData[0])
       final = newData.map(teamInfo => {
         const updatedStanding = { league, ...filterObj(teamInfo, PROPS_TO_FILTER.standings) };
-        // console.log(updatedStanding)
         return updatedStanding
       })
       break
@@ -47,9 +45,21 @@ export function manipulateData(data, endpoint, league) {
         return updatedPlayer
       })
       break
+    case 'teams/statistics':
+      let newLineups = data.lineups[0];
+      final = { league, ...filterObj(data, PROPS_TO_FILTER.teamStats), lineups: newLineups }
+      break
+    case 'players':
+      console.log(data)
+      let player = data[0];
+      console.log(player)
+      const { player: general, statistics } = player;
+
+      final = { league, general: filterObj(general, PROPS_TO_FILTER.topPlayers.general), statistics: filterObj(statistics[0], PROPS_TO_FILTER.topPlayers.statistics) };
+      break
     }
     
-  
+
   return final;
 
 }
@@ -60,7 +70,7 @@ export async function inputDataInDatabase(data, endpoint) {
     case 'players/topassists':
       try {
         for (let player of data) {
-          await TopPlayer.findOneAndUpdate({ 'general.id': player.general.id }, player, { upsert: true });
+          await Player.findOneAndUpdate({ 'general.id': player.general.id }, player, { upsert: true });
         }
 
         console.log(chalk.bgGreen('players now in database'))
@@ -86,6 +96,22 @@ export async function inputDataInDatabase(data, endpoint) {
         }
 
         console.log(chalk.bgGreen('Squad Members now in database'))
+      } catch (error) {
+        console.error('Error: unable to insert data: ', error);
+      }
+      break
+    case 'teams/statistics':
+      try {
+        await TeamStats.findOneAndUpdate({ 'team.id': data.team.id }, data, { upsert: true })
+        console.log(chalk.bgGreen('Team Stats now in database'))
+      } catch (error) {
+        console.error('Error: unable to insert data: ', error);
+      }
+      break
+    case 'players':
+      try {
+        await Player.findOneAndUpdate({ 'general.id': data.general.id }, data, { upsert: true });
+        console.log(chalk.bgGreen('Player Stats now in database'))
       } catch (error) {
         console.error('Error: unable to insert data: ', error);
       }

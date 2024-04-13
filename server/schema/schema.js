@@ -228,7 +228,8 @@ export const typeDefs = `#graphql
     topPlayers(league: String!, limit: Int = 20, sortBy: String!): [PlayerData!]!
     leagueStandings(league: String!, limit: Int = 20): [TeamStanding!]!
     playerSquads(team: String!, league: String!): [SquadMember!]!
-    teamStats(team: String!, league: String!): [TeamStats!]!
+    teamStats(team: String!, league: String!): TeamStats!
+    playerStats(player: String!, team: String!, league: String!): PlayerData!
   }
 `
 

@@ -62,12 +62,14 @@ const TeamStatsPenaltySchema = new mongoose.Schema({
   total: Number
 })
 
+const TeamSchema = new mongoose.Schema({
+  id: Number,
+  name: String
+})
+
 const TeamStatsSchema = new mongoose.Schema({
   league: String,
-  team: {
-    id: Number,
-    name: String
-  },
+  team: TeamSchema,
   form: String,
   fixtures: TeamStatsFixturesSchema,
   goals: TeamStatsGoalsSchema,

@@ -69,11 +69,11 @@ const PlayerStatisticsSchema = new mongoose.Schema({
   },
 })
 
-const TopPlayerSchema = new mongoose.Schema({
+const PlayerSchema = new mongoose.Schema({
   league: String,
   general: GeneralPlayerSchema,
   statistics: PlayerStatisticsSchema,
 })
 
-const TopPlayer = mongoose.model('Top Player', TopPlayerSchema);
-export default TopPlayer
+const Player = mongoose.model('Player', PlayerSchema);
+export default Player

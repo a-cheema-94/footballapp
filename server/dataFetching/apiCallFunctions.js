@@ -30,9 +30,9 @@ export async function makeApiCall(endpoint, params, league) {
         "x-apisports-key": footballApiKey
       }
     })
-    // console.log(apiRes.data.response)
+    console.log(apiRes.data.response)
     const sortedData = manipulateData(apiRes.data.response, endpoint, league);
-    // console.log(sortedData[3].statistics)
+    // console.log(sortedData.form)
     await inputDataInDatabase(sortedData, endpoint)
     
   } catch (error) {
@@ -40,6 +40,8 @@ export async function makeApiCall(endpoint, params, league) {
   }
 
 }
+
+
 
 // url = "https://v3.football.api-sports.io/"
 
