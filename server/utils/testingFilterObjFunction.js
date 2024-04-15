@@ -171,15 +171,164 @@ const standingsTests = {
 
 // endpoint: players/squads
 
-const playerSquads = {}
+const playerSquads = {
+  playerSquad: {
+      id: 280,
+      name: "Alisson Becker",
+      age: 31,
+      number: 1,
+      position: "Goalkeeper",
+      photo: "https://media.api-sports.io/football/players/280.png"
+    }
+    // console.log(filterObj(playerSquad, PROPS_TO_FILTER.squads))
 
-const playerSquad = {
-    id: 280,
-    name: "Alisson Becker",
-    age: 31,
-    number: 1,
-    position: "Goalkeeper",
-    photo: "https://media.api-sports.io/football/players/280.png"
-  }
+}
 
-console.log(filterObj(playerSquad, PROPS_TO_FILTER.squads))
+// endpoint: fixtures
+
+const fixtures = {
+
+  // fixture (last or next)
+  // const fixtureEx = {
+  //   fixture: {
+  //   id: 1035508,
+  //   referee: null,
+  //   timezone: "UTC",
+  //   date: "2024-04-21T15:30:00+00:00",
+  //   timestamp: 1713713400,
+  //   periods: {
+  //   first: null,
+  //   second: null,
+  //   },
+  //   venue: {
+  //   id: 535,
+  //   name: "Craven Cottage",
+  //   city: "London",
+  //   },
+  //   status: {
+  //   long: "Not Started",
+  //   short: "NS",
+  //   elapsed: null,
+  //   },
+  //   },
+  //   league: {
+  //   id: 39,
+  //   name: "Premier League",
+  //   country: "England",
+  //   logo: "https://media.api-sports.io/football/leagues/39.png",
+  //   flag: "https://media.api-sports.io/flags/gb.svg",
+  //   season: 2023,
+  //   round: "Regular Season - 34",
+  //   },
+  //   teams: {
+  //   home: {
+  //   id: 36,
+  //   name: "Fulham",
+  //   logo: "https://media.api-sports.io/football/teams/36.png",
+  //   winner: null,
+  //   },
+  //   away: {
+  //   id: 40,
+  //   name: "Liverpool",
+  //   logo: "https://media.api-sports.io/football/teams/40.png",
+  //   winner: null,
+  //   },
+  //   },
+  //   goals: {
+  //   home: null,
+  //   away: null,
+  //   },
+  //   score: {
+  //   halftime: {
+  //   home: null,
+  //   away: null,
+  //   },
+  //   fulltime: {
+  //   home: null,
+  //   away: null,
+  //   },
+  //   extratime: {
+  //   home: null,
+  //   away: null,
+  //   },
+  //   penalty: {
+  //   home: null,
+  //   away: null,
+  //   },
+  //   },
+  //   }
+  
+  
+  // console.log(filterObj(fixtureEx, PROPS_TO_FILTER.fixtures.fixture))
+  
+  // events
+  // const eventEx = {
+  //   time: {
+  //   elapsed: 14,
+  //   extra: null,
+  //   },
+  //   team: {
+  //   id: 52,
+  //   name: "Crystal Palace",
+  //   logo: "https://media.api-sports.io/football/teams/52.png",
+  //   },
+  //   player: {
+  //   id: 19586,
+  //   name: "E. Eze",
+  //   },
+  //   assist: {
+  //   id: 182201,
+  //   name: "T. Mitchell",
+  //   },
+  //   type: "Goal",
+  //   detail: "Normal Goal",
+  //   comments: null,
+  //   }
+  
+  //   console.log(filterObj(eventEx, PROPS_TO_FILTER.fixtures.events))
+  
+  // lineups
+  
+  // const lineupEx = {
+  //   team: {
+  //   id: 40,
+  //   name: "Liverpool",
+  //   logo: "https://media.api-sports.io/football/teams/40.png",
+  //   colors: {
+  //   player: {
+  //   primary: "e41e2c",
+  //   number: "ffffff",
+  //   border: "e41e2c",
+  //   },
+  //   goalkeeper: {
+  //   primary: "23262b",
+  //   number: "f3f5f0",
+  //   border: "23262b",
+  //   },
+  //   },
+  //   },
+  //   coach: {
+  //   id: 1,
+  //   name: "J. Klopp",
+  //   photo: "https://media.api-sports.io/football/coachs/1.png",
+  //   },
+  //   formation: "4-3-3",
+  //   startXI: [ { random: 'nonsense' }, { random: 'nonsense' }, { random: 'nonsense' } ],
+  //   substitutes: [ { random: 'nonsense' }, { random: 'nonsense' }, { random: 'nonsense' } ],
+  //   }
+  
+  //   console.log(filterObj(lineupEx, PROPS_TO_FILTER.fixtures.lineups))
+  
+  // statistics 
+  
+  // const statisticEx = {
+  //   team: {
+  //   id: 40,
+  //   name: "Liverpool",
+  //   logo: "https://media.api-sports.io/football/teams/40.png",
+  //   },
+  //   statistics: [ {random: "nonsense"}, {random: "nonsense"}, {random: "nonsense"}]
+  //   }
+  
+  // console.log(filterObj(statisticEx, PROPS_TO_FILTER.fixtures.statistics))
+}

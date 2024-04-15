@@ -80,7 +80,6 @@ const TeamStatsSchema = new mongoose.Schema({
     total: Number
   },
   penalty: TeamStatsPenaltySchema,
-  // TODO: in manipulate data change to: this format below, object is inside another object in the lineups object.
   lineups: {
     formation: String,
     played: Number

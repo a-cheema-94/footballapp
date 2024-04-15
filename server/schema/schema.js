@@ -224,12 +224,139 @@ export const typeDefs = `#graphql
     lineups: TeamLineupsInfo
   }
 
+  #Fixtures endpoint
+
+  type FixtureVenueInfo {
+    id: Int,
+    name: String,
+    city: String
+  }
+
+  type FixtureStatusInfo {
+    long: String,
+    short: String,
+    elapsed: Int
+  }
+
+  type FixtureGeneralInfo {
+    id: Int,
+    referee: String,
+    timestamp: String,
+    venue: FixtureVenueInfo,
+    status: FixtureStatusInfo
+  }
+
+  type FixtureTeamInfo {
+    id: Int,
+    name: String,
+    winner: Boolean
+  }
+
+  type FixtureTeamsInfo {
+    home: FixtureTeamInfo,
+    away: FixtureTeamInfo
+  }
+
+  type FixtureGoalsInfo {
+    home: Int,
+    away: Int
+  }
+
+  type FixtureTeamStatGeneralInfo {
+    id: Int,
+    name: String
+  }
+
+  type FixtureIndividualStatInfo {
+    type: String,
+    value: Int
+  }
+
+  type FixtureTeamStatsInfo {
+    team: FixtureTeamStatGeneralInfo,
+    statistics: [FixtureIndividualStatInfo]
+  }
+
+  type FixtureStatsInfo {
+    home: FixtureTeamStatsInfo,
+    away: FixtureTeamStatsInfo
+  }
+
+  type FixtureEventTimeInfo {
+    elapsed: Int,
+    extra: Int
+  }
+
+  type FixtureEventInfo {
+    id: Int,
+    name: String
+  }
+
+  type FixtureEventsInfo {
+    time: FixtureEventTimeInfo,
+    team: FixtureEventInfo,
+    player: FixtureEventInfo,
+    assist: FixtureEventInfo,
+    type: String,
+    detail: String,
+    comments: String
+  }
+
+  type TeamColorsInfo {
+    primary: String,
+    number: String,
+    border: String
+  }
+
+  type CoachInfo {
+    id: Int,
+    name: String
+  }
+
+  type FixturePlayerInfo {
+    id: Int,
+    name: String,
+    number: Int,
+    pos: String,
+    grid: String
+  }
+
+  type FixtureTeamLineupInfo {
+    id: Int,
+    name: String,
+    colors: TeamColorsInfo,
+    coach: CoachInfo
+    formation: String,
+    startXI: [FixturePlayerInfo],
+    substitutions: [FixturePlayerInfo]
+  }
+
+  type FixtureLineupInfo {
+    team: FixtureTeamLineupInfo
+  }
+
+  type FixtureLineupsInfo {
+    home: FixtureLineupInfo,
+    away: FixtureLineupInfo
+  }
+
+  type Fixture {
+    fixture: FixtureGeneralInfo,
+    teams: FixtureTeamsInfo,
+    goals: FixtureGoalsInfo,
+    statistics: FixtureStatsInfo,
+    events: [FixtureEventsInfo],
+    lineups: FixtureLineupsInfo,
+
+  }
+
   type Query {
     topPlayers(league: String!, limit: Int = 20, sortBy: String!): [PlayerData!]!
     leagueStandings(league: String!, limit: Int = 20): [TeamStanding!]!
     playerSquads(team: String!, league: String!): [SquadMember!]!
     teamStats(team: String!, league: String!): TeamStats!
     playerStats(player: String!, team: String!, league: String!): PlayerData!
+    getFixtureInfo(team: String!, league: String!, type: String!): Fixture!
   }
 `
 

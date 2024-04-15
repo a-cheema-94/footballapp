@@ -202,6 +202,28 @@ export const resolvers = {
         console.error(`some error occurred when fetching player stats from database: ${error}`)
       }
       return playerStats;
+    },
+
+    getFixtureInfo: async (_, { team, league, type }) => {
+      // TODO
+      // type = 'last' or type = 'next' and make freq daily
+      let endpoint = 'fixtures';
+      // teamId
+      let teamStanding = await TeamStanding.findOne({ 'team.name': team });
+      let teamId = teamStanding?.team.id
+      console.log(chalk.yellow(team, ': ', teamId))
+      try {
+        if( await shouldMakeApiCall('daily', endpoint, `${team}: ${type}`)) {
+          console.log(chalk.bold(endpoint))
+          console.log(chalk.green('Call Api!!!'))
+          // TODO: adapt makeApiCall function below to handle fixtures endpoint
+          await makeApiCall(endpoint, { team: teamId, league: LEAGUES[league], season: SEASON, type: 1 }, league)
+          console.log(chalk.green('async happening'))
+        }
+      } catch (error) {
+        throw new Error(`Squad Members failed to fetch: ${error.message}`)
+      }
+
     }
   }
 }

@@ -52,7 +52,6 @@ export function manipulateData(data, endpoint, league) {
     case 'players':
       console.log(data)
       let player = data[0];
-      console.log(player)
       const { player: general, statistics } = player;
 
       final = { league, general: filterObj(general, PROPS_TO_FILTER.topPlayers.general), statistics: filterObj(statistics[0], PROPS_TO_FILTER.topPlayers.statistics) };
