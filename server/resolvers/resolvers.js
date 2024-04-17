@@ -1,13 +1,14 @@
 import { makeApiCall } from '../dataFetching/apiCallFunctions.js';
 import { shouldMakeApiCall } from '../dataFetching/fetchData.js';
 import { clearMongoCollection } from '../dataFetching/handleDatabaseFunctions.js';
-import { LEAGUES, SEASON } from '../fixedData/fixedData.js';
+import { FIXTURES_ENDPOINTS, LEAGUES, SEASON } from '../fixedData/fixedData.js';
 import LastApiCallTimes from '../models/LastApiCallTimesModel.js';
 import SquadMember from '../models/SquadMemberModel.js';
 import TeamStanding from '../models/TeamStandingModel.js';
 import TeamStats from '../models/TeamStatsModel.js';
 import Player from '../models/TopPlayerModel.js';
 import chalk from 'chalk'
+import Fixture from '../models/fixtures/FixtureModel.js';
 
 // sortBy = goals or assists => specify endpoint based off this
 export const resolvers = {
@@ -204,8 +205,8 @@ export const resolvers = {
       return playerStats;
     },
 
-    getFixtureInfo: async (_, { team, league, type }) => {
-      // TODO
+    getLastOrNextFixture: async (_, { team, league, type }) => {
+      // TODO make logic for clearing the db (fixtures and lastApiCalls (all fixtures)) when a week has passed
       // type = 'last' or type = 'next' and make freq daily
       let endpoint = 'fixtures';
       // teamId
@@ -214,16 +215,66 @@ export const resolvers = {
       console.log(chalk.yellow(team, ': ', teamId))
       try {
         if( await shouldMakeApiCall('daily', endpoint, `${team}: ${type}`)) {
-          console.log(chalk.bold(endpoint))
+          console.log(chalk.bold.blue('Endpoint: ', endpoint))
           console.log(chalk.green('Call Api!!!'))
           // TODO: adapt makeApiCall function below to handle fixtures endpoint
-          await makeApiCall(endpoint, { team: teamId, league: LEAGUES[league], season: SEASON, type: 1 }, league)
+          const fixtureParams = { team: teamId, league: LEAGUES[league], season: SEASON }
+          fixtureParams[type] = 1;
+          await makeApiCall(endpoint, fixtureParams, league)
           console.log(chalk.green('async happening'))
         }
       } catch (error) {
         throw new Error(`Squad Members failed to fetch: ${error.message}`)
       }
 
+      let finalFixture;
+
+      let sortingInfo = {};
+
+      if(type === 'next') {
+        sortingInfo['fixture.status.short'] = 'NS'
+      } else if (type === 'last') {
+        sortingInfo['fixture.status.short'] = 'FT'
+      }
+
+      try {
+        finalFixture = await Fixture.findOne({ ...sortingInfo, $or: [
+          { 'teams.home.name': team },
+          { 'teams.away.name': team }
+        ] })
+        console.log(chalk.green('data finalized'))
+        
+      } catch (error) {
+        console.error(`some error occurred when fetching fixture from database: ${error}`)
+      }
+
+      return finalFixture;
+    },
+
+    getLastFixtureInfo: async (_, { team, league }) => {
+      // need fixture id of last fixture
+      let lastFixture = await Fixture.findOne({
+        $or: [
+          { 'teams.home.name': team },
+          { 'teams.away.name': team }
+        ],
+        'fixture.status.short': 'FT'
+      });
+      let lastFixtureId = lastFixture?.fixture.id;
+      let fixtureEvents = lastFixture?.events;
+      let fixtureLineups = lastFixture?.lineups;
+      let fixtureStatistics = lastFixture?.statistics;
+
+      // if the events/lineups/statistics are empty call api.
+      if(fixtureEvents.length === 0 && Object.keys(fixtureLineups).length === 0 && Object.keys(fixtureStatistics).length === 0) {
+        // call api for endpoints events/lineups/statistics
+        // TODO: update lastFixture with new data
+        const fixtureInfoCalls = FIXTURES_ENDPOINTS.map(endpoint => makeApiCall(endpoint, { fixture: lastFixtureId }, `${league}.${lastFixtureId}`));
+
+        await Promise.all(fixtureInfoCalls)
+      }
+
+      return lastFixture;
     }
   }
 }

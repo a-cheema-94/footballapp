@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
-import FixtureStatisticsSchema from './FixtureStatisticsModel';
-import FixtureEventSchema from './FixtureEventModel';
-import FixtureLineupSchema from './FixtureLineupModel';
+import FixtureStatisticsSchema from './FixtureStatisticsModel.js';
+import FixtureEventSchema from './FixtureEventModel.js';
+import FixtureLineupSchema from './FixtureLineupModel.js';
 
 const FixtureTeamSchema = new mongoose.Schema({
   id: Number,
@@ -10,6 +10,7 @@ const FixtureTeamSchema = new mongoose.Schema({
 })
 
 const FixtureSchema = new mongoose.Schema({
+  league: String,
   fixture: {
     id: Number,
     referee: String,

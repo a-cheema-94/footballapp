@@ -15,7 +15,7 @@ export const PROPS_TO_FILTER = {
   }
 };
 
-export const FIXTURES_ENDPOINTS = [ "fixtures", "fixtures/events", "fixtures/lineups", "fixtures/statistics" ];
+export const FIXTURES_ENDPOINTS = [ "fixtures/events", "fixtures/lineups", "fixtures/statistics" ];
 
 export const LEAGUES = {
   "Premier League": 39,

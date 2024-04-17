@@ -1,7 +1,6 @@
 import axios from "axios";
 import * as dotenv  from 'dotenv'
 import { inputDataInDatabase, manipulateData } from "./handleDatabaseFunctions.js";
-import { FIXTURES_ENDPOINTS } from "../fixedData/fixedData.js";
 dotenv.config({ path: '../.env' })
 
 const footballApiKey = process.env.FOOTBALL_API_KEY;
@@ -24,28 +23,9 @@ export async function makeApiCall(endpoint, params, league) {
     return options;
   })
 
-  // TODO if fixtures endpoint => make adjustments
-
   let apiRes;
 
   try {
-    // TODO
-    // if(endpoint === 'fixtures') {
-    //   const fixtureEndpointCalls = FIXTURES_ENDPOINTS.map( async (fixtureEndpoint) => {
-    //     const apiCall = await footballApiClient.get(`https://v3.football.api-sports.io/${fixtureEndpoint}`, {
-    //       params,
-    //       headers: {
-    //         "x-apisports-key": footballApiKey
-    //       }
-    //     });
-
-    //     return apiCall;
-    //   });
-
-    //   const results = await Promise.all(fixtureEndpointCalls);
-    //   const finalFixture = { ...results[0] }
-    // }
-
     apiRes = await footballApiClient.get(`https://v3.football.api-sports.io/${endpoint}`, {
       params,
       headers: {
@@ -58,9 +38,8 @@ export async function makeApiCall(endpoint, params, league) {
     console.error(`Error fetching data from football api: ${error}`)
   }
 
+  const sortedData = manipulateData(apiRes.data.response, endpoint, league);
   try {
-    const sortedData = manipulateData(apiRes.data.response, endpoint, league);
-    // console.log(sortedData.form)
     await inputDataInDatabase(sortedData, endpoint)
 
   } catch (error) {

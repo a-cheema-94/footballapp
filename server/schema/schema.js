@@ -341,6 +341,7 @@ export const typeDefs = `#graphql
   }
 
   type Fixture {
+    league: String!
     fixture: FixtureGeneralInfo,
     teams: FixtureTeamsInfo,
     goals: FixtureGoalsInfo,
@@ -356,7 +357,8 @@ export const typeDefs = `#graphql
     playerSquads(team: String!, league: String!): [SquadMember!]!
     teamStats(team: String!, league: String!): TeamStats!
     playerStats(player: String!, team: String!, league: String!): PlayerData!
-    getFixtureInfo(team: String!, league: String!, type: String!): Fixture!
+    getLastOrNextFixture(team: String!, league: String!, type: String!): Fixture!
+    getLastFixtureInfo(team: String!, league: String!): Fixture!
   }
 `
 
