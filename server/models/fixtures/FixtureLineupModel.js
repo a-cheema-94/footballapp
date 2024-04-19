@@ -24,14 +24,14 @@ const FixtureLineupSchema = new mongoose.Schema({
       player: PlayerColorsSchema,
       goalkeeper: PlayerColorsSchema
     },
-    coach: {
-      id: Number,
-      name: String
-    },
-    formation: String,
-    startXI: [PlayerSchema],
-    substitutions: [PlayerSchema]
-  }
+  },
+  coach: {
+    id: Number,
+    name: String
+  },
+  formation: String,
+  startXI: [PlayerSchema],
+  substitutions: [PlayerSchema]
 })
 
 export default FixtureLineupSchema

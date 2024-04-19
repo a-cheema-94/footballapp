@@ -13,9 +13,5 @@ const FixtureTeamStatsSchema = new mongoose.Schema({
   statistics: [StatSchema]
 })
 
-const FixtureStatisticsSchema = new mongoose.Schema({
-  home: FixtureTeamStatsSchema,
-  away: FixtureTeamStatsSchema
-})
 
-export default FixtureStatisticsSchema
+export default FixtureTeamStatsSchema

@@ -217,7 +217,6 @@ export const resolvers = {
         if( await shouldMakeApiCall('daily', endpoint, `${team}: ${type}`)) {
           console.log(chalk.bold.blue('Endpoint: ', endpoint))
           console.log(chalk.green('Call Api!!!'))
-          // TODO: adapt makeApiCall function below to handle fixtures endpoint
           const fixtureParams = { team: teamId, league: LEAGUES[league], season: SEASON }
           fixtureParams[type] = 1;
           await makeApiCall(endpoint, fixtureParams, league)
@@ -266,15 +265,30 @@ export const resolvers = {
       let fixtureStatistics = lastFixture?.statistics;
 
       // if the events/lineups/statistics are empty call api.
-      if(fixtureEvents.length === 0 && Object.keys(fixtureLineups).length === 0 && Object.keys(fixtureStatistics).length === 0) {
-        // call api for endpoints events/lineups/statistics
-        // TODO: update lastFixture with new data
-        const fixtureInfoCalls = FIXTURES_ENDPOINTS.map(endpoint => makeApiCall(endpoint, { fixture: lastFixtureId }, `${league}.${lastFixtureId}`));
 
-        await Promise.all(fixtureInfoCalls)
+      try {
+        if(fixtureEvents.length === 0 && Object.keys(fixtureLineups).length === 0 && Object.keys(fixtureStatistics).length === 0) {
+          // call api for endpoints events/lineups/statistics
+          // TODO: update lastFixture with new data
+          const fixtureInfoCalls = FIXTURES_ENDPOINTS.map(endpoint => makeApiCall(endpoint, { fixture: lastFixtureId }, `${league}.${lastFixtureId}`));
+  
+          await Promise.all(fixtureInfoCalls)
+        }
+        
+      } catch (error) {
+        console.error(`Error! not able to make api call to get fixture info: ${error}`)
       }
 
-      return lastFixture;
+      // look for fixture again and then return
+      let finalFixture;
+      try {
+        finalFixture = await Fixture.findOne({ "fixture.id": lastFixtureId });
+      } catch (error) {
+        console.error(`Error, cannot query fixture from database: ${error}`)
+      }
+
+      return finalFixture;
+
     }
   }
 }

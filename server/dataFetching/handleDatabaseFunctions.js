@@ -61,7 +61,7 @@ export function manipulateData(data, endpoint, league) {
     case 'fixtures':
       let fixture = data[0];
       // console.log(fixture)
-      final = { league, ...filterObj(fixture, PROPS_TO_FILTER.fixtures.fixture), statistics: {}, events: [], lineups: {} };
+      final = { league, ...filterObj(fixture, PROPS_TO_FILTER.fixtures.fixture), statistics: [], events: [], lineups: [] };
       break
     // TODO: see if can optimize
     case 'fixtures/events':
@@ -145,8 +145,8 @@ export async function inputDataInDatabase(data, endpoint) {
         console.error("Error: Unable to insert data: ", error)
       }
       break
+    // TODO: see if can optimize
     case 'fixtures/events':
-      // TODO: add events to Event model by the fixture id
       fixtureId = data.pop();
       try {
         await Fixture.findOneAndUpdate({ "fixture.id": fixtureId }, { $set: { events: data } })
@@ -156,18 +156,16 @@ export async function inputDataInDatabase(data, endpoint) {
       break
     case 'fixtures/lineups':
       fixtureId = data.pop();
-      const [homeTeamLineups, awayTeamLineups] = data;
       try {
-        await Fixture.findOneAndUpdate({ "fixture.id": fixtureId }, { $set: { lineups: { home: homeTeamLineups, away: awayTeamLineups } } }) 
+        await Fixture.findOneAndUpdate({ "fixture.id": fixtureId }, { $set: { lineups: data } }) 
       } catch(error) {
         console.error("Error: Unable to update fixture lineups: ", error)
       }
       break
     case 'fixtures/statistics':
       fixtureId = data.pop();
-      const [homeTeamStats, awayTeamStats] = data;
       try {
-        await Fixture.findOneAndUpdate({ "fixture.id": fixtureId }, { $set: { statistics: { home: homeTeamStats, away: awayTeamStats } } }) 
+        await Fixture.findOneAndUpdate({ "fixture.id": fixtureId }, { $set: { statistics: data } }) 
       } catch(error) {
         console.error("Error: Unable to update fixture statistics: ", error)
       }
