@@ -277,11 +277,6 @@ export const typeDefs = `#graphql
     statistics: [FixtureIndividualStatInfo]
   }
 
-  type FixtureStatsInfo {
-    home: FixtureTeamStatsInfo,
-    away: FixtureTeamStatsInfo
-  }
-
   type FixtureEventTimeInfo {
     elapsed: Int,
     extra: Int
@@ -325,19 +320,14 @@ export const typeDefs = `#graphql
     id: Int,
     name: String,
     colors: TeamColorsInfo,
-    coach: CoachInfo
-    formation: String,
-    startXI: [FixturePlayerInfo],
-    substitutions: [FixturePlayerInfo]
   }
 
   type FixtureLineupInfo {
     team: FixtureTeamLineupInfo
-  }
-
-  type FixtureLineupsInfo {
-    home: FixtureLineupInfo,
-    away: FixtureLineupInfo
+    coach: CoachInfo
+    formation: String,
+    startXI: [FixturePlayerInfo],
+    substitutions: [FixturePlayerInfo]
   }
 
   type Fixture {
@@ -345,9 +335,9 @@ export const typeDefs = `#graphql
     fixture: FixtureGeneralInfo,
     teams: FixtureTeamsInfo,
     goals: FixtureGoalsInfo,
-    statistics: FixtureStatsInfo,
+    statistics: [FixtureTeamStatsInfo, FixtureTeamStatsInfo],
     events: [FixtureEventsInfo],
-    lineups: FixtureLineupsInfo,
+    lineups: [FixtureLineupInfo, FixtureLineupInfo],
 
   }
 
