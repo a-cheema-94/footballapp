@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const StatSchema = new mongoose.Schema({
   type: String,
-  value: Number
+  value: String
 })
 
 const FixtureTeamStatsSchema = new mongoose.Schema({

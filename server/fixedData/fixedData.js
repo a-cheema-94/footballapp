@@ -10,8 +10,8 @@ export const PROPS_TO_FILTER = {
   fixtures: {
     fixture: [ "fixture.timezone", "fixture.date", "fixture.periods", "league", "teams.home.logo", "teams.away.logo", "score" ],
     events: ["team.logo"],
-    lineups: ["team.logo", "coach.photo"],
-    statistics: ["team.logo"]
+    lineups: ["logo", "photo"],
+    statistics: ["logo"]
   }
 };
 

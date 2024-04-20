@@ -34,9 +34,9 @@ const FixtureSchema = new mongoose.Schema({
     home: Number,
     away: Number
   },
-  statistics: [FixtureTeamStatsSchema, FixtureTeamStatsSchema],
+  statistics: [FixtureTeamStatsSchema],
   events: [FixtureEventSchema],
-  lineups: [FixtureLineupSchema, FixtureLineupSchema]
+  lineups: [FixtureLineupSchema]
 });
 
 

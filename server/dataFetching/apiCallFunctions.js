@@ -39,6 +39,8 @@ export async function makeApiCall(endpoint, params, league) {
   }
 
   const sortedData = manipulateData(apiRes.data.response, endpoint, league);
+  console.log('-------------')
+  console.log(sortedData)
   try {
     await inputDataInDatabase(sortedData, endpoint)
 

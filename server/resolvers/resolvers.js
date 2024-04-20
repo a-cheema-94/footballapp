@@ -250,8 +250,13 @@ export const resolvers = {
       return finalFixture;
     },
 
+    // TODO: TEST
     getLastFixtureInfo: async (_, { team, league }) => {
       // need fixture id of last fixture
+      // clearMongoCollection(Fixture)
+      // clearMongoCollection(LastApiCallTimes)
+
+
       let lastFixture = await Fixture.findOne({
         $or: [
           { 'teams.home.name': team },
@@ -266,8 +271,11 @@ export const resolvers = {
 
       // if the events/lineups/statistics are empty call api.
 
+      // let apiCalls;
+
+
       try {
-        if(fixtureEvents.length === 0 && Object.keys(fixtureLineups).length === 0 && Object.keys(fixtureStatistics).length === 0) {
+        if(fixtureEvents.length === 0 && fixtureLineups.length === 0 && fixtureStatistics.length === 0) {
           // call api for endpoints events/lineups/statistics
           // TODO: update lastFixture with new data
           const fixtureInfoCalls = FIXTURES_ENDPOINTS.map(endpoint => makeApiCall(endpoint, { fixture: lastFixtureId }, `${league}.${lastFixtureId}`));
@@ -278,17 +286,34 @@ export const resolvers = {
       } catch (error) {
         console.error(`Error! not able to make api call to get fixture info: ${error}`)
       }
+  
 
       // look for fixture again and then return
       let finalFixture;
       try {
         finalFixture = await Fixture.findOne({ "fixture.id": lastFixtureId });
+        console.log(chalk.green.bold('successfully got data from database'))
       } catch (error) {
         console.error(`Error, cannot query fixture from database: ${error}`)
       }
-
       return finalFixture;
 
+    },
+    // TODO: live query
+    liveFixtures: async (_, { leagues }) => {
+      let liveLeagueIds = ''
+      leagues.forEach(league => liveLeagueIds += `${LEAGUES[league]}-`);
+      liveLeagueIds = liveLeagueIds.split('-');
+      liveLeagueIds.pop();
+      liveLeagueIds = liveLeagueIds.join('-');
+      let endpoint = 'fixtures'
+
+      let liveFixturesCall;
+      try {
+        
+      } catch (error) {
+        throw new Error(`Live Fixtures failed to fetch: ${error.message}`)
+      }
     }
   }
 }

@@ -67,17 +67,27 @@ export function manipulateData(data, endpoint, league) {
     case 'fixtures/events':
       fixtureId = league.split('.')[1];
       final = data.map(event => filterObj(event, PROPS_TO_FILTER.fixtures.events));
-      final[final.length - 1] = fixtureId;
+      final.push(fixtureId);
       break
     case 'fixtures/lineups':
       fixtureId = league.split('.')[1];
-      final = data.map(team => filterObj(team, PROPS_TO_FILTER.fixtures.lineups));
-      final[final.length - 1] = fixtureId;
+      final = data.map(({ team, coach, ...rest }) => ({
+        team: filterObj(team, PROPS_TO_FILTER.fixtures.lineups),
+        coach: filterObj(coach, PROPS_TO_FILTER.fixtures.lineups),
+        ...rest
+      }))
+      final.push(fixtureId);
       break
     case 'fixtures/statistics':
       fixtureId = league.split('.')[1];
-      final = data.map(team => filterObj(team, PROPS_TO_FILTER.fixtures.statistics));
-      final[final.length - 1] = fixtureId;
+      final = data.map(({ team, statistics }) => ({
+        team: filterObj(team, PROPS_TO_FILTER.fixtures.statistics),
+        statistics: statistics.map(({type, value}) => ({
+          type,
+          value: !value ? null : value.toString()
+        }))
+      }));
+      final.push(fixtureId);
       break
     }
     
@@ -156,6 +166,9 @@ export async function inputDataInDatabase(data, endpoint) {
       break
     case 'fixtures/lineups':
       fixtureId = data.pop();
+      // console.log('LINEUPS')
+      // console.log(data)
+      console.log(data[0].startXI['0'])
       try {
         await Fixture.findOneAndUpdate({ "fixture.id": fixtureId }, { $set: { lineups: data } }) 
       } catch(error) {
@@ -164,6 +177,8 @@ export async function inputDataInDatabase(data, endpoint) {
       break
     case 'fixtures/statistics':
       fixtureId = data.pop();
+      console.log('---------------STATS-----------')
+      console.log(data)
       try {
         await Fixture.findOneAndUpdate({ "fixture.id": fixtureId }, { $set: { statistics: data } }) 
       } catch(error) {

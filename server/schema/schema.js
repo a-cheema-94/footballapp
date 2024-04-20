@@ -269,7 +269,7 @@ export const typeDefs = `#graphql
 
   type FixtureIndividualStatInfo {
     type: String,
-    value: Int
+    value: String
   }
 
   type FixtureTeamStatsInfo {
@@ -297,10 +297,15 @@ export const typeDefs = `#graphql
     comments: String
   }
 
-  type TeamColorsInfo {
+  type PlayerColorsInfo {
     primary: String,
     number: String,
     border: String
+  }
+
+  type TeamColorsInfo {
+    player: PlayerColorsInfo
+    goalkeeper: PlayerColorsInfo
   }
 
   type CoachInfo {
@@ -308,12 +313,16 @@ export const typeDefs = `#graphql
     name: String
   }
 
-  type FixturePlayerInfo {
+  type FixturePlayerProps {
     id: Int,
     name: String,
     number: Int,
     pos: String,
     grid: String
+  }
+
+  type FixturePlayerInfo {
+    player: FixturePlayerProps
   }
 
   type FixtureTeamLineupInfo {
@@ -335,9 +344,9 @@ export const typeDefs = `#graphql
     fixture: FixtureGeneralInfo,
     teams: FixtureTeamsInfo,
     goals: FixtureGoalsInfo,
-    statistics: [FixtureTeamStatsInfo, FixtureTeamStatsInfo],
+    statistics: [FixtureTeamStatsInfo],
     events: [FixtureEventsInfo],
-    lineups: [FixtureLineupInfo, FixtureLineupInfo],
+    lineups: [FixtureLineupInfo],
 
   }
 
@@ -349,6 +358,7 @@ export const typeDefs = `#graphql
     playerStats(player: String!, team: String!, league: String!): PlayerData!
     getLastOrNextFixture(team: String!, league: String!, type: String!): Fixture!
     getLastFixtureInfo(team: String!, league: String!): Fixture!
+    liveFixtures(leagues: [String!]!): [Fixture!]!
   }
 `
 
