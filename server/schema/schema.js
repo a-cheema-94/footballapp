@@ -340,6 +340,7 @@ export const typeDefs = `#graphql
   }
 
   type Fixture {
+    live: Boolean
     league: String!
     fixture: FixtureGeneralInfo,
     teams: FixtureTeamsInfo,

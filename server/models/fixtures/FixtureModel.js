@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import FixtureEventSchema from './FixtureEventModel.js';
 import FixtureLineupSchema from './FixtureLineupModel.js';
 import FixtureTeamStatsSchema from './FixtureStatisticsModel.js';
+import { apiCallFrequencies } from '../../dataFetching/fetchData.js';
 
 const FixtureTeamSchema = new mongoose.Schema({
   id: Number,
@@ -10,6 +11,14 @@ const FixtureTeamSchema = new mongoose.Schema({
 })
 
 const FixtureSchema = new mongoose.Schema({
+  createdAt: {
+    type: Date,
+    default: Date.now()
+  },
+  live: {
+    type: Boolean,
+    default: false
+  },
   league: String,
   fixture: {
     id: Number,
@@ -39,6 +48,8 @@ const FixtureSchema = new mongoose.Schema({
   lineups: [FixtureLineupSchema]
 });
 
+Fixture.index({ createdAt: 1 }, { expireAfterMilliseconds: apiCallFrequencies.WEEKLY })
+// this will ensure the Fixture collection will not be cluttered and will be cleared after a week.
 
 const Fixture = mongoose.model('Fixture', FixtureSchema);
 export default Fixture

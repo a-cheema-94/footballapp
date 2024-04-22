@@ -1,11 +1,12 @@
 import axios from "axios";
 import * as dotenv  from 'dotenv'
-import { inputDataInDatabase, manipulateData } from "./handleDatabaseFunctions.js";
+import { clearMongoCollection, inputDataInDatabase, manipulateData } from "./handleDatabaseFunctions.js";
+import Fixture from "../models/fixtures/FixtureModel.js";
 dotenv.config({ path: '../.env' })
 
 const footballApiKey = process.env.FOOTBALL_API_KEY;
 
-export async function makeApiCall(endpoint, params, league) {
+export async function makeApiCall(endpoint, params, league = null) {
   // console.log(endpoint)
   // console.log(params)
   const footballApiClient = axios.create(); // create axios instance
@@ -36,6 +37,12 @@ export async function makeApiCall(endpoint, params, league) {
     
   } catch (error) {
     console.error(`Error fetching data from football api: ${error}`)
+  }
+
+  // delete live fixtures once all live fixtures are finished for that gameweek across all leagues.
+  if(endpoint === 'fixtures' && league === null && apiRes.data.response.length === 0) {
+    // clear live fixtures from database
+    clearMongoCollection(Fixture, { live: true })
   }
 
   const sortedData = manipulateData(apiRes.data.response, endpoint, league);

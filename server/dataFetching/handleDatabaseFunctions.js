@@ -59,9 +59,19 @@ export function manipulateData(data, endpoint, league) {
       final = { league, general: filterObj(general, PROPS_TO_FILTER.topPlayers.general), statistics: filterObj(statistics[0], PROPS_TO_FILTER.topPlayers.statistics) };
       break
     case 'fixtures':
-      let fixture = data[0];
-      // console.log(fixture)
-      final = { league, ...filterObj(fixture, PROPS_TO_FILTER.fixtures.fixture), statistics: [], events: [], lineups: [] };
+      if(data.length > 1) {
+        // TODO: LIVE fixture endpoint logic
+        final = data.map(liveFixture => {
+          const { league: { name }, events } = liveFixture;
+          delete liveFixture.events;
+          const updatedLiveFixture = { live: true, league: name, ...filterObj(liveFixture, PROPS_TO_FILTER.fixtures.fixture), events, statistics: [], lineups: [] };
+          return updatedLiveFixture
+        });
+      } else {
+        let fixture = data[0];
+        // console.log(fixture)
+        final = { league, ...filterObj(fixture, PROPS_TO_FILTER.fixtures.fixture), statistics: [], events: [], lineups: [] };
+      }
       break
     // TODO: see if can optimize
     case 'fixtures/events':
@@ -149,10 +159,23 @@ export async function inputDataInDatabase(data, endpoint) {
       }
       break
     case 'fixtures':
-      try {
-        await Fixture.findOneAndUpdate({"fixture.id": data.fixture.id}, data, { upsert: true });
-      } catch(error) {
-        console.error("Error: Unable to insert data: ", error)
+      // check if data is an array (live fixtures)
+      if(Array.isArray(data)) {
+        // TODO: LOGIC for live fixtures going in database.
+        try {
+          for(let liveFixture of data) {
+            await Fixture.findOneAndUpdate({"fixture.id": liveFixture.fixture.id}, liveFixture, { upsert: true });
+          }
+          console.log(chalk.bgGreen('Live Fixtures now in database'))
+        } catch (error) {
+          console.error('Error: unable to insert data: ', error);
+        }
+      } else {
+        try {
+          await Fixture.findOneAndUpdate({"fixture.id": data.fixture.id}, data, { upsert: true });
+        } catch(error) {
+          console.error("Error: Unable to insert data: ", error)
+        }
       }
       break
     // TODO: see if can optimize
@@ -188,9 +211,9 @@ export async function inputDataInDatabase(data, endpoint) {
   }
 }
 
-export async function clearMongoCollection(mongoModel) {
+export async function clearMongoCollection(mongoModel, deleteParams = {}) {
   try {
-    const output = await mongoModel.deleteMany({});
+    const output = await mongoModel.deleteMany(deleteParams);
     console.log(chalk.bgGreen('successfully cleared collection', mongoModel))
   } catch (error) {
     console.error(`unable to clear collection: ${error}`);

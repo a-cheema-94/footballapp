@@ -259,49 +259,102 @@ const fixtures = {
 //   },
 //   }
 
-// const fixtureEx = {
-//   fixture: {
-//     id: 1035461,
-//     referee: 'M. Salisbury',
-//     timezone: 'UTC',
-//     date: '2024-04-24T19:00:00+00:00',
-//     timestamp: 1713985200,
-//     periods: { first: null, second: null },
-//     venue: { id: 556, name: 'Old Trafford', city: 'Manchester' },
-//     status: { long: 'Not Started', short: 'NS', elapsed: null }
-//   },
-//   league: {
-//     id: 39,
-//     name: 'Premier League',
-//     country: 'England',
-//     logo: 'https://media.api-sports.io/football/leagues/39.png',
-//     flag: 'https://media.api-sports.io/flags/gb.svg',
-//     season: 2023,
-//     round: 'Regular Season - 29'
-//   },
-//   teams: {
-//     home: {
-//       id: 33,
-//       name: 'Manchester United',
-//       logo: 'https://media.api-sports.io/football/teams/33.png',
-//       winner: null
-//     },
-//     away: {
-//       id: 62,
-//       name: 'Sheffield Utd',
-//       logo: 'https://media.api-sports.io/football/teams/62.png',
-//       winner: null
-//     }
-//   },
-//   goals: { home: null, away: null },
-//   score: {
-//     halftime: { home: null, away: null },
-//     fulltime: { home: null, away: null },
-//     extratime: { home: null, away: null },
-//     penalty: { home: null, away: null }
-//   }
-// }
+const fixtureEx = {
+  fixture: {
+    id: 1035461,
+    referee: 'M. Salisbury',
+    timezone: 'UTC',
+    date: '2024-04-24T19:00:00+00:00',
+    timestamp: 1713985200,
+    periods: { first: null, second: null },
+    venue: { id: 556, name: 'Old Trafford', city: 'Manchester' },
+    status: { long: 'Not Started', short: 'NS', elapsed: null }
+  },
+  league: {
+    id: 39,
+    name: 'Premier League',
+    country: 'England',
+    logo: 'https://media.api-sports.io/football/leagues/39.png',
+    flag: 'https://media.api-sports.io/flags/gb.svg',
+    season: 2023,
+    round: 'Regular Season - 29'
+  },
+  teams: {
+    home: {
+      id: 33,
+      name: 'Manchester United',
+      logo: 'https://media.api-sports.io/football/teams/33.png',
+      winner: null
+    },
+    away: {
+      id: 62,
+      name: 'Sheffield Utd',
+      logo: 'https://media.api-sports.io/football/teams/62.png',
+      winner: null
+    }
+  },
+  goals: { home: null, away: null },
+  score: {
+    halftime: { home: null, away: null },
+    fulltime: { home: null, away: null },
+    extratime: { home: null, away: null },
+    penalty: { home: null, away: null }
+  },
+  events: [
+      {
+        time: {
+        elapsed: 29,
+        extra: null,
+        },
+        team: {
+        id: 1483,
+        name: "NK Varazdin",
+        logo: "https://media.api-sports.io/football/teams/1483.png",
+        },
+        player: {
+        id: 14457,
+        name: "I. Postonjski",
+        },
+        assist: {
+        id: null,
+        name: null,
+        },
+        type: "Goal",
+        detail: "Normal Goal",
+        comments: null,
+      },
+      {
+        time: {
+        elapsed: 31,
+        extra: null,
+        },
+        team: {
+        id: 1483,
+        name: "NK Varazdin",
+        logo: "https://media.api-sports.io/football/teams/1483.png",
+        },
+        player: {
+        id: 14370,
+        name: "M. Marina",
+        },
+        assist: {
+        id: null,
+        name: null,
+        },
+        type: "Card",
+        detail: "Yellow Card",
+        comments: null,
+      },
+    ]
+}
 
+// const { events } = fixtureEx;
+// delete fixtureEx.events;
+// const newFixture = { ...filterObj(fixtureEx, PROPS_TO_FILTER.fixtures.fixture), events };
+// console.log(newFixture)
+
+const { fixture: { id } } = fixtureEx;
+console.log(id)
 
 // console.log(filterObj(fixtureEx, PROPS_TO_FILTER.fixtures.fixture))
 
@@ -333,41 +386,41 @@ const fixtures = {
 
 // lineups
 
-const lineupEx = {
-    team: {
-      id: 40,
-      name: "Liverpool",
-      logo: "https://media.api-sports.io/football/teams/40.png",
-      colors: {
-        player: {
-        primary: "e41e2c",
-        number: "ffffff",
-        border: "e41e2c",
-        },
-        goalkeeper: {
-        primary: "23262b",
-        number: "f3f5f0",
-        border: "23262b",
-        },
-      },
-    },
-    coach: {
-    id: 1,
-    name: "J. Klopp",
-    photo: "https://media.api-sports.io/football/coachs/1.png",
-    },
-    formation: "4-3-3",
-    startXI: [ { random: 'nonsense' }, { random: 'nonsense' }, { random: 'nonsense' } ],
-    substitutes: [ { random: 'nonsense' }, { random: 'nonsense' }, { random: 'nonsense' } ],
-  }
+// const lineupEx = {
+//     team: {
+//       id: 40,
+//       name: "Liverpool",
+//       logo: "https://media.api-sports.io/football/teams/40.png",
+//       colors: {
+//         player: {
+//         primary: "e41e2c",
+//         number: "ffffff",
+//         border: "e41e2c",
+//         },
+//         goalkeeper: {
+//         primary: "23262b",
+//         number: "f3f5f0",
+//         border: "23262b",
+//         },
+//       },
+//     },
+//     coach: {
+//     id: 1,
+//     name: "J. Klopp",
+//     photo: "https://media.api-sports.io/football/coachs/1.png",
+//     },
+//     formation: "4-3-3",
+//     startXI: [ { random: 'nonsense' }, { random: 'nonsense' }, { random: 'nonsense' } ],
+//     substitutes: [ { random: 'nonsense' }, { random: 'nonsense' }, { random: 'nonsense' } ],
+//   }
 
-  const lineupArray = [lineupEx]
+//   const lineupArray = [lineupEx]
 
-  console.log(lineupArray.map(({ team, coach, ...rest }) => ({
-    team: filterObj(team, PROPS_TO_FILTER.fixtures.lineups),
-    coach: filterObj(coach, PROPS_TO_FILTER.fixtures.lineups),
-    ...rest
-  })))
+//   console.log(lineupArray.map(({ team, coach, ...rest }) => ({
+//     team: filterObj(team, PROPS_TO_FILTER.fixtures.lineups),
+//     coach: filterObj(coach, PROPS_TO_FILTER.fixtures.lineups),
+//     ...rest
+//   })))
 
   // {
   //   team: { id: 48, name: 'West Ham', colors: [Object] },

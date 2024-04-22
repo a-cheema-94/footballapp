@@ -10,7 +10,6 @@ import Player from '../models/TopPlayerModel.js';
 import chalk from 'chalk'
 import Fixture from '../models/fixtures/FixtureModel.js';
 
-// sortBy = goals or assists => specify endpoint based off this
 export const resolvers = {
 
   Query: {
@@ -47,7 +46,7 @@ export const resolvers = {
         
         topPlayers = await Player.find({ league }).sort(sortingInformation).limit(limit).exec();
         
-        console.log(chalk.green('data finalised'))
+        console.log(chalk.green('data finalized'))
         console.log(topPlayers.length)
       } catch (error) {
         console.error(`some error occurred when fetching players from database: ${error}`)
@@ -250,7 +249,6 @@ export const resolvers = {
       return finalFixture;
     },
 
-    // TODO: TEST
     getLastFixtureInfo: async (_, { team, league }) => {
       // need fixture id of last fixture
       // clearMongoCollection(Fixture)
@@ -277,7 +275,6 @@ export const resolvers = {
       try {
         if(fixtureEvents.length === 0 && fixtureLineups.length === 0 && fixtureStatistics.length === 0) {
           // call api for endpoints events/lineups/statistics
-          // TODO: update lastFixture with new data
           const fixtureInfoCalls = FIXTURES_ENDPOINTS.map(endpoint => makeApiCall(endpoint, { fixture: lastFixtureId }, `${league}.${lastFixtureId}`));
   
           await Promise.all(fixtureInfoCalls)
@@ -299,7 +296,7 @@ export const resolvers = {
       return finalFixture;
 
     },
-    // TODO: live query
+    
     liveFixtures: async (_, { leagues }) => {
       let liveLeagueIds = ''
       leagues.forEach(league => liveLeagueIds += `${LEAGUES[league]}-`);
@@ -308,12 +305,52 @@ export const resolvers = {
       liveLeagueIds = liveLeagueIds.join('-');
       let endpoint = 'fixtures'
 
-      let liveFixturesCall;
       try {
-        
+        if( await shouldMakeApiCall('minute', endpoint, 'live')) {
+          console.log(chalk.bold(endpoint))
+          console.log(chalk.green('Call Api!!!'))
+          await makeApiCall(endpoint, { live: liveLeagueIds })
+          console.log(chalk.green('async happening'))
+        }
       } catch (error) {
-        throw new Error(`Live Fixtures failed to fetch: ${error.message}`)
+        throw new Error(`Player failed to fetch: ${error.message}`)
       }
+
+      // more complex since I want Premier league live fixtures first followed by the rest, so use an aggregation pipeline.
+
+      let liveFixtures;
+
+      try {
+        liveFixtures = await Fixture.aggregate([
+          {
+            $match: { live: true }
+            // get all live fixtures in an array
+          },
+          {
+            // add a sortOrder field to specify that premier league live fixtures will be sorted first
+            $addFields: {
+              sortOrder: {
+                $cond: {
+                  if: { $eq: [ "$league", "Premier League" ] },
+                  then: 0,
+                  else: 1
+                }
+              }
+            }
+          },
+          {
+            // now, sort first by live premier league fixtures in alphabetical order, then the other fixtures by league in alphabetical order.
+            $sort: {
+              sortOrder: 1,
+              league: 1
+            }
+          }
+        ])
+      } catch (error) {
+        console.error(`some error occurred when fetching live fixtures from database: ${error}`)
+      }
+
+      return liveFixtures;      
     }
   }
 }

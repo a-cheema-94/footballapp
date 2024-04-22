@@ -1,7 +1,7 @@
 import LastApiCallTimes from "../models/LastApiCallTimesModel.js";
 import chalk from 'chalk'
 
-const apiCallFrequencies = {
+export const apiCallFrequencies = {
   MINUTE: 60 * 1000,
   DAILY: 24 * 60 * 60 * 1000,
   WEEKLY: 7 * 24 * 60 * 60 * 1000,
