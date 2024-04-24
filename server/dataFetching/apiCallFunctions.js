@@ -7,8 +7,6 @@ dotenv.config({ path: '../.env' })
 const footballApiKey = process.env.FOOTBALL_API_KEY;
 
 export async function makeApiCall(endpoint, params, league = null) {
-  // console.log(endpoint)
-  // console.log(params)
   const footballApiClient = axios.create(); // create axios instance
   footballApiClient.interceptors.request.use(options => {
     const headers = options.headers;
@@ -33,7 +31,6 @@ export async function makeApiCall(endpoint, params, league = null) {
         "x-apisports-key": footballApiKey
       }
     })
-    // console.log(apiRes.data.response)
     
   } catch (error) {
     console.error(`Error fetching data from football api: ${error}`)
@@ -43,11 +40,10 @@ export async function makeApiCall(endpoint, params, league = null) {
   if(endpoint === 'fixtures' && league === null && apiRes.data.response.length === 0) {
     // clear live fixtures from database
     clearMongoCollection(Fixture, { live: true })
+    return;
   }
 
   const sortedData = manipulateData(apiRes.data.response, endpoint, league);
-  console.log('-------------')
-  console.log(sortedData)
   try {
     await inputDataInDatabase(sortedData, endpoint)
 
@@ -56,14 +52,3 @@ export async function makeApiCall(endpoint, params, league = null) {
   }
 
 }
-
-
-
-// url = "https://v3.football.api-sports.io/"
-
-const params = {
-  league: 39,
-  season: 2023
-}
-
-// makeApiCall('players/topscorers', params, 'Premier League')

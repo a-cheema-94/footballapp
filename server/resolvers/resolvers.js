@@ -47,7 +47,7 @@ export const resolvers = {
         topPlayers = await Player.find({ league }).sort(sortingInformation).limit(limit).exec();
         
         console.log(chalk.green('data finalized'))
-        console.log(topPlayers.length)
+        // console.log(topPlayers.length)
       } catch (error) {
         console.error(`some error occurred when fetching players from database: ${error}`)
       }
@@ -90,6 +90,9 @@ export const resolvers = {
     }, 
 
     playerSquads: async (_, { team, league }) => {
+      // clearMongoCollection(LastApiCallTimes, { endpoint: 'players/squads' });
+      // clearMongoCollection(SquadMember)
+
       let endpoint = 'players/squads';
       // teamId
       let teamStanding = await TeamStanding.findOne({ 'team.name': team });
@@ -298,6 +301,9 @@ export const resolvers = {
     },
     
     liveFixtures: async (_, { leagues }) => {
+      // clearMongoCollection(Fixture, { live: true })
+      // clearMongoCollection(LastApiCallTimes, { parameter: 'live' })
+
       let liveLeagueIds = ''
       leagues.forEach(league => liveLeagueIds += `${LEAGUES[league]}-`);
       liveLeagueIds = liveLeagueIds.split('-');
@@ -356,5 +362,3 @@ export const resolvers = {
 }
 
 export default resolvers
-
-// sort by statistics.goals.total

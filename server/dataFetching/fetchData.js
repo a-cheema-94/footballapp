@@ -27,7 +27,7 @@ export const shouldMakeApiCall = async (freq, endpoint, parameter) => {
   console.log(chalk.black.bgYellow(freq, endpoint, parameter))
   cachedFreq = lastApiCallTimes?.freq[freq];
   if(cachedFreq && currentTime - cachedFreq < apiFreq) {
-    console.log('call time is cached and NOT expired')
+    console.log(chalk.bgMagenta('call time is cached and NOT expired'))
     return false
   }
 
@@ -47,10 +47,7 @@ export const shouldMakeApiCall = async (freq, endpoint, parameter) => {
   } catch (error) {
     console.error(`An error occurred when saving latest call time to database: ${error}`)
   }
-  console.log(chalk.bgGreen('call time is not cached and expired'))
+  console.log(chalk.black.bold.bgGreen('call time is not cached and expired'))
 
   return true;
 }
-
-// milliseconds since Date.now() is in milliseconds
-// TODO => fixture frequency special case => 

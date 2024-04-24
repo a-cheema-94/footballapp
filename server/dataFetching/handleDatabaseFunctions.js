@@ -7,20 +7,10 @@ import Fixture from "../models/fixtures/FixtureModel.js";
 import { filterObj } from "../utils/filterData.js";
 import chalk from 'chalk'
 
-// RENAMING OBJECT KEYS
-
-// const myObject = { oldKey: 'value' };  
-
-// const { oldKey: newKey, ...rest } = myObject; 
-// const updatedObject = { newKey, ...rest };
-
-// console.log(updatedObject); // { newKey: 'value' }
-
 
 export function manipulateData(data, endpoint, league) {
   let final;
   let fixtureId;
-  // console.log(endpoint)
 
   switch(endpoint) {
     case 'players/topscorers':
@@ -52,7 +42,6 @@ export function manipulateData(data, endpoint, league) {
       final = { league, ...filterObj(data, PROPS_TO_FILTER.teamStats), lineups: newLineups }
       break
     case 'players':
-      console.log(data)
       let player = data[0];
       const { player: general, statistics } = player;
 
@@ -60,7 +49,6 @@ export function manipulateData(data, endpoint, league) {
       break
     case 'fixtures':
       if(data.length > 1) {
-        // TODO: LIVE fixture endpoint logic
         final = data.map(liveFixture => {
           const { league: { name }, events } = liveFixture;
           delete liveFixture.events;
@@ -69,11 +57,9 @@ export function manipulateData(data, endpoint, league) {
         });
       } else {
         let fixture = data[0];
-        // console.log(fixture)
         final = { league, ...filterObj(fixture, PROPS_TO_FILTER.fixtures.fixture), statistics: [], events: [], lineups: [] };
       }
       break
-    // TODO: see if can optimize
     case 'fixtures/events':
       fixtureId = league.split('.')[1];
       final = data.map(event => filterObj(event, PROPS_TO_FILTER.fixtures.events));
@@ -161,7 +147,6 @@ export async function inputDataInDatabase(data, endpoint) {
     case 'fixtures':
       // check if data is an array (live fixtures)
       if(Array.isArray(data)) {
-        // TODO: LOGIC for live fixtures going in database.
         try {
           for(let liveFixture of data) {
             await Fixture.findOneAndUpdate({"fixture.id": liveFixture.fixture.id}, liveFixture, { upsert: true });
@@ -178,38 +163,48 @@ export async function inputDataInDatabase(data, endpoint) {
         }
       }
       break
-    // TODO: see if can optimize
     case 'fixtures/events':
+    case 'fixtures/lineups':
+    case 'fixtures/statistics':
       fixtureId = data.pop();
+      const endpointCategory = endpoint.split('/')[1];
+      const dataToEditFixtures = {}
+      dataToEditFixtures[endpointCategory] = data
       try {
-        await Fixture.findOneAndUpdate({ "fixture.id": fixtureId }, { $set: { events: data } })
+        await Fixture.findOneAndUpdate({ "fixture.id": fixtureId }, { $set: dataToEditFixtures })
       } catch (error) {
         console.error("Error: Unable to update fixture events: ", error)
       }
       break
-    case 'fixtures/lineups':
-      fixtureId = data.pop();
-      // console.log('LINEUPS')
-      // console.log(data)
-      console.log(data[0].startXI['0'])
-      try {
-        await Fixture.findOneAndUpdate({ "fixture.id": fixtureId }, { $set: { lineups: data } }) 
-      } catch(error) {
-        console.error("Error: Unable to update fixture lineups: ", error)
-      }
-      break
-    case 'fixtures/statistics':
-      fixtureId = data.pop();
-      console.log('---------------STATS-----------')
-      console.log(data)
-      try {
-        await Fixture.findOneAndUpdate({ "fixture.id": fixtureId }, { $set: { statistics: data } }) 
-      } catch(error) {
-        console.error("Error: Unable to update fixture statistics: ", error)
-      }
-      break
+      
   }
 }
+
+// case 'fixtures/events':
+//       fixtureId = data.pop();
+//       try {
+//         await Fixture.findOneAndUpdate({ "fixture.id": fixtureId }, { $set: { events: data } })
+//       } catch (error) {
+//         console.error("Error: Unable to update fixture events: ", error)
+//       }
+//       break
+//     case 'fixtures/lineups':
+//       fixtureId = data.pop();
+//       try {
+//         await Fixture.findOneAndUpdate({ "fixture.id": fixtureId }, { $set: { lineups: data } }) 
+//       } catch(error) {
+//         console.error("Error: Unable to update fixture lineups: ", error)
+//       }
+//       break
+//     case 'fixtures/statistics':
+//       fixtureId = data.pop();
+//       try {
+//         await Fixture.findOneAndUpdate({ "fixture.id": fixtureId }, { $set: { statistics: data } }) 
+//       } catch(error) {
+//         console.error("Error: Unable to update fixture statistics: ", error)
+//       }
+//       break
+
 
 export async function clearMongoCollection(mongoModel, deleteParams = {}) {
   try {

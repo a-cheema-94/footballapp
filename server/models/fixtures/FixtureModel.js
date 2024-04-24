@@ -48,7 +48,7 @@ const FixtureSchema = new mongoose.Schema({
   lineups: [FixtureLineupSchema]
 });
 
-Fixture.index({ createdAt: 1 }, { expireAfterMilliseconds: apiCallFrequencies.WEEKLY })
+FixtureSchema.index({ createdAt: 1 }, { expireAfterMilliseconds: apiCallFrequencies.WEEKLY })
 // this will ensure the Fixture collection will not be cluttered and will be cleared after a week.
 
 const Fixture = mongoose.model('Fixture', FixtureSchema);
