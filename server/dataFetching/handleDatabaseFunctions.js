@@ -8,7 +8,7 @@ import Fixture from "../models/fixtures/FixtureModel.js";
 import { filterObj } from "../utils/filterData.js";
 import chalk from 'chalk'
 
-export async function manipulateAndInputData(data, endpoint, league) {
+export async function manipulateAndInputData(data, endpoint, league = null) {
   let final;
 
   switch(endpoint) {

@@ -1,5 +1,5 @@
-import { makeApiCall, makeNewsApiCall } from '../dataFetching/apiCallFunctions.js';
-import { shouldMakeApiCall } from '../dataFetching/fetchData.js';
+import { makeFootballApiCall, makeNewsApiCall } from '../dataFetching/apiCallFunctions.js';
+import { shouldMakeApiCall } from '../dataFetching/shouldMakeApiCall.js';
 import { clearMongoCollection } from '../dataFetching/handleDatabaseFunctions.js';
 import { FIXTURES_ENDPOINTS, LEAGUES, SEASON } from '../fixedData/fixedData.js';
 import LastApiCallTimes from '../models/LastApiCallTimesModel.js';
@@ -29,7 +29,7 @@ export const resolvers = {
         if( await shouldMakeApiCall('daily', endpoint, league)) {
           console.log(chalk.bold(endpoint))
           console.log(chalk.green('Call Api!!!'))
-          await makeApiCall(endpoint, { league: LEAGUES[league], season: SEASON }, league)
+          await makeFootballApiCall(endpoint, { league: LEAGUES[league], season: SEASON }, league)
           console.log(chalk.green('async happening'))
         }
       } catch (error) {
@@ -67,7 +67,7 @@ export const resolvers = {
         if( await shouldMakeApiCall('daily', endpoint, league)) {
           console.log(chalk.bold(endpoint))
           console.log(chalk.green('Call Api!!!'))
-          await makeApiCall(endpoint, { league: LEAGUES[league], season: SEASON }, league)
+          await makeFootballApiCall(endpoint, { league: LEAGUES[league], season: SEASON }, league)
           console.log(chalk.green('async happening'))
         }
       } catch (error) {
@@ -103,7 +103,7 @@ export const resolvers = {
         if( await shouldMakeApiCall('weekly', endpoint, team)) {
           console.log(chalk.bold(endpoint))
           console.log(chalk.green('Call Api!!!'))
-          await makeApiCall(endpoint, { team: teamId }, league)
+          await makeFootballApiCall(endpoint, { team: teamId }, league)
           console.log(chalk.green('async happening'))
         }
       } catch (error) {
@@ -143,7 +143,7 @@ export const resolvers = {
         if( await shouldMakeApiCall('weekly', endpoint, team)) {
           console.log(chalk.bold(endpoint))
           console.log(chalk.green('Call Api!!!'))
-          await makeApiCall(endpoint, { team: teamId, league: LEAGUES[league], season: SEASON  }, league)
+          await makeFootballApiCall(endpoint, { team: teamId, league: LEAGUES[league], season: SEASON  }, league)
           console.log(chalk.green('async happening'))
         }
       } catch (error) {
@@ -190,7 +190,7 @@ export const resolvers = {
         if( await shouldMakeApiCall('weekly', endpoint, player)) {
           console.log(chalk.bold(endpoint))
           console.log(chalk.green('Call Api!!!'))
-          await makeApiCall(endpoint, { id: playerId, team: teamId, league: LEAGUES[league], season: SEASON }, league)
+          await makeFootballApiCall(endpoint, { id: playerId, team: teamId, league: LEAGUES[league], season: SEASON }, league)
           console.log(chalk.green('async happening'))
         }
       } catch (error) {
@@ -222,7 +222,7 @@ export const resolvers = {
           console.log(chalk.green('Call Api!!!'))
           const fixtureParams = { team: teamId, league: LEAGUES[league], season: SEASON }
           fixtureParams[type] = 1;
-          await makeApiCall(endpoint, fixtureParams, league)
+          await makeFootballApiCall(endpoint, fixtureParams, league)
           console.log(chalk.green('async happening'))
         }
       } catch (error) {
@@ -279,7 +279,7 @@ export const resolvers = {
       try {
         if(fixtureEvents.length === 0 && fixtureLineups.length === 0 && fixtureStatistics.length === 0) {
           // call api for endpoints events/lineups/statistics
-          const fixtureInfoCalls = FIXTURES_ENDPOINTS.map(endpoint => makeApiCall(endpoint, { fixture: lastFixtureId }, `${league}.${lastFixtureId}`));
+          const fixtureInfoCalls = FIXTURES_ENDPOINTS.map(endpoint => makeFootballApiCall(endpoint, { fixture: lastFixtureId }, `${league}.${lastFixtureId}`));
   
           await Promise.all(fixtureInfoCalls)
         }
@@ -316,7 +316,7 @@ export const resolvers = {
         if( await shouldMakeApiCall('minute', endpoint, 'live')) {
           console.log(chalk.bold(endpoint))
           console.log(chalk.green('Call Api!!!'))
-          await makeApiCall(endpoint, { live: liveLeagueIds })
+          await makeFootballApiCall(endpoint, { live: liveLeagueIds })
           console.log(chalk.green('async happening'))
         }
       } catch (error) {

@@ -9,7 +9,7 @@ const footballApiKey = process.env.FOOTBALL_API_KEY;
 const newsApiKey = process.env.NEWS_API_KEY;
 
 
-export async function makeApiCall(endpoint, params, league = null) {
+export async function makeFootballApiCall(endpoint, params, league = null) {
   const footballApiClient = axios.create(); // create axios instance
   footballApiClient.interceptors.request.use(options => {
     const headers = options.headers;
@@ -46,14 +46,6 @@ export async function makeApiCall(endpoint, params, league = null) {
     return;
   }
 
-  // const sortedData = manipulateData(apiRes.data.response, endpoint, league);
-  // try {
-  //   await inputDataInDatabase(sortedData, endpoint)
-
-  // } catch (error) {
-  //   console.error(`Error sorting and putting data in database: ${error}`)
-  // }
-
   try {
     await manipulateAndInputData(apiRes.data.response, endpoint, league)
   } catch (error) {
@@ -63,7 +55,6 @@ export async function makeApiCall(endpoint, params, league = null) {
 }
 
 export async function makeNewsApiCall(query = null) {
-  // TODO
   const newsApiClient = axios.create();
   let newsApiRes;
   try {
@@ -78,7 +69,7 @@ export async function makeNewsApiCall(query = null) {
   }
 
   try {
-    await inputDataInDatabase(newsApiRes.data.articles, 'news')
+    await manipulateAndInputData(newsApiRes.data.articles, 'news')
 
   } catch (error) {
     console.error(`Error sorting and putting data in database: ${error}`)

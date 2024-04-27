@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import FixtureEventSchema from './FixtureEventModel.js';
 import FixtureLineupSchema from './FixtureLineupModel.js';
 import FixtureTeamStatsSchema from './FixtureStatisticsModel.js';
-import { apiCallFrequencies } from '../../dataFetching/fetchData.js';
+import { apiCallFrequencies } from '../../dataFetching/shouldMakeApiCall.js';
 
 const FixtureTeamSchema = new mongoose.Schema({
   id: Number,
