@@ -1,10 +1,13 @@
 import axios from "axios";
 import * as dotenv  from 'dotenv'
-import { clearMongoCollection, inputDataInDatabase, manipulateData } from "./handleDatabaseFunctions.js";
+import { clearMongoCollection, manipulateAndInputData } from "./handleDatabaseFunctions.js";
 import Fixture from "../models/fixtures/FixtureModel.js";
+import chalk from "chalk";
 dotenv.config({ path: '../.env' })
 
 const footballApiKey = process.env.FOOTBALL_API_KEY;
+const newsApiKey = process.env.NEWS_API_KEY;
+
 
 export async function makeApiCall(endpoint, params, league = null) {
   const footballApiClient = axios.create(); // create axios instance
@@ -43,12 +46,41 @@ export async function makeApiCall(endpoint, params, league = null) {
     return;
   }
 
-  const sortedData = manipulateData(apiRes.data.response, endpoint, league);
-  try {
-    await inputDataInDatabase(sortedData, endpoint)
+  // const sortedData = manipulateData(apiRes.data.response, endpoint, league);
+  // try {
+  //   await inputDataInDatabase(sortedData, endpoint)
 
+  // } catch (error) {
+  //   console.error(`Error sorting and putting data in database: ${error}`)
+  // }
+
+  try {
+    await manipulateAndInputData(apiRes.data.response, endpoint, league)
   } catch (error) {
     console.error(`Error sorting and putting data in database: ${error}`)
   }
 
+}
+
+export async function makeNewsApiCall(query = null) {
+  // TODO
+  const newsApiClient = axios.create();
+  let newsApiRes;
+  try {
+    newsApiRes = await newsApiClient.get(`https://newsapi.org/v2/top-headlines?sources=four-four-two`, { 
+      headers: {
+        "X-Api-Key": newsApiKey
+      }
+     })
+     console.log(chalk.bgGreenBright(newsApiRes.data.totalResults))
+  } catch (error) {
+    console.error(`Error fetching news articles.`)
+  }
+
+  try {
+    await inputDataInDatabase(newsApiRes.data.articles, 'news')
+
+  } catch (error) {
+    console.error(`Error sorting and putting data in database: ${error}`)
+  }
 }

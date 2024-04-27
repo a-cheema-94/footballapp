@@ -1,4 +1,5 @@
 import { fixturesTypeDefs } from "./fixturesSchema.js";
+import { newsTypeDefs } from "./newsSchema.js";
 import { squadMemberTypeDefs } from "./squadMemberSchema.js";
 import { standingsTypeDefs } from "./standingsSchema.js";
 import { teamStatsTypeDefs } from "./teamStatsSchema.js";
@@ -15,6 +16,8 @@ export const typeDefs = `#graphql
 
   ${fixturesTypeDefs}
 
+  ${newsTypeDefs}
+
   type Query {
     topPlayers(league: String!, limit: Int = 20, sortBy: String!): [PlayerData!]!
     leagueStandings(league: String!, limit: Int = 20): [TeamStanding!]!
@@ -24,6 +27,7 @@ export const typeDefs = `#graphql
     getLastOrNextFixture(team: String!, league: String!, type: String!): Fixture!
     getLastFixtureInfo(team: String!, league: String!): Fixture!
     liveFixtures(leagues: [String!]!): [Fixture!]!
+    topFootballStories: [newsStory!]!
   }
 `
 

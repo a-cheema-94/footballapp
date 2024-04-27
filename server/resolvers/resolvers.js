@@ -1,4 +1,4 @@
-import { makeApiCall } from '../dataFetching/apiCallFunctions.js';
+import { makeApiCall, makeNewsApiCall } from '../dataFetching/apiCallFunctions.js';
 import { shouldMakeApiCall } from '../dataFetching/fetchData.js';
 import { clearMongoCollection } from '../dataFetching/handleDatabaseFunctions.js';
 import { FIXTURES_ENDPOINTS, LEAGUES, SEASON } from '../fixedData/fixedData.js';
@@ -9,6 +9,7 @@ import TeamStats from '../models/TeamStatsModel.js';
 import Player from '../models/TopPlayerModel.js';
 import chalk from 'chalk'
 import Fixture from '../models/fixtures/FixtureModel.js';
+import News from '../models/NewsModel.js';
 
 export const resolvers = {
 
@@ -319,7 +320,7 @@ export const resolvers = {
           console.log(chalk.green('async happening'))
         }
       } catch (error) {
-        throw new Error(`Player failed to fetch: ${error.message}`)
+        throw new Error(`Live Fixture failed to fetch: ${error.message}`)
       }
 
       // more complex since I want Premier league live fixtures first followed by the rest, so use an aggregation pipeline.
@@ -357,6 +358,34 @@ export const resolvers = {
       }
 
       return liveFixtures;      
+    },
+
+    topFootballStories: async () => {
+
+      try {
+        if( await shouldMakeApiCall('daily', 'news', 'top football headlines')) {
+          console.log(chalk.bold('news'))
+          console.log(chalk.green('Call Api!!!'))
+          await makeNewsApiCall()
+          console.log(chalk.green('async happening'))
+        }
+      } catch (error) {
+        throw new Error(`Top news stories failed to fetch: ${error.message}`)
+      }
+
+      let topFootballHeadlines;
+      try {
+        
+        topFootballHeadlines = await News.find().sort({ publishedAt: -1 }).exec();
+        
+        console.log(chalk.green('data finalized'))
+        // console.log(topPlayers.length)
+      } catch (error) {
+        console.error(`some error occurred when fetching news stories from database: ${error}`)
+      }
+
+      return topFootballHeadlines;
+
     }
   }
 }
