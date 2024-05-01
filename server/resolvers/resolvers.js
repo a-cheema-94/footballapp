@@ -209,8 +209,6 @@ export const resolvers = {
     },
 
     getLastOrNextFixture: async (_, { team, league, type }) => {
-      // TODO make logic for clearing the db (fixtures and lastApiCalls (all fixtures)) when a week has passed
-      // type = 'last' or type = 'next' and make freq daily
       let endpoint = 'fixtures';
       // teamId
       let teamStanding = await TeamStanding.findOne({ 'team.name': team });
