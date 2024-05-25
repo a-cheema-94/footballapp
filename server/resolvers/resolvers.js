@@ -10,6 +10,7 @@ import Player from '../models/TopPlayerModel.js';
 import chalk from 'chalk'
 import Fixture from '../models/fixtures/FixtureModel.js';
 import News from '../models/NewsModel.js';
+import { makeInitialQuery } from './additionalFunctions.js';
 
 export const resolvers = {
 
@@ -24,17 +25,8 @@ export const resolvers = {
       if(sortBy === 'assists') endpoint = 'players/topassists'
 
       if(!Object.keys(LEAGUES).includes(league)) league = 'Premier League';
-      
-      try {
-        if( await shouldMakeApiCall('daily', endpoint, league)) {
-          console.log(chalk.bold(endpoint))
-          console.log(chalk.green('Call Api!!!'))
-          await makeFootballApiCall(endpoint, { league: LEAGUES[league], season: SEASON }, league)
-          console.log(chalk.green('async happening'))
-        }
-      } catch (error) {
-        throw new Error(`Top Players failed to fetch: ${error.message}`)
-      }
+
+      await makeInitialQuery('daily', endpoint, league, { league: LEAGUES[league], season: SEASON }, 'Top Players', league)
 
       let sortingInformation = {};
       let category = 'total';
@@ -63,16 +55,7 @@ export const resolvers = {
       let endpoint = 'standings'
       if(!Object.keys(LEAGUES).includes(league)) league = 'Premier League';
 
-      try {
-        if( await shouldMakeApiCall('daily', endpoint, league)) {
-          console.log(chalk.bold(endpoint))
-          console.log(chalk.green('Call Api!!!'))
-          await makeFootballApiCall(endpoint, { league: LEAGUES[league], season: SEASON }, league)
-          console.log(chalk.green('async happening'))
-        }
-      } catch (error) {
-        throw new Error(`Team Standings failed to fetch: ${error.message}`)
-      }
+      await makeInitialQuery('daily', endpoint, league, { league: LEAGUES[league], season: SEASON }, 'Team Standings', league)
       
       let sortingInformation = {};
       sortingInformation[`rank`] = 1
@@ -99,16 +82,9 @@ export const resolvers = {
       let teamStanding = await TeamStanding.findOne({ 'team.name': team });
       let teamId = teamStanding?.team.id
       console.log(chalk.yellow(team, ': ', teamId))
-      try {
-        if( await shouldMakeApiCall('weekly', endpoint, team)) {
-          console.log(chalk.bold(endpoint))
-          console.log(chalk.green('Call Api!!!'))
-          await makeFootballApiCall(endpoint, { team: teamId }, league)
-          console.log(chalk.green('async happening'))
-        }
-      } catch (error) {
-        throw new Error(`Squad Members failed to fetch: ${error.message}`)
-      }
+
+      await makeInitialQuery('weekly', endpoint, team, { team: teamId }, "Squad Members", league )
+
       
       let squad;
       try {
@@ -139,16 +115,7 @@ export const resolvers = {
       let teamId = teamStanding?.team.id;
       // console.log(teamId)
 
-      try {
-        if( await shouldMakeApiCall('weekly', endpoint, team)) {
-          console.log(chalk.bold(endpoint))
-          console.log(chalk.green('Call Api!!!'))
-          await makeFootballApiCall(endpoint, { team: teamId, league: LEAGUES[league], season: SEASON  }, league)
-          console.log(chalk.green('async happening'))
-        }
-      } catch (error) {
-        throw new Error(`Team Stats failed to fetch: ${error.message}`)
-      }
+      await makeInitialQuery('weekly', endpoint, team, { team: teamId, league: LEAGUES[league], season: SEASON  }, 'Team Stats', league );
 
       let teamStats;
 
@@ -186,16 +153,7 @@ export const resolvers = {
       }
       let playerId = playerToFind?.id;
 
-      try {
-        if( await shouldMakeApiCall('weekly', endpoint, player)) {
-          console.log(chalk.bold(endpoint))
-          console.log(chalk.green('Call Api!!!'))
-          await makeFootballApiCall(endpoint, { id: playerId, team: teamId, league: LEAGUES[league], season: SEASON }, league)
-          console.log(chalk.green('async happening'))
-        }
-      } catch (error) {
-        throw new Error(`Player failed to fetch: ${error.message}`)
-      }
+      await makeInitialQuery('weekly', endpoint, player, { id: playerId, team: teamId, league: LEAGUES[league], season: SEASON }, "Player", league )
 
       let playerStats;
       try {
@@ -209,26 +167,29 @@ export const resolvers = {
     },
 
     getLastOrNextFixture: async (_, { team, league, type }) => {
+      // clearMongoCollection(LastApiCallTimes, { endpoint: "fixtures" })
+      // await clearMongoCollection(Fixture, { $or: [
+      //   { 'teams.home.name': team },
+      //   { 'teams.home.name': team },
+      // ] })
+
+
+
       let endpoint = 'fixtures';
       // teamId
       let teamStanding = await TeamStanding.findOne({ 'team.name': team });
       let teamId = teamStanding?.team.id
       console.log(chalk.yellow(team, ': ', teamId))
-      try {
-        if( await shouldMakeApiCall('daily', endpoint, `${team}: ${type}`)) {
-          console.log(chalk.bold.blue('Endpoint: ', endpoint))
-          console.log(chalk.green('Call Api!!!'))
-          const fixtureParams = { team: teamId, league: LEAGUES[league], season: SEASON }
-          fixtureParams[type] = 1;
-          await makeFootballApiCall(endpoint, fixtureParams, league)
-          console.log(chalk.green('async happening'))
-        }
-      } catch (error) {
-        throw new Error(`Squad Members failed to fetch: ${error.message}`)
-      }
+
+      
+      const fixtureParams = { team: teamId, league: LEAGUES[league], season: SEASON }
+      fixtureParams[type] = 1 // can be last or next
+
+      await makeInitialQuery("daily", endpoint, `${team}: ${type}`, fixtureParams, "Fixtures (last or next)", league )
 
       let finalFixture;
 
+      // get latest fixture i.e. latest last fixture and latest next fixture for a particular team, so use .sort after query has been sorted.
       let sortingInfo = {};
 
       if(type === 'next') {
@@ -241,7 +202,7 @@ export const resolvers = {
         finalFixture = await Fixture.findOne({ ...sortingInfo, $or: [
           { 'teams.home.name': team },
           { 'teams.away.name': team }
-        ] })
+        ] }).sort({ createdAt: -1 })
         console.log(chalk.green('data finalized'))
         
       } catch (error) {
@@ -256,26 +217,26 @@ export const resolvers = {
       // clearMongoCollection(Fixture)
       // clearMongoCollection(LastApiCallTimes)
 
-
       let lastFixture = await Fixture.findOne({
         $or: [
           { 'teams.home.name': team },
           { 'teams.away.name': team }
         ],
         'fixture.status.short': 'FT'
-      });
-      let lastFixtureId = lastFixture?.fixture.id;
-      let fixtureEvents = lastFixture?.events;
-      let fixtureLineups = lastFixture?.lineups;
-      let fixtureStatistics = lastFixture?.statistics;
+      }).sort({ createdAt: -1 });
+
+      const {
+        fixture: { id: lastFixtureId } = {}, // case where fixture might be undefined => avoid errors
+        events: fixtureEvents,
+        lineups: fixtureLineups,
+        statistics: fixtureStatistics
+      } = lastFixture || {};
 
       // if the events/lineups/statistics are empty call api.
-
-      // let apiCalls;
-
+      const fixtureInfoData = [ fixtureEvents, fixtureLineups, fixtureStatistics ]
 
       try {
-        if(fixtureEvents.length === 0 && fixtureLineups.length === 0 && fixtureStatistics.length === 0) {
+        if(fixtureInfoData.every(array => array.length === 0)) {
           // call api for endpoints events/lineups/statistics
           const fixtureInfoCalls = FIXTURES_ENDPOINTS.map(endpoint => makeFootballApiCall(endpoint, { fixture: lastFixtureId }, `${league}.${lastFixtureId}`));
   
@@ -310,16 +271,18 @@ export const resolvers = {
       liveLeagueIds = liveLeagueIds.join('-');
       let endpoint = 'fixtures'
 
-      try {
-        if( await shouldMakeApiCall('minute', endpoint, 'live')) {
-          console.log(chalk.bold(endpoint))
-          console.log(chalk.green('Call Api!!!'))
-          await makeFootballApiCall(endpoint, { live: liveLeagueIds })
-          console.log(chalk.green('async happening'))
-        }
-      } catch (error) {
-        throw new Error(`Live Fixture failed to fetch: ${error.message}`)
-      }
+      await makeInitialQuery("minute", endpoint, 'live', { live: liveLeagueIds }, "Live Fixture")
+
+      // try {
+      //   if( await shouldMakeApiCall('minute', endpoint, 'live')) {
+      //     console.log(chalk.bold(endpoint))
+      //     console.log(chalk.green('Call Api!!!'))
+      //     await makeFootballApiCall(endpoint, { live: liveLeagueIds })
+      //     console.log(chalk.green('async happening'))
+      //   }
+      // } catch (error) {
+      //   throw new Error(`Live Fixture failed to fetch: ${error.message}`)
+      // }
 
       // more complex since I want Premier league live fixtures first followed by the rest, so use an aggregation pipeline.
 

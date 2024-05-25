@@ -89,7 +89,7 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
         console.error("An error occurred putting data in database: ", error, " for endpoint: ", endpoint);
       }
       break
-      break
+      
     case 'fixtures/events':
       final = data.map(event => filterObj(event, PROPS_TO_FILTER.fixtures.events));
       try {
@@ -139,6 +139,7 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
     } 
   
   console.log(chalk.bgGreen.bold.black("data for ", endpoint, " now in database"))
+  
   return final;
 
 }

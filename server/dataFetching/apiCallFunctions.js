@@ -39,6 +39,8 @@ export async function makeFootballApiCall(endpoint, params, league = null) {
     console.error(`Error fetching data from football api: ${error}`)
   }
 
+  
+
   // delete live fixtures once all live fixtures are finished for that gameweek across all leagues.
   if(endpoint === 'fixtures' && league === null && apiRes.data.response.length === 0) {
     // clear live fixtures from database
