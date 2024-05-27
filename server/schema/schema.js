@@ -28,6 +28,9 @@ export const typeDefs = `#graphql
     getLastFixtureInfo(team: String!, league: String!): Fixture!
     liveFixtures(leagues: [String!]!): [Fixture!]!
     topFootballStories: [newsStory!]!
+
+    # subject to change
+    playerSearch(query: String!, league: String!, team: String): [PlayerData!]
   }
 `
 

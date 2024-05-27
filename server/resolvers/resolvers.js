@@ -10,10 +10,9 @@ import Player from '../models/TopPlayerModel.js';
 import chalk from 'chalk'
 import Fixture from '../models/fixtures/FixtureModel.js';
 import News from '../models/NewsModel.js';
-import { makeInitialQuery } from './additionalFunctions.js';
+import { getTeamOrPlayerId, makeInitialQuery } from './additionalFunctions.js';
 
 export const resolvers = {
-
   Query: {
     topPlayers: async (_, { league, limit = 20, sortBy }) => {
 
@@ -79,8 +78,8 @@ export const resolvers = {
 
       let endpoint = 'players/squads';
       // teamId
-      let teamStanding = await TeamStanding.findOne({ 'team.name': team });
-      let teamId = teamStanding?.team.id
+      let teamId= await getTeamOrPlayerId(TeamStanding, { 'team.name': team });
+      
       console.log(chalk.yellow(team, ': ', teamId))
 
       await makeInitialQuery('weekly', endpoint, team, { team: teamId }, "Squad Members", league )
@@ -105,15 +104,8 @@ export const resolvers = {
 
       let endpoint = 'teams/statistics';
       // team Id
-      let teamStanding;
-      try {
-        teamStanding = await TeamStanding.findOne({ 'team.name': team });
-        
-      } catch (error) {
-        console.error(`An error occurred querying the team standing`)
-      }
-      let teamId = teamStanding?.team.id;
-      // console.log(teamId)
+      let teamId = await getTeamOrPlayerId(TeamStanding, { 'team.name': team })
+      console.log(teamId)
 
       await makeInitialQuery('weekly', endpoint, team, { team: teamId, league: LEAGUES[league], season: SEASON  }, 'Team Stats', league );
 
@@ -126,8 +118,6 @@ export const resolvers = {
       } catch (error) {
         console.error(`some error occurred when fetching team stats from database: ${error}`)
       }
-
-      // console.log(teamStats)
       return teamStats;
     },
 
@@ -137,21 +127,9 @@ export const resolvers = {
 
       let endpoint = 'players';
 
-      let teamStanding;
-      try {
-        teamStanding = await TeamStanding.findOne({ 'team.name': team });
-        
-      } catch (error) {
-        console.error(`An error occurred querying the team standing`)
-      }
-      let teamId = teamStanding?.team.id;
-      let playerToFind;
-      try {
-        playerToFind = await SquadMember.findOne({ name: player });
-      } catch (error) {
-        console.error(`An error occurred querying the Player`)
-      }
-      let playerId = playerToFind?.id;
+      let teamId = await getTeamOrPlayerId(TeamStanding, { 'team.name': team });
+
+      let playerId = await getTeamOrPlayerId(SquadMember, { name: player });
 
       await makeInitialQuery('weekly', endpoint, player, { id: playerId, team: teamId, league: LEAGUES[league], season: SEASON }, "Player", league )
 
@@ -176,9 +154,8 @@ export const resolvers = {
 
 
       let endpoint = 'fixtures';
-      // teamId
-      let teamStanding = await TeamStanding.findOne({ 'team.name': team });
-      let teamId = teamStanding?.team.id
+
+      let teamId = await getTeamOrPlayerId(TeamStanding, { 'team.name': team })
       console.log(chalk.yellow(team, ': ', teamId))
 
       
@@ -273,16 +250,6 @@ export const resolvers = {
 
       await makeInitialQuery("minute", endpoint, 'live', { live: liveLeagueIds }, "Live Fixture")
 
-      // try {
-      //   if( await shouldMakeApiCall('minute', endpoint, 'live')) {
-      //     console.log(chalk.bold(endpoint))
-      //     console.log(chalk.green('Call Api!!!'))
-      //     await makeFootballApiCall(endpoint, { live: liveLeagueIds })
-      //     console.log(chalk.green('async happening'))
-      //   }
-      // } catch (error) {
-      //   throw new Error(`Live Fixture failed to fetch: ${error.message}`)
-      // }
 
       // more complex since I want Premier league live fixtures first followed by the rest, so use an aggregation pipeline.
 
@@ -347,6 +314,50 @@ export const resolvers = {
 
       return topFootballHeadlines;
 
+    },
+
+    // TODO: Player Search
+    playerSearch: async (_, { query, league, team = null }) => {
+      let searchResults = [];
+      let teamId;
+      let endpoint = 'players'
+
+      const playerSearchParams = { search: query, league: LEAGUES[league], season: SEASON }
+      if(team) {
+        teamId = await getTeamOrPlayerId(TeamStanding, { 'team.name': team })
+        playerSearchParams[team] = teamId;
+      }
+      
+      // search through Player collection to see if any matches, if not call api can add new player to Player collection.
+
+      try {
+        searchResults = await Player.aggregate([
+          {
+            $search: {
+              index: 'playerSearch',
+              text: {
+                query,
+                // use array to limit to three fields and explicitly state each nested field
+                path: [
+                  'general.name',
+                  'general.firstname',
+                  'general.lastname'
+                ]
+              }
+            }
+          }
+        ])
+      } catch (error) {
+        console.error(`Error when querying the documents: ${error}`)
+      }
+
+      await makeFootballApiCall(endpoint, playerSearchParams, league);
+
+      if(searchResults.length === 0) {
+        // TODO => FINISH and finalize logic now query the database based on query param, or find more elegant solution.
+      }
+      return searchResults;
+      
     }
   }
 }
