@@ -2,6 +2,7 @@ import chalk from "chalk"
 import { shouldMakeApiCall } from "../dataFetching/shouldMakeApiCall.js"
 import { makeFootballApiCall } from "../dataFetching/apiCallFunctions.js";
 import TeamStanding from "../models/TeamStandingModel.js";
+import Player from "../models/TopPlayerModel.js";
 
 export const makeInitialQuery  = async (apiCallFrequency, endpoint, apiCallCategory, queryParams, collection, league = null) => {
   try {
@@ -26,4 +27,28 @@ export const getTeamOrPlayerId = async (mongooseModel, query) => {
   }
   
   return model === 'Team Standing' ? result?.team.id : result?.id
+}
+
+export const searchDatabase = async (searchQuery) => {
+  try {
+    return await Player.aggregate([
+          
+      {
+        $search: {
+          index: 'playerSearch',
+          text: {
+            query: searchQuery,
+            // use array to limit to three fields and explicitly state each nested field
+            path: [
+              'general.name',
+              'general.firstname',
+              'general.lastname'
+            ]
+          }
+        }
+      }
+    ])
+  } catch (error) {
+    console.error(`Error when searching the database documents: ${error}`)
+  }
 }

@@ -62,9 +62,11 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
       break
     case 'players':
       let player = data[0];
+      if(!player) console.log(chalk.bgRed("No player found!!"))
       const { player: general, statistics } = player;
 
       final = { league, general: filterObj(general, PROPS_TO_FILTER.topPlayers.general), statistics: filterObj(statistics[0], PROPS_TO_FILTER.topPlayers.statistics) };
+      console.log(final)
       try {
         await inputDataInDatabase(final, Player, 'general')
       } catch (error) {

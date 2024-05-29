@@ -10,7 +10,7 @@ import Player from '../models/TopPlayerModel.js';
 import chalk from 'chalk'
 import Fixture from '../models/fixtures/FixtureModel.js';
 import News from '../models/NewsModel.js';
-import { getTeamOrPlayerId, makeInitialQuery } from './additionalFunctions.js';
+import { getTeamOrPlayerId, makeInitialQuery, searchDatabase } from './additionalFunctions.js';
 
 export const resolvers = {
   Query: {
@@ -323,38 +323,34 @@ export const resolvers = {
       let endpoint = 'players'
 
       const playerSearchParams = { search: query, league: LEAGUES[league], season: SEASON }
+      const matchFields = [{ league }];
       if(team) {
         teamId = await getTeamOrPlayerId(TeamStanding, { 'team.name': team })
         playerSearchParams[team] = teamId;
+        // matchFields["statistics.team.name"] = team;
+        matchFields.push({ "statistics.team.name": team })
       }
       
-      // search through Player collection to see if any matches, if not call api can add new player to Player collection.
+      // search through Player collection to see if any matches, if not call api can add new player to Player collection. Also have limits to the search with league and team (if not null).
 
       try {
-        searchResults = await Player.aggregate([
-          {
-            $search: {
-              index: 'playerSearch',
-              text: {
-                query,
-                // use array to limit to three fields and explicitly state each nested field
-                path: [
-                  'general.name',
-                  'general.firstname',
-                  'general.lastname'
-                ]
-              }
-            }
-          }
-        ])
+        searchResults = await searchDatabase(query);
+
+        if(searchResults.length === 0) {
+          console.log(chalk.bold.bgYellowBright.black('player/players NOT in database already need to call API'))
+
+          await makeFootballApiCall(endpoint, playerSearchParams, league);
+
+          // add a delay, to ensure database has processed data.
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+
+          searchResults = await searchDatabase(query);
+        } else {
+          console.log(chalk.bold.bgMagenta('player/players in database already'))
+        }
+
       } catch (error) {
-        console.error(`Error when querying the documents: ${error}`)
-      }
-
-      await makeFootballApiCall(endpoint, playerSearchParams, league);
-
-      if(searchResults.length === 0) {
-        // TODO => FINISH and finalize logic now query the database based on query param, or find more elegant solution.
+        console.error(chalk.bold.bgRedBright(`Error when searching and fetching players: ${error}`))
       }
       return searchResults;
       
