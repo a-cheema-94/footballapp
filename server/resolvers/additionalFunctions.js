@@ -29,25 +29,46 @@ export const getTeamOrPlayerId = async (mongooseModel, query) => {
   return model === 'Team Standing' ? result?.team.id : result?.id
 }
 
-export const searchDatabase = async (searchQuery) => {
+export const searchDatabase = async (searchQuery, matchFields) => {
+  let searchResults;
   try {
-    return await Player.aggregate([
+    searchResults = await Player.aggregate([
           
       {
         $search: {
           index: 'playerSearch',
-          text: {
-            query: searchQuery,
-            // use array to limit to three fields and explicitly state each nested field
-            path: [
-              'general.name',
-              'general.firstname',
-              'general.lastname'
-            ]
-          }
+          compound: {
+            must: [
+              {
+                text: {
+                  query: searchQuery,
+                  // use array to limit to three fields and explicitly state each nested field
+                  path: [
+                    'general.name',
+                    'general.firstname',
+                    'general.lastname'
+                  ],
+                  fuzzy: {
+                    maxEdits: 2
+                  }
+                  
+                }
+
+              },
+            ],
+
+            filter: [...matchFields]
+          },
         }
       }
-    ])
+    ]);
+
+    return searchResults
+    // return searchResults.filter(player => {
+    //   if(player.league)
+      
+    // })
+    // .filter(player => player.statistics.team.name !== team)
   } catch (error) {
     console.error(`Error when searching the database documents: ${error}`)
   }

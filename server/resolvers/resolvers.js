@@ -316,25 +316,32 @@ export const resolvers = {
 
     },
 
-    // TODO: Player Search
+    // TODO: Amend Player Search to query player squads instead and now can add more filters. Make all optional and add limit to pipeline.
     playerSearch: async (_, { query, league, team = null }) => {
       let searchResults = [];
       let teamId;
       let endpoint = 'players'
 
       const playerSearchParams = { search: query, league: LEAGUES[league], season: SEASON }
-      const matchFields = [{ league }];
-      if(team) {
-        teamId = await getTeamOrPlayerId(TeamStanding, { 'team.name': team })
-        playerSearchParams[team] = teamId;
-        // matchFields["statistics.team.name"] = team;
-        matchFields.push({ "statistics.team.name": team })
+      // const matchFields = [{ term: { query: "Premier League", path: 'league' } }];
+      const matchFields = [
+        {
+          text: {
+            query: league,
+            path: 'league'
+          }
+        }
+      ];
+
+      if(team !== null) {
+        teamId = await getTeamOrPlayerId(TeamStanding, { 'team.name': team });
+        playerSearchParams.team = teamId;
+        matchFields.push({ text: { query: team, path: 'statistics.team.name' } })
       }
-      
       // search through Player collection to see if any matches, if not call api can add new player to Player collection. Also have limits to the search with league and team (if not null).
 
       try {
-        searchResults = await searchDatabase(query);
+        searchResults = await searchDatabase(query, matchFields);
 
         if(searchResults.length === 0) {
           console.log(chalk.bold.bgYellowBright.black('player/players NOT in database already need to call API'))
@@ -344,7 +351,7 @@ export const resolvers = {
           // add a delay, to ensure database has processed data.
           await new Promise((resolve) => setTimeout(resolve, 1000));
 
-          searchResults = await searchDatabase(query);
+          searchResults = await searchDatabase(query, matchFields);
         } else {
           console.log(chalk.bold.bgMagenta('player/players in database already'))
         }
