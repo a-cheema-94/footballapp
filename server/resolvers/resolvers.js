@@ -316,14 +316,14 @@ export const resolvers = {
 
     },
 
-    // TODO: Amend Player Search to query player squads instead and now can add more filters. Make all optional and add limit to pipeline.
-    playerSearch: async (_, { query, league, team = null }) => {
+    playerSearch: async (_, { query, league, team = null, position = null, range = null }) => {
       let searchResults = [];
       let teamId;
-      let endpoint = 'players'
+      let endpoint = 'players/squads'
 
-      const playerSearchParams = { search: query, league: LEAGUES[league], season: SEASON }
-      // const matchFields = [{ term: { query: "Premier League", path: 'league' } }];
+      const playerSearchParams = {}
+      
+      // FILTERS
       const matchFields = [
         {
           text: {
@@ -336,17 +336,27 @@ export const resolvers = {
       if(team !== null) {
         teamId = await getTeamOrPlayerId(TeamStanding, { 'team.name': team });
         playerSearchParams.team = teamId;
-        matchFields.push({ text: { query: team, path: 'statistics.team.name' } })
+        matchFields.push({ text: { query: team, path: 'team' } })
       }
-      // search through Player collection to see if any matches, if not call api can add new player to Player collection. Also have limits to the search with league and team (if not null).
 
+      if(range !== null) {
+        const [lower, higher] = range.split('-');
+        matchFields.push({ range: { path: 'age', gte: lower*1, lte: higher*1 } })
+      }
+
+      if(position !== null) {
+        matchFields.push({ text: { query: position, path: 'position' } })
+      }
+
+
+      // QUERIES
       try {
         searchResults = await searchDatabase(query, matchFields);
 
-        if(searchResults.length === 0) {
+        if(searchResults.length === 0 && team !== null) {
           console.log(chalk.bold.bgYellowBright.black('player/players NOT in database already need to call API'))
 
-          await makeFootballApiCall(endpoint, playerSearchParams, league);
+          await makeInitialQuery('weekly', endpoint, team, playerSearchParams, "Squad Members", league )
 
           // add a delay, to ensure database has processed data.
           await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -361,6 +371,38 @@ export const resolvers = {
       }
       return searchResults;
       
+    },
+
+    // TODO: Decide if filtering autocomplete like playerSearch is worth it.
+    autoCompletePlayer: async (_, { query }) => {
+      let autoCompleteResults = [];
+
+      try {
+        autoCompleteResults = await SquadMember.aggregate([
+          {
+            $search: {
+              index: 'autoCompletePlayers',
+              autocomplete: {
+                query,
+                path: "name",
+                tokenOrder: 'sequential',
+                fuzzy: {
+                  maxEdits: 2,
+                  prefixLength: 1,
+                  maxExpansions: 100,
+                }
+              }
+            }
+          },
+          {
+            $limit: 10
+          }
+        ])
+      } catch (error) {
+        console.error(chalk.bgRedBright.white(`Error, issue with autocomplete on player search: ${error}`))
+      }
+
+      return autoCompleteResults;
     }
   }
 }

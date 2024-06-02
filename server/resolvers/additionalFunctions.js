@@ -3,6 +3,7 @@ import { shouldMakeApiCall } from "../dataFetching/shouldMakeApiCall.js"
 import { makeFootballApiCall } from "../dataFetching/apiCallFunctions.js";
 import TeamStanding from "../models/TeamStandingModel.js";
 import Player from "../models/TopPlayerModel.js";
+import SquadMember from "../models/SquadMemberModel.js";
 
 export const makeInitialQuery  = async (apiCallFrequency, endpoint, apiCallCategory, queryParams, collection, league = null) => {
   try {
@@ -32,7 +33,7 @@ export const getTeamOrPlayerId = async (mongooseModel, query) => {
 export const searchDatabase = async (searchQuery, matchFields) => {
   let searchResults;
   try {
-    searchResults = await Player.aggregate([
+    searchResults = await SquadMember.aggregate([
           
       {
         $search: {
@@ -44,12 +45,10 @@ export const searchDatabase = async (searchQuery, matchFields) => {
                   query: searchQuery,
                   // use array to limit to three fields and explicitly state each nested field
                   path: [
-                    'general.name',
-                    'general.firstname',
-                    'general.lastname'
+                    'name',
                   ],
                   fuzzy: {
-                    maxEdits: 2
+                    maxEdits: 1
                   }
                   
                 }
