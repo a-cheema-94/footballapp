@@ -63,11 +63,7 @@ export const searchDatabase = async (searchQuery, matchFields) => {
     ]);
 
     return searchResults
-    // return searchResults.filter(player => {
-    //   if(player.league)
-      
-    // })
-    // .filter(player => player.statistics.team.name !== team)
+    
   } catch (error) {
     console.error(`Error when searching the database documents: ${error}`)
   }

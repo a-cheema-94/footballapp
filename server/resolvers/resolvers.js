@@ -348,7 +348,6 @@ export const resolvers = {
         matchFields.push({ text: { query: position, path: 'position' } })
       }
 
-
       // QUERIES
       try {
         searchResults = await searchDatabase(query, matchFields);
