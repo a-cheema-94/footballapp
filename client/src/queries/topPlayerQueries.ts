@@ -8,6 +8,7 @@ export const TOP_PLAYER_QUERY = gql`
       age
       firstname
       lastname
+      name
     }
     statistics {
       team {

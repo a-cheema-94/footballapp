@@ -20,7 +20,7 @@ export const topPlayerTypeDefs = `
 
   type PlayerStatistics {
     team: Team!
-    game: GameInfo!
+    game: GameInfo
     substitutions: Substitutions!
     shots: Shots!
     goals: Goals!

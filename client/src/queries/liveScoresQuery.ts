@@ -13,6 +13,27 @@ export const LIVE_SCORES_QUERY = gql`
         id
       }
     }
+
+    events {
+      assist {
+        name
+      }
+      comments
+      detail
+      player {
+        name
+      }
+
+      team {
+        name
+      }
+
+      time {
+        elapsed
+      }
+      type
+      
+    }
     
     goals {
       home
