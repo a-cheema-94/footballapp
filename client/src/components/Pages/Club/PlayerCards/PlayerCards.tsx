@@ -13,7 +13,6 @@ const PlayerCards = (props: Props) => {
   if(error) return <div>An Error occurred: {error.message}</div>
   if(loading) return <p>Loading ...</p>
 
-  console.log(data)
 
   return (
     <div className="d-flex flex-wrap gap-3">
