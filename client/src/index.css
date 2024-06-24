@@ -1,0 +1,8 @@
+.transition-component {
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out; /* Example transition effect */
+}
+
+.transition-component.active {
+  opacity: 1;
+}
