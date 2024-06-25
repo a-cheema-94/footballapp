@@ -20,8 +20,8 @@ const CompetitionMenuOption = ({ league }: Props) => {
   if(loading) return <p>Loading ...</p>
 
   const renderTooltip = (props: any) => (
-    <Tooltip {...props}>
-      Click to go to team page
+    <Tooltip {...props} placement="right-start">
+      Go to team page
     </Tooltip>
   )
 
@@ -43,8 +43,8 @@ const CompetitionMenuOption = ({ league }: Props) => {
             {data.leagueStandings.map((team: any, index: number) => (
               <NavDropdown.Item key={index} className="select-none">
                 <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 250, hide: 400 }}
+                  placement="auto-end"
+                  delay={{ show: 600, hide: 400 }}
                   overlay={renderTooltip}
                 >
                 <Stack direction="horizontal" gap={4} className="align-items-start">
