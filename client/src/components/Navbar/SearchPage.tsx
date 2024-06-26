@@ -1,46 +1,92 @@
-import { Form, InputGroup } from 'react-bootstrap';
+import { ChangeEvent, FC, useState, KeyboardEvent } from 'react';
+import { Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
-import { IoMdClose } from "react-icons/io";
 import { IoSearchOutline } from 'react-icons/io5';
-
+import { IoMdClose } from "react-icons/io";
+import { useLazyQuery, useQuery } from '@apollo/client';
+import { AUTOCOMPLETE_QUERY } from '../../queries/search/autocompleteQuery';
+import { PLAYER_SEARCH_QUERY } from '../../queries/search/playerSearchQuery';
 
 type Props = {
   search: boolean,
   close: () => void
 }
 
-{/* <Form className="d-flex">
-  <Form.Control
-    type="search"
-    placeholder="Search"
-    className="me-2"
-    aria-label="Search"
-  />
-  <Button variant="outline-success">Search</Button>
-</Form> */}
-
 const SearchPage = ({ search, close }: Props) => {
-  return (
-    <div className={`w-100 d-flex justify-content-between z-3 position-fixed transition-component ${search ? 'active' : ''}`}>
+
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [autoCompleteSuggestions, setAutoCompleteSuggestions] = useState<any[]>([]);
+
+
+  const [autoComplete, { data: autoCompleteData, loading: autoCompleteLoading, error: autoCompleteError }] = useLazyQuery(AUTOCOMPLETE_QUERY, {
+    onCompleted: (autoCompleteData: any) => {
+      setAutoCompleteSuggestions(autoCompleteData?.autoCompletePlayer)
       
-      <Form className="d-flex">
-          <Form.Control 
-            type="search" 
-            placeholder='search for players ...'
-            aria-label='Search'
-            className='border-end-0'
-          />
+    },
+    fetchPolicy: 'network-only'
+  })
+  const [playerSearch, { data: playerSearchData, loading: playerSearchLoading, error: playerSearchError }] = useLazyQuery(PLAYER_SEARCH_QUERY)
 
-          <div className="border border-2 border-start-0 rounded-2 p-1">
-            <IoSearchOutline className=''/>
-          </div>
+  // if(autoCompleteError) return <div>An Error occurred: {autoCompleteError.message}</div>
+  if(playerSearchLoading) return <p>Loading ...</p>
+  if(playerSearchError) return <div>An Error occurred: {playerSearchError.message}</div>
+
+  // if(autoCompleteLoading) return <p>Loading ...</p>
+  if(autoCompleteError) return <div>An Error occurred: {autoCompleteError.message}</div>
+
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value
+
+    setSearchQuery(value)
+
+    if(value.length > 2) {
+      autoComplete({ variables: { query: searchQuery } })
+    } else {
+      setAutoCompleteSuggestions([])
+    }
+
+  };
+  const clearSearch = () => setSearchQuery('');
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if(event.key === 'Enter') {
+      event.preventDefault();
+      playerSearch({ variables: { query: searchQuery, league: 'Premier League' } })
+    }
+  }
+
+  return (
+    <div className={`w-100 bg-white pt-3 d-flex flex-column gap-3 position-fixed transition-component ${search ? 'active' : ''}`} style={{ marginTop: '100px', paddingBottom: '500px' }}>
+      
+      <div className="d-flex justify-content-between">
+    
+        <Form className="d-flex w-50 ms-3" >
+            <Form.Control
+              
+              value={searchQuery}
+              onChange={handleSearch}
+              onKeyDown={handleKeyDown}
+              type="text"
+              placeholder='search for players by last name ...'
+              aria-label='Search'
+              className=''
+            />
+
+            <Button className=" bg-transparent text-success border-0 p-1 position-absolute" style={{ right: 'calc(50% - 10px)', top: '18px' }}>
+              {!searchQuery ? <IoSearchOutline className=''/> : <IoMdClose onClick={clearSearch}/>}
+            </Button>
 
 
-      </Form>
+        </Form>
 
-      <Button onClick={() => close()}>
+      <Button onClick={() => close()} className='me-3'>
         <IoMdClose />
       </Button>
+      </div>
+
+      <div className="">{playerSearchData?.playerSearch.map((player: any, index: number) => (
+        <p key={index}>{player.name}</p>
+      ))}</div>
     </div>
   )
 }

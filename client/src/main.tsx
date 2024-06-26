@@ -10,7 +10,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-
+// client.resetStore()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

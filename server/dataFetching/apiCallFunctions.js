@@ -11,19 +11,19 @@ const newsApiKey = process.env.NEWS_API_KEY;
 
 export async function makeFootballApiCall(endpoint, params, league = null) {
   const footballApiClient = axios.create(); // create axios instance
-  footballApiClient.interceptors.request.use(options => {
-    const headers = options.headers;
-    const neededHeaders = ["x-apisports-key"];
+  // footballApiClient.interceptors.request.use(options => {
+  //   const headers = options.headers;
+  //   const neededHeaders = ["x-apisports-key"];
     
-    // remove unnecessary headers
-    for(let header in headers) {
-      if(!neededHeaders.includes(header)) {
-        delete headers[header]
-      }
-    }
+  //   // remove unnecessary headers
+  //   for(let header in headers) {
+  //     if(!neededHeaders.includes(header)) {
+  //       delete headers[header]
+  //     }
+  //   }
 
-    return options;
-  })
+  //   return options;
+  // })
 
   let apiRes;
 
