@@ -9,6 +9,7 @@ import { Route, Routes } from "react-router-dom";
 import MainNavbar from "./components/Navbar/MainNavbar";
 import { useState } from "react";
 import SearchPage from "./components/Navbar/SearchPage";
+import TestComponent from "./components/TestComponent";
 
 function App() {
   const [search, setSearch] = useState(false);
@@ -31,6 +32,7 @@ function App() {
       <Route path="/player" element={<Player />}/>
       <Route path="/liveMatchStats" element={<LiveMatchStats />}/>
       <Route path="/fullTimeMatchStats" element={<FullTimeMatchStats />}/>
+      {/* <Route path="/test" element={<TestComponent />}/> */}
     </Routes>
     </>
   )

@@ -1,5 +1,5 @@
-import { ChangeEvent, FC, useState, KeyboardEvent } from 'react';
-import { Form } from 'react-bootstrap';
+import { ChangeEvent, FC, useState, KeyboardEvent, useEffect } from 'react';
+import { Form, ListGroup, Spinner } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { IoSearchOutline } from 'react-icons/io5';
 import { IoMdClose } from "react-icons/io";
@@ -14,8 +14,11 @@ type Props = {
 
 const SearchPage = ({ search, close }: Props) => {
 
+  // TODO => make a variable for toggling the autocomplete list in the UI.
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [autoCompleteSuggestions, setAutoCompleteSuggestions] = useState<any[]>([]);
+  const [showAutoCompleteSuggestions, setShowAutoCompleteSuggestions] = useState<boolean>(false);
+  const [autoCompleteSuggestionIndex, setAutoCompleteSuggestionIndex] = useState<number>(0)
 
 
   const [autoComplete, { data: autoCompleteData, loading: autoCompleteLoading, error: autoCompleteError }] = useLazyQuery(AUTOCOMPLETE_QUERY, {
@@ -28,7 +31,7 @@ const SearchPage = ({ search, close }: Props) => {
   const [playerSearch, { data: playerSearchData, loading: playerSearchLoading, error: playerSearchError }] = useLazyQuery(PLAYER_SEARCH_QUERY)
 
   // if(autoCompleteError) return <div>An Error occurred: {autoCompleteError.message}</div>
-  if(playerSearchLoading) return <p>Loading ...</p>
+  // if(playerSearchLoading) return <Spinner animation='border' size='sm' />
   if(playerSearchError) return <div>An Error occurred: {playerSearchError.message}</div>
 
   // if(autoCompleteLoading) return <p>Loading ...</p>
@@ -39,19 +42,40 @@ const SearchPage = ({ search, close }: Props) => {
 
     setSearchQuery(value)
 
-    if(value.length > 2) {
-      autoComplete({ variables: { query: searchQuery } })
-    } else {
-      setAutoCompleteSuggestions([])
-    }
+    // autoComplete({ variables: { query: searchQuery } });
+
+    // if(value.length > 2) {
+      
+    //   autoComplete({ variables: { query: searchQuery } })
+    // } else {
+    //   setAutoCompleteSuggestions([])
+    // }
 
   };
-  const clearSearch = () => setSearchQuery('');
+
+  useEffect(() => {
+    if(searchQuery !== '') {
+      setShowAutoCompleteSuggestions(true)
+      autoComplete({ variables: { query: searchQuery } })
+    }
+  }, [searchQuery])
+  
+  const clearSearch = () => {
+    setSearchQuery('')
+    setAutoCompleteSuggestions([]);
+    setAutoCompleteSuggestionIndex(-1)
+  };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if(event.key === 'Enter') {
+    if(event.key === 'ArrowUp') {
+      setAutoCompleteSuggestionIndex(prevIndex => Math.max(0 , prevIndex - 1) )
+    } else if (event.key === 'ArrowDown') {
+      setAutoCompleteSuggestionIndex(prevIndex => Math.min(prevIndex + 1, autoCompleteSuggestions.length))
+    } else if(event.key === 'Enter') {
       event.preventDefault();
+      setSearchQuery(autoCompleteSuggestions[autoCompleteSuggestionIndex].name)
       playerSearch({ variables: { query: searchQuery, league: 'Premier League' } })
+      setShowAutoCompleteSuggestions(prev => !prev)
     }
   }
 
@@ -60,7 +84,7 @@ const SearchPage = ({ search, close }: Props) => {
       
       <div className="d-flex justify-content-between">
     
-        <Form className="d-flex w-50 ms-3" >
+        <Form className="d-flex w-50 ms-3 position-relative" >
             <Form.Control
               
               value={searchQuery}
@@ -72,11 +96,17 @@ const SearchPage = ({ search, close }: Props) => {
               className=''
             />
 
-            <Button className=" bg-transparent text-success border-0 p-1 position-absolute" style={{ right: 'calc(50% - 10px)', top: '18px' }}>
+            <Button className=" bg-transparent text-success border-0 p-1 position-absolute end-0">
               {!searchQuery ? <IoSearchOutline className=''/> : <IoMdClose onClick={clearSearch}/>}
             </Button>
 
+            
 
+            {(searchQuery && showAutoCompleteSuggestions) && <ListGroup className="position-absolute bg-white w-100 list-unstyled top-100 border rounded">
+              {autoCompleteSuggestions.map((suggestion: any, index: number) => (
+                <ListGroup.Item key={index} active={index === autoCompleteSuggestionIndex} className='mb-2'>{suggestion.name}</ListGroup.Item>
+              ))}
+            </ListGroup>}
         </Form>
 
       <Button onClick={() => close()} className='me-3'>
