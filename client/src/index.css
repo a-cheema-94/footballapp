@@ -6,3 +6,9 @@
 .transition-component.active {
   opacity: 1;
 }
+
+.hover-over:hover {
+  background-color: #198754;
+  color: white;
+  cursor: pointer;
+}

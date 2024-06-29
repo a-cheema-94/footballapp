@@ -14,27 +14,31 @@ type Props = {
 
 const SearchPage = ({ search, close }: Props) => {
 
-  // TODO => make a variable for toggling the autocomplete list in the UI.
+  // STATE variable
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [playerSuggestions, setPlayerSuggestions] = useState<any[]>([]);
   const [autoCompleteSuggestions, setAutoCompleteSuggestions] = useState<any[]>([]);
   const [showAutoCompleteSuggestions, setShowAutoCompleteSuggestions] = useState<boolean>(false);
   const [autoCompleteSuggestionIndex, setAutoCompleteSuggestionIndex] = useState<number>(0)
+  
 
-
+  // QUERIES
   const [autoComplete, { data: autoCompleteData, loading: autoCompleteLoading, error: autoCompleteError }] = useLazyQuery(AUTOCOMPLETE_QUERY, {
     onCompleted: (autoCompleteData: any) => {
       setAutoCompleteSuggestions(autoCompleteData?.autoCompletePlayer)
       
     },
-    fetchPolicy: 'network-only'
   })
-  const [playerSearch, { data: playerSearchData, loading: playerSearchLoading, error: playerSearchError }] = useLazyQuery(PLAYER_SEARCH_QUERY)
+  const [playerSearch, { data: playerSearchData, loading: playerSearchLoading, error: playerSearchError }] = useLazyQuery(PLAYER_SEARCH_QUERY, {
+    onCompleted: (playerSearchData: any) => {
+      setPlayerSuggestions(playerSearchData?.playerSearch)
+    }
+  })
 
-  // if(autoCompleteError) return <div>An Error occurred: {autoCompleteError.message}</div>
-  // if(playerSearchLoading) return <Spinner animation='border' size='sm' />
+  // Error states
+
   if(playerSearchError) return <div>An Error occurred: {playerSearchError.message}</div>
 
-  // if(autoCompleteLoading) return <p>Loading ...</p>
   if(autoCompleteError) return <div>An Error occurred: {autoCompleteError.message}</div>
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
@@ -42,22 +46,15 @@ const SearchPage = ({ search, close }: Props) => {
 
     setSearchQuery(value)
 
-    // autoComplete({ variables: { query: searchQuery } });
-
-    // if(value.length > 2) {
-      
-    //   autoComplete({ variables: { query: searchQuery } })
-    // } else {
-    //   setAutoCompleteSuggestions([])
-    // }
-
   };
 
   useEffect(() => {
     if(searchQuery !== '') {
       setShowAutoCompleteSuggestions(true)
       autoComplete({ variables: { query: searchQuery } })
+      playerSearch({ variables: { query: searchQuery, league: 'Premier League' } })
     }
+    
   }, [searchQuery])
   
   const clearSearch = () => {
@@ -70,14 +67,30 @@ const SearchPage = ({ search, close }: Props) => {
     if(event.key === 'ArrowUp') {
       setAutoCompleteSuggestionIndex(prevIndex => Math.max(0 , prevIndex - 1) )
     } else if (event.key === 'ArrowDown') {
-      setAutoCompleteSuggestionIndex(prevIndex => Math.min(prevIndex + 1, autoCompleteSuggestions.length))
+      setAutoCompleteSuggestionIndex(prevIndex => Math.min(prevIndex + 1, autoCompleteSuggestions.length - 1))
     } else if(event.key === 'Enter') {
+
       event.preventDefault();
-      setSearchQuery(autoCompleteSuggestions[autoCompleteSuggestionIndex].name)
-      playerSearch({ variables: { query: searchQuery, league: 'Premier League' } })
-      setShowAutoCompleteSuggestions(prev => !prev)
+      if(autoCompleteSuggestionIndex >= 0) {
+        setSearchQuery(autoCompleteSuggestions[autoCompleteSuggestionIndex].name)
+      }
+      
+      setTimeout(() => {
+        setShowAutoCompleteSuggestions(false)
+        setAutoCompleteSuggestionIndex(-1)
+      }, 100)
     }
   }
+
+
+  const handleClickListItems = (index: number) => {
+    setSearchQuery(autoCompleteSuggestions[index].name)
+    setTimeout(() => {
+      setShowAutoCompleteSuggestions(false)
+      setAutoCompleteSuggestionIndex(-1)
+    }, 100)
+  }
+  
 
   return (
     <div className={`w-100 bg-white pt-3 d-flex flex-column gap-3 position-fixed transition-component ${search ? 'active' : ''}`} style={{ marginTop: '100px', paddingBottom: '500px' }}>
@@ -100,11 +113,9 @@ const SearchPage = ({ search, close }: Props) => {
               {!searchQuery ? <IoSearchOutline className=''/> : <IoMdClose onClick={clearSearch}/>}
             </Button>
 
-            
-
-            {(searchQuery && showAutoCompleteSuggestions) && <ListGroup className="position-absolute bg-white w-100 list-unstyled top-100 border rounded">
+            {(showAutoCompleteSuggestions) && <ListGroup className="position-absolute bg-white w-100 list-unstyled top-100 border rounded">
               {autoCompleteSuggestions.map((suggestion: any, index: number) => (
-                <ListGroup.Item key={index} active={index === autoCompleteSuggestionIndex} className='mb-2'>{suggestion.name}</ListGroup.Item>
+                <ListGroup.Item onClick={() => handleClickListItems(index)} key={index} active={index === autoCompleteSuggestionIndex} className={`hover-over ${index === autoCompleteSuggestionIndex ? 'bg-success' : ''}`}>{suggestion.name}</ListGroup.Item>
               ))}
             </ListGroup>}
         </Form>
@@ -114,9 +125,9 @@ const SearchPage = ({ search, close }: Props) => {
       </Button>
       </div>
 
-      <div className="">{playerSearchData?.playerSearch.map((player: any, index: number) => (
-        <p key={index}>{player.name}</p>
-      ))}</div>
+      {searchQuery ? <div className="">{playerSuggestions.map((player: any, index: number) => (
+        <p key={index}>{player?.name}</p>
+      ))}</div> : <p>No current search results</p>}
     </div>
   )
 }

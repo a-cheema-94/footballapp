@@ -56,9 +56,12 @@ export const searchDatabase = async (searchQuery, matchFields) => {
               },
             ],
 
-            filter: [...matchFields]
+            filter: [...matchFields],
           },
         }
+      },
+      {
+        $limit: 10
       }
     ]);
 
