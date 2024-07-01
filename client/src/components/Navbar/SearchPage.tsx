@@ -6,6 +6,7 @@ import { IoMdClose } from "react-icons/io";
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { AUTOCOMPLETE_QUERY } from '../../queries/search/autocompleteQuery';
 import { PLAYER_SEARCH_QUERY } from '../../queries/search/playerSearchQuery';
+import LeagueSelector from '../reusable/leagueSelector';
 
 type Props = {
   search: boolean,
@@ -19,7 +20,9 @@ const SearchPage = ({ search, close }: Props) => {
   const [playerSuggestions, setPlayerSuggestions] = useState<any[]>([]);
   const [autoCompleteSuggestions, setAutoCompleteSuggestions] = useState<any[]>([]);
   const [showAutoCompleteSuggestions, setShowAutoCompleteSuggestions] = useState<boolean>(false);
-  const [autoCompleteSuggestionIndex, setAutoCompleteSuggestionIndex] = useState<number>(0)
+  const [autoCompleteSuggestionIndex, setAutoCompleteSuggestionIndex] = useState<number>(0);
+  // TODO: add league selector and use data from autocomplete when clicking on suggestion to change it.
+  const [playerLeague, setPlayerLeague] = useState<string>('Premier League');
   
 
   // QUERIES
@@ -52,10 +55,12 @@ const SearchPage = ({ search, close }: Props) => {
     if(searchQuery !== '') {
       setShowAutoCompleteSuggestions(true)
       autoComplete({ variables: { query: searchQuery } })
-      playerSearch({ variables: { query: searchQuery, league: 'Premier League' } })
+      if(playerLeague) {
+        playerSearch({ variables: { query: searchQuery, league: playerLeague } })
+      }
     }
     
-  }, [searchQuery])
+  }, [searchQuery, playerLeague])
   
   const clearSearch = () => {
     setSearchQuery('')
@@ -72,6 +77,7 @@ const SearchPage = ({ search, close }: Props) => {
 
       event.preventDefault();
       if(autoCompleteSuggestionIndex >= 0) {
+        setPlayerLeague(autoCompleteSuggestions[autoCompleteSuggestionIndex].league)
         setSearchQuery(autoCompleteSuggestions[autoCompleteSuggestionIndex].name)
       }
       
@@ -84,20 +90,24 @@ const SearchPage = ({ search, close }: Props) => {
 
 
   const handleClickListItems = (index: number) => {
+    setPlayerLeague(autoCompleteSuggestions[index].league)
     setSearchQuery(autoCompleteSuggestions[index].name)
     setTimeout(() => {
       setShowAutoCompleteSuggestions(false)
       setAutoCompleteSuggestionIndex(-1)
     }, 100)
   }
-  
+
+  const handleSelectLeague = (eventKey: any) => setPlayerLeague(eventKey)
 
   return (
     <div className={`w-100 bg-white pt-3 d-flex flex-column gap-3 position-fixed transition-component ${search ? 'active' : ''}`} style={{ marginTop: '100px', paddingBottom: '500px' }}>
       
       <div className="d-flex justify-content-between">
     
-        <Form className="d-flex w-50 ms-3 position-relative" >
+        <Form className="d-flex w-50 ms-3 position-relative gap-3" >
+            <LeagueSelector selectLeague={handleSelectLeague} playerLeague={playerLeague}/>
+
             <Form.Control
               
               value={searchQuery}
