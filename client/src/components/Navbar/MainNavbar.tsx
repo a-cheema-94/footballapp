@@ -22,7 +22,8 @@ const MainNavbar = ({ toggle }: Props) => {
       <Navbar expand={false} className="bg-secondary-subtle mb-3 p-3 position-fixed w-100" style={{ height: '100px' }}>
           <Container fluid>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${false}`} className='border border-0' onClick={() => setIsCompetitionMenu(true)}/>
-            <Navbar.Brand href="#">
+
+            <Navbar.Brand href="/">
               <img src={`./fstat_logo.svg`} alt="" width="200px"/>
             </Navbar.Brand>
 

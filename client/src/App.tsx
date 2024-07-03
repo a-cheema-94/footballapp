@@ -22,18 +22,20 @@ function App() {
     <>
       
     <MainNavbar toggle={toggle}/>
-    <SearchPage search={search} close={close}/>
+    {search && <SearchPage search={search} close={close}/>}
 
-    <Routes>
+    <div style={{ paddingTop: '100px' }}>
+      <Routes>
 
-      <Route path="/" element={<Homepage />}/>
-      <Route path="/competition" element={<Competition />}/>
-      <Route path="/club" element={<Club />}/>
-      <Route path="/player" element={<Player />}/>
-      <Route path="/liveMatchStats" element={<LiveMatchStats />}/>
-      <Route path="/fullTimeMatchStats" element={<FullTimeMatchStats />}/>
-      {/* <Route path="/test" element={<TestComponent />}/> */}
-    </Routes>
+        <Route path="/" element={<Homepage />}/>
+        <Route path="/competition" element={<Competition />}/>
+        <Route path="/club" element={<Club />}/>
+        <Route path="/player" element={<Player />}/>
+        <Route path="/liveMatchStats" element={<LiveMatchStats />}/>
+        <Route path="/fullTimeMatchStats" element={<FullTimeMatchStats />}/>
+        {/* <Route path="/test" element={<TestComponent />}/> */}
+      </Routes>
+    </div>
     </>
   )
 }

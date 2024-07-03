@@ -6,7 +6,7 @@ type Props = {}
 
 const Homepage = (props: Props) => {
   return (
-    <div className="d-flex flex-column gap-2 " style={{ paddingTop: '120px' }}>
+    <div className="d-flex flex-column gap-2 pt-2">
       <LiveScores />
       <hr />
       <TopPlayerData />

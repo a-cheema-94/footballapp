@@ -1,25 +1,23 @@
-import React, { useEffect, useRef } from 'react'
-import { ListGroupProps } from 'react-bootstrap';
+import { MutableRefObject, useEffect, useRef } from 'react'
 
-type Props = {
-  close: () => void
-}
+type Ref<T> = MutableRefObject<T | null>
 
-const useContentVisible = (close: () => void) => {
-  const ref = useRef<any>(null);
+type UseContentVisibleParams = () => void
 
-  const handleClickOutsideContent = (event: MouseEvent) => {
-    if(ref.current && ref.current.contains(event.target)) {
-      close();
-    }
-  }
+const useContentVisible = <T extends HTMLElement>(callback: UseContentVisibleParams): Ref<T> => {
+  const ref = useRef<T>(null);
 
   useEffect(() => {
-    document.addEventListener('click', handleClickOutsideContent);
+    const handleClickOutsideElement = (event: MouseEvent) => {
+      if(ref.current && !ref.current.contains(event.target as Node)) {
+        callback();
+      }
+    }
 
-    return () => document.removeEventListener('click', handleClickOutsideContent)
-  }, [close]);
+    document.addEventListener('click', handleClickOutsideElement);
 
+    return () => document.removeEventListener('click', handleClickOutsideElement)
+  }, [callback])
 
 
   return ref;

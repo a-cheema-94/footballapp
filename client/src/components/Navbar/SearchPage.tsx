@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useState, KeyboardEvent, useEffect } from 'react';
-import { Form, ListGroup, Spinner } from 'react-bootstrap';
+import { Form, ListGroup, ListGroupProps, Spinner } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { IoSearchOutline } from 'react-icons/io5';
 import { IoMdClose } from "react-icons/io";
@@ -7,6 +7,7 @@ import { useLazyQuery, useQuery } from '@apollo/client';
 import { AUTOCOMPLETE_QUERY } from '../../queries/search/autocompleteQuery';
 import { PLAYER_SEARCH_QUERY } from '../../queries/search/playerSearchQuery';
 import LeagueSelector from '../reusable/leagueSelector';
+import useContentVisible from '../reusable/useContentVisible';
 
 type Props = {
   search: boolean,
@@ -59,6 +60,8 @@ const SearchPage = ({ search, close }: Props) => {
         playerSearch({ variables: { query: searchQuery, league: playerLeague } })
       }
     }
+
+    return () => setShowAutoCompleteSuggestions(false)
     
   }, [searchQuery, playerLeague])
   
@@ -98,14 +101,18 @@ const SearchPage = ({ search, close }: Props) => {
     }, 100)
   }
 
-  const handleSelectLeague = (eventKey: any) => setPlayerLeague(eventKey)
+  const handleSelectLeague = (eventKey: any) => setPlayerLeague(eventKey);
+
+  const closeAutoComplete = () => setShowAutoCompleteSuggestions(false);
+
+  const autoCompleteRef = useContentVisible<HTMLDivElement>(closeAutoComplete);
 
   return (
     <div className={`w-100 bg-white pt-3 d-flex flex-column gap-3 position-fixed transition-component ${search ? 'active' : ''}`} style={{ marginTop: '100px', paddingBottom: '500px' }}>
       
       <div className="d-flex justify-content-between">
     
-        <Form className="d-flex w-50 ms-3 position-relative gap-3" >
+        <Form className="d-flex w-50 ms-3 position-relative gap-3">
             <LeagueSelector selectLeague={handleSelectLeague} playerLeague={playerLeague}/>
 
             <Form.Control
@@ -123,7 +130,7 @@ const SearchPage = ({ search, close }: Props) => {
               {!searchQuery ? <IoSearchOutline className=''/> : <IoMdClose onClick={clearSearch}/>}
             </Button>
 
-            {(showAutoCompleteSuggestions) && <ListGroup className="position-absolute bg-white w-100 list-unstyled top-100 border rounded">
+            {(showAutoCompleteSuggestions) && <ListGroup ref={autoCompleteRef} className="position-absolute bg-white w-100 list-unstyled top-100 border rounded border-primary">
               {autoCompleteSuggestions.map((suggestion: any, index: number) => (
                 <ListGroup.Item onClick={() => handleClickListItems(index)} key={index} active={index === autoCompleteSuggestionIndex} className={`hover-over ${index === autoCompleteSuggestionIndex ? 'bg-success' : ''}`}>{suggestion.name}</ListGroup.Item>
               ))}

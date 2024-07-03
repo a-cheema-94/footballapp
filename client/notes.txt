@@ -1,0 +1,17 @@
+Common Event Types:
+
+Mouse Events: Used for mouse interactions (click, mouseover, etc.).
+MouseEvent<HTMLButtonElement>
+
+Keyboard Events: Used for keyboard interactions (keydown, keyup, etc.).
+KeyboardEvent<HTMLInputElement>
+
+Form Events: Used for form interactions (submit, change, etc.).
+FormEvent<HTMLFormElement>
+ChangeEvent<HTMLInputElement>
+
+Focus Events: Used for focus interactions (focus, blur)
+FocusEvent<HTMLInputElement>
+
+Drag Events: Used for drag interactions (dragstart, dragend, etc.).
+DragEvent<HTMLDivElement>
