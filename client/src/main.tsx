@@ -4,6 +4,7 @@ import App from './App.tsx'
 import './index.css'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { BrowserRouter as Router } from 'react-router-dom'
+import './sass/custom.scss';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/',

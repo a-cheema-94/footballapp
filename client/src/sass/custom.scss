@@ -1,0 +1,20 @@
+@use 'sass:map';
+@import '../../node_modules/bootstrap/scss/functions';
+@import '../../node_modules/bootstrap/scss/variables';
+
+// $all-color-list: $blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans;
+// $all-colors: ();
+
+$all-colors: map.merge($blues, $teals);
+
+
+
+@each $name, $color in $all-colors {
+  .text-#{$name} {
+    color: $color !important;
+  }
+
+  .bg-#{$name} {
+    background-color: $color !important;
+  }
+}
