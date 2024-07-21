@@ -108,7 +108,7 @@ const SearchPage = ({ search, close }: Props) => {
   const autoCompleteRef = useContentVisible<HTMLDivElement>(closeAutoComplete);
 
   return (
-    <div className={`w-100 bg-white pt-3 d-flex flex-column gap-3 position-fixed transition-component ${search ? 'active' : ''}`} style={{ marginTop: '100px', paddingBottom: '500px' }}>
+    <div className={`w-100 bg-white pt-3 d-flex flex-column gap-3 position-fixed ${search ? 'active' : ''}`} style={{ marginTop: '100px', paddingBottom: '500px' }}>
       
       <div className="d-flex justify-content-between">
     
@@ -132,7 +132,7 @@ const SearchPage = ({ search, close }: Props) => {
 
             {(showAutoCompleteSuggestions) && <ListGroup ref={autoCompleteRef} className="position-absolute bg-white w-100 list-unstyled top-100 border rounded border-primary">
               {autoCompleteSuggestions.map((suggestion: any, index: number) => (
-                <ListGroup.Item onClick={() => handleClickListItems(index)} key={index} active={index === autoCompleteSuggestionIndex} className={`hover-over ${index === autoCompleteSuggestionIndex ? 'bg-success' : ''}`}>{suggestion.name}</ListGroup.Item>
+                <ListGroup.Item onClick={() => handleClickListItems(index)} key={index} active={index === autoCompleteSuggestionIndex} className={`bg-hover-green-500 ${index === autoCompleteSuggestionIndex ? 'bg-green-500' : ''}`}>{suggestion.name}</ListGroup.Item>
               ))}
             </ListGroup>}
         </Form>
@@ -144,7 +144,7 @@ const SearchPage = ({ search, close }: Props) => {
 
       {searchQuery ? <div className="">{playerSuggestions.map((player: any, index: number) => (
         <p key={index}>{player?.name}</p>
-      ))}</div> : <p>No current search results</p>}
+      ))}</div> : <p className='text-green-500 text-hover-purple-500'>No current search results</p>}
     </div>
   )
 }

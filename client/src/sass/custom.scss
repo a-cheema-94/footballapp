@@ -1,13 +1,15 @@
+@use 'sass:meta';
+@use 'sass:list';
 @use 'sass:map';
+@use 'sass:string';
+@import 'helperFunctions';
 @import '../../node_modules/bootstrap/scss/functions';
 @import '../../node_modules/bootstrap/scss/variables';
 
-// $all-color-list: $blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans;
-// $all-colors: ();
 
-$all-colors: map.merge($blues, $teals);
+$all-colors: multiple-map-merge($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
 
-
+$all-colors: map.merge($all-colors, ("white": $white, "black": $black));
 
 @each $name, $color in $all-colors {
   .text-#{$name} {
@@ -17,4 +19,23 @@ $all-colors: map.merge($blues, $teals);
   .bg-#{$name} {
     background-color: $color !important;
   }
+
+  .bg-hover-#{$name}:hover {
+    cursor: pointer;
+    background-color: $color !important;
+    
+    @if(string.index($name, '-')) {
+      $number: string.slice($string: $name, $start-at: string.index($name, '-') + 1, $end-at: -1);
+      
+      @if (string-to-number($number) > 300) {
+        color: $white;
+      }
+
+    } @else {
+      color: $black;
+    };
+
+  }
 }
+
+// @debug meta.type-of(string-to-number('3323'));

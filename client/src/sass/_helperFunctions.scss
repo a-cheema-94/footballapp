@@ -1,0 +1,33 @@
+// add in all color variations by merging all color maps.
+
+@function multiple-map-merge ($maps...) {
+  $final-map: ();
+
+  @each $map in $maps {
+    $final-map: map.merge($final-map, $map);
+  }
+
+  @return $final-map;
+}
+
+// can change text color in hover classes by converting strings to numbers.
+
+@function string-to-number ($string) {
+  // operator lists
+  $numbers: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9;
+  $strings: '0', '1', '2', '3', '4', '5', '6', '7', '8', '9';
+
+  $final: 0;
+
+  @for $i from 1 through string.length($string) {
+    // now we can look at each character in the string separately.
+    $char: string.slice($string, $i, $i);
+    
+    // match $char with $strings element.
+    @if(list.index($strings, $char)) {
+      $final: $final * 10 + list.nth($numbers, list.index($strings, $char));
+    }
+  }
+
+  @return $final;
+}
