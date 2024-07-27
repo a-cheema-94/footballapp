@@ -8,9 +8,9 @@ const Homepage = (props: Props) => {
   return (
     <div className="d-flex flex-column gap-2 pt-2">
       <LiveScores />
-      <hr />
+      <br />
       <TopPlayerData />
-      <hr />
+      <br />
       <TopFootballStories />
     </div>
   )

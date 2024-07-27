@@ -19,7 +19,7 @@ const MainNavbar = ({ toggle }: Props) => {
 
   return (
     <>
-      <Navbar expand={false} className="bg-orange-400 mb-3 p-3 position-fixed w-100" style={{ height: '100px' }}>
+      <Navbar expand={false} className="bg-orange-500 mb-3 p-3 position-fixed w-100" style={{ height: '100px' }}>
           <Container fluid>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${false}`} className='border border-0' onClick={() => setIsCompetitionMenu(true)}/>
 
@@ -29,10 +29,10 @@ const MainNavbar = ({ toggle }: Props) => {
 
             <Button
               onClick={() => toggle()}
+              className='bg-transparent text-black border-0'
             >
-              <IoSearchOutline/>
+              <IoSearchOutline style={{ width: '30px', height: '30px' }}/>
             </Button>
-
 
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${false}`}

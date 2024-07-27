@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useState, KeyboardEvent, useEffect } from 'react';
-import { Form, ListGroup, ListGroupProps, Spinner } from 'react-bootstrap';
+import { CloseButton, Form, ListGroup, ListGroupProps, Spinner } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { IoSearchOutline } from 'react-icons/io5';
 import { IoMdClose } from "react-icons/io";
@@ -8,6 +8,9 @@ import { AUTOCOMPLETE_QUERY } from '../../queries/search/autocompleteQuery';
 import { PLAYER_SEARCH_QUERY } from '../../queries/search/playerSearchQuery';
 import LeagueSelector from '../reusable/leagueSelector';
 import useContentVisible from '../reusable/useContentVisible';
+import SearchFiltersBtn from './SearchFiltersBtn';
+import SearchFilters from './SearchFilters';
+import PlayerSearchResult from './PlayerSearchResult';
 
 type Props = {
   search: boolean,
@@ -16,14 +19,23 @@ type Props = {
 
 const SearchPage = ({ search, close }: Props) => {
 
-  // STATE variable
+  // STATE variables
+
+  // menus
+  const [showFilters, setShowFilters] = useState<boolean>(false);
+  const [showAutoCompleteSuggestions, setShowAutoCompleteSuggestions] = useState<boolean>(false);
+  
+  // data
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [playerSuggestions, setPlayerSuggestions] = useState<any[]>([]);
   const [autoCompleteSuggestions, setAutoCompleteSuggestions] = useState<any[]>([]);
-  const [showAutoCompleteSuggestions, setShowAutoCompleteSuggestions] = useState<boolean>(false);
   const [autoCompleteSuggestionIndex, setAutoCompleteSuggestionIndex] = useState<number>(0);
-  // TODO: add league selector and use data from autocomplete when clicking on suggestion to change it.
+
+  // search filters
   const [playerLeague, setPlayerLeague] = useState<string>('Premier League');
+  const [playerTeam, setPlayerTeam] = useState<string | null>(null);
+  const [playerPosition, setPlayerPosition] = useState<string | null>(null);
+  const [playerRange, setPlayerRange] = useState<string | null>(null);
   
 
   // QUERIES
@@ -45,32 +57,35 @@ const SearchPage = ({ search, close }: Props) => {
 
   if(autoCompleteError) return <div>An Error occurred: {autoCompleteError.message}</div>
 
+  
+  useEffect(() => {
+    if(searchQuery !== '') {
+      setShowAutoCompleteSuggestions(true)
+      autoComplete({ variables: { query: searchQuery } })
+      if(playerLeague) {
+        playerSearch({ variables: { query: searchQuery, league: playerLeague, team: playerTeam, range: playerRange, position: playerPosition } })
+      }
+    }
+    
+    return () => setShowAutoCompleteSuggestions(false)
+    
+  }, [searchQuery, playerLeague, playerTeam, playerRange, playerPosition])
+  
+
+  // Functions
+
+  const clearSearch = () => {
+    setSearchQuery('')
+    setAutoCompleteSuggestions([]);
+    setAutoCompleteSuggestionIndex(-1)
+  };
+  
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
 
     setSearchQuery(value)
 
   };
-
-  useEffect(() => {
-    if(searchQuery !== '') {
-      setShowAutoCompleteSuggestions(true)
-      autoComplete({ variables: { query: searchQuery } })
-      if(playerLeague) {
-        playerSearch({ variables: { query: searchQuery, league: playerLeague } })
-      }
-    }
-
-    return () => setShowAutoCompleteSuggestions(false)
-    
-  }, [searchQuery, playerLeague])
-  
-  const clearSearch = () => {
-    setSearchQuery('')
-    setAutoCompleteSuggestions([]);
-    setAutoCompleteSuggestionIndex(-1)
-  };
-
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if(event.key === 'ArrowUp') {
       setAutoCompleteSuggestionIndex(prevIndex => Math.max(0 , prevIndex - 1) )
@@ -107,43 +122,73 @@ const SearchPage = ({ search, close }: Props) => {
 
   const autoCompleteRef = useContentVisible<HTMLDivElement>(closeAutoComplete);
 
+  const openFilters = () => setShowFilters(true);
+  const resetFilters = () => {
+    setPlayerTeam(null);
+    setPlayerPosition(null);
+    setPlayerRange(null);
+  }
+  const closeFilters = () => {
+    setShowFilters(false);
+    resetFilters();
+  };
+
   return (
     <div className={`w-100 bg-white pt-3 d-flex flex-column gap-3 position-fixed ${search ? 'active' : ''}`} style={{ marginTop: '100px', paddingBottom: '500px' }}>
       
       <div className="d-flex justify-content-between">
     
-        <Form className="d-flex w-50 ms-3 position-relative gap-3">
+        <Form className="d-flex w-50 ms-4 gap-2 align-items-center">
             <LeagueSelector selectLeague={handleSelectLeague} playerLeague={playerLeague}/>
 
-            <Form.Control
-              
-              value={searchQuery}
-              onChange={handleSearch}
-              onKeyDown={handleKeyDown}
-              type="text"
-              placeholder='search for players by last name ...'
-              aria-label='Search'
-              className=''
-            />
+            <div className="w-100 position-relative">
 
-            <Button className=" bg-transparent text-success border-0 p-1 position-absolute end-0">
-              {!searchQuery ? <IoSearchOutline className=''/> : <IoMdClose onClick={clearSearch}/>}
-            </Button>
+              <div className="position-relative">
+                <Form.Control
+                  
+                  value={searchQuery}
+                  onChange={handleSearch}
+                  onKeyDown={handleKeyDown}
+                  type="text"
+                  placeholder='search for players by last name ...'
+                  aria-label='Search'
+                  className='outline-none'
+                />
+                {searchQuery && <CloseButton onClick={clearSearch} className='position-absolute end-0 top-0 mt-2 me-1'></CloseButton>}
+              </div>
 
-            {(showAutoCompleteSuggestions) && <ListGroup ref={autoCompleteRef} className="position-absolute bg-white w-100 list-unstyled top-100 border rounded border-primary">
-              {autoCompleteSuggestions.map((suggestion: any, index: number) => (
-                <ListGroup.Item onClick={() => handleClickListItems(index)} key={index} active={index === autoCompleteSuggestionIndex} className={`bg-hover-green-500 ${index === autoCompleteSuggestionIndex ? 'bg-green-500' : ''}`}>{suggestion.name}</ListGroup.Item>
-              ))}
-            </ListGroup>}
+              {/* Todo: autoComplete component */}
+
+              {(showAutoCompleteSuggestions && !showFilters) && <ListGroup ref={autoCompleteRef} className="position-absolute bg-white start-0 w-100 list-unstyled top-100 rounded">
+                {autoCompleteSuggestions.map((suggestion: any, index: number) => (
+                  <ListGroup.Item onClick={() => handleClickListItems(index)} key={index} active={index === autoCompleteSuggestionIndex} className={`bg-hover-green-500 ${index === autoCompleteSuggestionIndex ? 'bg-green-500' : ''}`}>{suggestion.name}</ListGroup.Item>
+                ))}
+              </ListGroup>}
+            </div>
+
+            <SearchFiltersBtn showFilters={showFilters} openFilters={openFilters} closeFilters={closeFilters}/>
+            <br />
         </Form>
 
-      <Button onClick={() => close()} className='me-3'>
-        <IoMdClose />
-      </Button>
+        <Button onClick={() => close()} className='me-3 bg-transparent text-black border-0'>
+          <IoMdClose />
+        </Button>
       </div>
 
+      {showFilters && 
+      <SearchFilters
+        resetFilters={resetFilters}
+        playerLeague={playerLeague} 
+        selectedTeam={playerTeam} 
+        setSelectedTeam={setPlayerTeam}
+        selectedPosition={playerPosition}
+        setSelectedPosition={setPlayerPosition}
+        selectedRange={playerRange}
+        setSelectedRange={setPlayerRange}
+      />}
+
       {searchQuery ? <div className="">{playerSuggestions.map((player: any, index: number) => (
-        <p key={index}>{player?.name}</p>
+        <PlayerSearchResult player={player} key={index}/>
       ))}</div> : <p className='text-green-500 text-hover-purple-500'>No current search results</p>}
     </div>
   )
