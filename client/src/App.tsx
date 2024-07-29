@@ -8,7 +8,7 @@ import FullTimeMatchStats from "./components/Pages/MatchStats/FullTimeMatchStats
 import { Route, Routes } from "react-router-dom";
 import MainNavbar from "./components/Navbar/MainNavbar";
 import { useState } from "react";
-import SearchPage from "./components/Navbar/SearchPage";
+import SearchPage from "./components/Navbar/searchPage/SearchPage";
 import TestComponent from "./components/TestComponent";
 
 function App() {
@@ -22,10 +22,10 @@ function App() {
     <>
       
     <MainNavbar toggle={toggle}/>
-    {search && <SearchPage search={search} close={close}/>}
 
     <div style={{ paddingTop: '100px' }}>
-      <Routes>
+    {search && <SearchPage search={search} close={close}/>}
+      {!search && <Routes>
 
         <Route path="/" element={<Homepage />}/>
         <Route path="/competition" element={<Competition />}/>
@@ -34,7 +34,7 @@ function App() {
         <Route path="/liveMatchStats" element={<LiveMatchStats />}/>
         <Route path="/fullTimeMatchStats" element={<FullTimeMatchStats />}/>
         {/* <Route path="/test" element={<TestComponent />}/> */}
-      </Routes>
+      </Routes>}
     </div>
     </>
   )

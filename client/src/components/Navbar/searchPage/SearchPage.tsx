@@ -1,16 +1,18 @@
-import { ChangeEvent, FC, useState, KeyboardEvent, useEffect } from 'react';
+import { ChangeEvent, FC, useState, KeyboardEvent, useEffect, useReducer } from 'react';
 import { CloseButton, Form, ListGroup, ListGroupProps, Spinner } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { IoSearchOutline } from 'react-icons/io5';
 import { IoMdClose } from "react-icons/io";
 import { useLazyQuery, useQuery } from '@apollo/client';
-import { AUTOCOMPLETE_QUERY } from '../../queries/search/autocompleteQuery';
-import { PLAYER_SEARCH_QUERY } from '../../queries/search/playerSearchQuery';
-import LeagueSelector from '../reusable/leagueSelector';
-import useContentVisible from '../reusable/useContentVisible';
+import { AUTOCOMPLETE_QUERY } from '../../../queries/search/autocompleteQuery';
+import { PLAYER_SEARCH_QUERY } from '../../../queries/search/playerSearchQuery';
+import LeagueSelector from '../../reusable/leagueSelector';
+import useContentVisible from '../../reusable/useContentVisible';
 import SearchFiltersBtn from './SearchFiltersBtn';
 import SearchFilters from './SearchFilters';
 import PlayerSearchResult from './PlayerSearchResult';
+import AutoComplete from './AutoComplete';
+import { initialSearchState, searchReducer } from './searchReducer';
 
 type Props = {
   search: boolean,
@@ -20,6 +22,7 @@ type Props = {
 const SearchPage = ({ search, close }: Props) => {
 
   // STATE variables
+  const [searchPageState, dispatch] = useReducer(searchReducer, initialSearchState);
 
   // menus
   const [showFilters, setShowFilters] = useState<boolean>(false);
@@ -28,7 +31,7 @@ const SearchPage = ({ search, close }: Props) => {
   // data
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [playerSuggestions, setPlayerSuggestions] = useState<any[]>([]);
-  const [autoCompleteSuggestions, setAutoCompleteSuggestions] = useState<any[]>([]);
+  const [, setAutoCompleteSuggestions] = useState<any[]>([]);
   const [autoCompleteSuggestionIndex, setAutoCompleteSuggestionIndex] = useState<number>(0);
 
   // search filters
@@ -37,7 +40,8 @@ const SearchPage = ({ search, close }: Props) => {
   const [playerPosition, setPlayerPosition] = useState<string | null>(null);
   const [playerRange, setPlayerRange] = useState<string | null>(null);
   
-
+  // ref
+  
   // QUERIES
   const [autoComplete, { data: autoCompleteData, loading: autoCompleteLoading, error: autoCompleteError }] = useLazyQuery(AUTOCOMPLETE_QUERY, {
     onCompleted: (autoCompleteData: any) => {
@@ -52,11 +56,11 @@ const SearchPage = ({ search, close }: Props) => {
   })
 
   // Error states
-
+  
   if(playerSearchError) return <div>An Error occurred: {playerSearchError.message}</div>
-
+  
   if(autoCompleteError) return <div>An Error occurred: {autoCompleteError.message}</div>
-
+  
   
   useEffect(() => {
     if(searchQuery !== '') {
@@ -71,9 +75,9 @@ const SearchPage = ({ search, close }: Props) => {
     
   }, [searchQuery, playerLeague, playerTeam, playerRange, playerPosition])
   
-
+  
   // Functions
-
+  
   const clearSearch = () => {
     setSearchQuery('')
     setAutoCompleteSuggestions([]);
@@ -82,9 +86,9 @@ const SearchPage = ({ search, close }: Props) => {
   
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
-
+    
     setSearchQuery(value)
-
+    
   };
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if(event.key === 'ArrowUp') {
@@ -105,8 +109,8 @@ const SearchPage = ({ search, close }: Props) => {
       }, 100)
     }
   }
-
-
+  
+  
   const handleClickListItems = (index: number) => {
     setPlayerLeague(autoCompleteSuggestions[index].league)
     setSearchQuery(autoCompleteSuggestions[index].name)
@@ -115,13 +119,9 @@ const SearchPage = ({ search, close }: Props) => {
       setAutoCompleteSuggestionIndex(-1)
     }, 100)
   }
-
+  
   const handleSelectLeague = (eventKey: any) => setPlayerLeague(eventKey);
-
-  const closeAutoComplete = () => setShowAutoCompleteSuggestions(false);
-
-  const autoCompleteRef = useContentVisible<HTMLDivElement>(closeAutoComplete);
-
+  
   const openFilters = () => setShowFilters(true);
   const resetFilters = () => {
     setPlayerTeam(null);
@@ -133,17 +133,20 @@ const SearchPage = ({ search, close }: Props) => {
     resetFilters();
   };
 
+  // Click outside autocomplete menu.
+  const closeAutoComplete = () => setShowAutoCompleteSuggestions(false);
+  const autoCompleteRef = useContentVisible<HTMLDivElement>(closeAutoComplete);
+  
   return (
-    <div className={`w-100 bg-white pt-3 d-flex flex-column gap-3 position-fixed ${search ? 'active' : ''}`} style={{ marginTop: '100px', paddingBottom: '500px' }}>
+    <div className={`w-100 bg-white d-flex flex-column gap-3 ${search ? 'active' : ''}`} >
       
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-between position-fixed bg-white w-100 z-3 p-2">
     
         <Form className="d-flex w-50 ms-4 gap-2 align-items-center">
             <LeagueSelector selectLeague={handleSelectLeague} playerLeague={playerLeague}/>
 
             <div className="w-100 position-relative">
 
-              <div className="position-relative">
                 <Form.Control
                   
                   value={searchQuery}
@@ -155,15 +158,8 @@ const SearchPage = ({ search, close }: Props) => {
                   className='outline-none'
                 />
                 {searchQuery && <CloseButton onClick={clearSearch} className='position-absolute end-0 top-0 mt-2 me-1'></CloseButton>}
-              </div>
 
-              {/* Todo: autoComplete component */}
-
-              {(showAutoCompleteSuggestions && !showFilters) && <ListGroup ref={autoCompleteRef} className="position-absolute bg-white start-0 w-100 list-unstyled top-100 rounded">
-                {autoCompleteSuggestions.map((suggestion: any, index: number) => (
-                  <ListGroup.Item onClick={() => handleClickListItems(index)} key={index} active={index === autoCompleteSuggestionIndex} className={`bg-hover-green-500 ${index === autoCompleteSuggestionIndex ? 'bg-green-500' : ''}`}>{suggestion.name}</ListGroup.Item>
-                ))}
-              </ListGroup>}
+              <AutoComplete autoCompleteRef={autoCompleteRef} autoCompleteSuggestionIndex={autoCompleteSuggestionIndex} handleClickListItems={handleClickListItems} autoCompleteSuggestions={autoCompleteSuggestions} showAutoCompleteSuggestions={showAutoCompleteSuggestions} showFilters={showFilters}/>
             </div>
 
             <SearchFiltersBtn showFilters={showFilters} openFilters={openFilters} closeFilters={closeFilters}/>
@@ -175,21 +171,24 @@ const SearchPage = ({ search, close }: Props) => {
         </Button>
       </div>
 
-      {showFilters && 
-      <SearchFilters
-        resetFilters={resetFilters}
-        playerLeague={playerLeague} 
-        selectedTeam={playerTeam} 
-        setSelectedTeam={setPlayerTeam}
-        selectedPosition={playerPosition}
-        setSelectedPosition={setPlayerPosition}
-        selectedRange={playerRange}
-        setSelectedRange={setPlayerRange}
-      />}
+      <div style={{ marginTop: '5rem' }}>
 
-      {searchQuery ? <div className="">{playerSuggestions.map((player: any, index: number) => (
-        <PlayerSearchResult player={player} key={index}/>
-      ))}</div> : <p className='text-green-500 text-hover-purple-500'>No current search results</p>}
+        {showFilters && 
+        <SearchFilters
+          resetFilters={resetFilters}
+          playerLeague={playerLeague} 
+          selectedTeam={playerTeam} 
+          setSelectedTeam={setPlayerTeam}
+          selectedPosition={playerPosition}
+          setSelectedPosition={setPlayerPosition}
+          selectedRange={playerRange}
+          setSelectedRange={setPlayerRange}
+        />}
+
+        {searchQuery ? <div className="overflow-y-auto">{playerSuggestions.map((player: any, index: number) => (
+          <PlayerSearchResult player={player} key={index}/>
+        ))}</div> : <p className='text-green-500 text-hover-purple-500'>No current search results</p>}
+      </div>
     </div>
   )
 }

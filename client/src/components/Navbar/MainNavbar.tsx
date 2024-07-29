@@ -6,8 +6,9 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { IoSearchOutline } from "react-icons/io5";
-import CompetitionMenuOption from './CompetitionMenuOption';
+import CompetitionMenuOption from '../Navbar/offcanvasMenu/CompetitionMenuOption';
 import { useState } from 'react';
+import SideMenu from './offcanvasMenu/SideMenu';
 
 type Props = {
   toggle: () => void,
@@ -19,7 +20,7 @@ const MainNavbar = ({ toggle }: Props) => {
 
   return (
     <>
-      <Navbar expand={false} className="bg-orange-500 mb-3 p-3 position-fixed w-100" style={{ height: '100px' }}>
+      <Navbar expand={false} className="bg-orange-500 p-3 position-fixed w-100 z-3" style={{ height: '100px' }}>
           <Container fluid>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${false}`} className='border border-0' onClick={() => setIsCompetitionMenu(true)}/>
 
@@ -34,31 +35,8 @@ const MainNavbar = ({ toggle }: Props) => {
               <IoSearchOutline style={{ width: '30px', height: '30px' }}/>
             </Button>
 
-            <Navbar.Offcanvas
-              id={`offcanvasNavbar-expand-${false}`}
-              aria-labelledby={`offcanvasNavbarLabel-expand-${false}`}
-              placement="start"
-              show={isCompetitionMenu}
-              onHide={() => setIsCompetitionMenu(false)}
-            >
-              
-                <Offcanvas.Header closeButton>
-                  <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${false}`}>
-                    Competitions
-                  </Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                  <Nav className="justify-content-end flex-grow-1 pe-3">
-                    
-                    <CompetitionMenuOption league={'Premier League'}/>
-                    <CompetitionMenuOption league={'Bundesliga'}/>
-                    <CompetitionMenuOption league={'La Liga'}/>
-                    <CompetitionMenuOption league={'Serie A'}/> 
-                    
-                  </Nav>
-                </Offcanvas.Body>
-              
-            </Navbar.Offcanvas>
+            <SideMenu isCompetitionMenu={isCompetitionMenu} setIsCompetitionMenu={setIsCompetitionMenu}/>
+            
           </Container>
         </Navbar>
     </>

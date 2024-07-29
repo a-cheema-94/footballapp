@@ -1,10 +1,10 @@
 import { useQuery } from "@apollo/client"
-import { LEAGUE_TABLE_QUERY } from "../../queries/leagueTableQuery";
+import { LEAGUE_TABLE_QUERY } from "../../../queries/leagueTableQuery";
 import { NavDropdown, Stack, Nav, Tooltip, OverlayTrigger } from "react-bootstrap";
-import { getLogosAndImages } from "../../functions/logoFunction";
+import { getLogosAndImages } from "../../../functions/logoFunction";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import TooltipWrapper from "../reusable/TooltipWrapper";
+import TooltipWrapper from "../../reusable/TooltipWrapper";
 
 type Props = {
   league: string

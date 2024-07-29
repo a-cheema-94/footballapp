@@ -1,9 +1,9 @@
 import { Button, Dropdown, Form, Stack } from "react-bootstrap"
-import { POSITIONS } from "../../functions/fixedData"
+import { POSITIONS } from "../../../functions/fixedData"
 import { Dispatch, SetStateAction, useState } from "react"
 import { useLazyQuery } from "@apollo/client"
-import { LEAGUE_TABLE_QUERY } from "../../queries/leagueTableQuery"
-import { getLogosAndImages } from "../../functions/logoFunction"
+import { LEAGUE_TABLE_QUERY } from "../../../queries/leagueTableQuery"
+import { getLogosAndImages } from "../../../functions/logoFunction"
 
 type Props = {
   playerLeague: string

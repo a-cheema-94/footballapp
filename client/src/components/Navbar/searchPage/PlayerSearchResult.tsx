@@ -1,5 +1,5 @@
 import { Stack } from "react-bootstrap"
-import { getLogosAndImages } from "../../functions/logoFunction"
+import { getLogosAndImages } from "../../../functions/logoFunction"
 
 type Props = {
   player: any

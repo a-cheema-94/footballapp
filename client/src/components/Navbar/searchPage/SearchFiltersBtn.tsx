@@ -1,5 +1,5 @@
 import { MdFilterList, MdOutlineFilterListOff } from "react-icons/md"
-import TooltipWrapper from "../reusable/TooltipWrapper";
+import TooltipWrapper from "../../reusable/TooltipWrapper";
 import { DiVisualstudio } from "react-icons/di";
 
 type Props = {
