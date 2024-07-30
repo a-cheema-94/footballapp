@@ -8,12 +8,12 @@ import { getLogosAndImages } from "../../../functions/logoFunction"
 type Props = {
   playerLeague: string
   selectedTeam: string | null,
-  setSelectedTeam: Dispatch<SetStateAction<string | null>>
   selectedPosition: string | null,
-  setSelectedPosition: Dispatch<SetStateAction<string | null>>
   resetFilters: () => void
   selectedRange: string | null,
-  setSelectedRange: Dispatch<SetStateAction<string | null>>
+  teamsFilter: (eventKey: any) => void
+  positionFilter: (eventKey: any) => void
+  rangeFilter: (ageRange: string) => void
 }
 
 type TeamType = {
@@ -21,7 +21,7 @@ type TeamType = {
   id: number
 }
 
-const SearchFilters = ({ playerLeague, selectedTeam, setSelectedTeam, selectedPosition, setSelectedPosition, resetFilters, selectedRange, setSelectedRange }: Props) => {
+const SearchFilters = ({ playerLeague, selectedTeam, teamsFilter, selectedPosition, positionFilter, resetFilters, selectedRange, rangeFilter }: Props) => {
   // state variables
   const [filterTeams, setFilterTeams] = useState<TeamType[]>([{ name: 'Liverpool', id: 1234 }, { name: 'Chelsea', id: 2938 }]);
 
@@ -43,16 +43,11 @@ const SearchFilters = ({ playerLeague, selectedTeam, setSelectedTeam, selectedPo
 
   const PLAYER_AGE_RANGES = ['16-20', '21-25', '26-30', '31-40']
 
-  // functions
-  const handleSelectPositions = (eventKey: any) => setSelectedPosition(eventKey);
-  const handleSelectTeams = (eventKey: any) => setSelectedTeam(eventKey);
-  const handleChoosingRange = (ageRange: string) => setSelectedRange(ageRange);
-
   const matchTeam = filterTeams.find(team => team.name === selectedTeam);
 
   return (
     <Stack className='ms-4 p-3 bg-teal-200 gap-3 w-50 rounded'>
-        <Dropdown onSelect={handleSelectTeams} onClick={() => teams({variables: { league: playerLeague }})}>
+        <Dropdown onSelect={teamsFilter} onClick={() => teams({variables: { league: playerLeague }})}>
           <Dropdown.Toggle className='bg-white text-black border-black d-flex align-items-center gap-2'>
               
               <p className="mt-2">{selectedTeam ? selectedTeam : 'Select Team'}</p>
@@ -66,7 +61,7 @@ const SearchFilters = ({ playerLeague, selectedTeam, setSelectedTeam, selectedPo
           </Dropdown.Menu>
         </Dropdown>
 
-        <Dropdown onSelect={handleSelectPositions}>
+        <Dropdown onSelect={positionFilter}>
           <Dropdown.Toggle className='bg-white text-black border-black'>
             {selectedPosition ? selectedPosition : 'Select Position'}
           </Dropdown.Toggle>
@@ -86,7 +81,7 @@ const SearchFilters = ({ playerLeague, selectedTeam, setSelectedTeam, selectedPo
                 inline
                 label={ageRange}
                 checked={ageRange === selectedRange}
-                onChange={() => handleChoosingRange(ageRange)}
+                onChange={() => rangeFilter(ageRange)}
               
               />
             ))}

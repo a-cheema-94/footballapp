@@ -5,8 +5,8 @@ type SearchStateType = {
   showAutoCompleteSuggestions: boolean,
   searchQuery: string,
   playerSuggestions: any[],
-  autoCompleteSuggestions: any[],
-  autoCompleteSuggestionIndex: number,
+  autoCompleteSuggestions: any[], 
+  autoCompleteSuggestionIndex: number, //HERE
   playerLeague: string,
   playerTeam: string | null,
   playerPosition: string | null,
@@ -15,7 +15,7 @@ type SearchStateType = {
 
 type SearchActionType = {
   type: string,
-  payload: SearchStateType
+  payload: any
 }
 
 export const initialSearchState = {
@@ -61,7 +61,13 @@ const actionHandlers = {
     return { ...state, autoCompleteSuggestions: action.payload.autoCompleteSuggestions }
   },
   [ACTIONS.SET_AUTO_COMPLETE_INDEX]: (state: SearchStateType, action: SearchActionType) => {
-    return { ...state, autoCompleteSuggestionIndex: action.payload.autoCompleteSuggestionIndex }
+    if(action.payload.autoCompleteSuggestionIndex === 'Up') {
+      return { ...state, autoCompleteSuggestionIndex: Math.max(0, state.autoCompleteSuggestionIndex - 1) }
+    } else if (action.payload.autoCompleteSuggestionIndex === 'Down') {
+      return { ...state, autoCompleteSuggestionIndex: Math.min(state.autoCompleteSuggestionIndex + 1, state.autoCompleteSuggestions.length - 1) }
+    } else {
+      return { ...state, autoCompleteSuggestionIndex: action.payload.autoCompleteSuggestionIndex }
+    }
   },
   [ACTIONS.FILTER_PLAYER_LEAGUE]: (state: SearchStateType, action: SearchActionType) => {
     return { ...state, playerLeague: action.payload.playerLeague }
