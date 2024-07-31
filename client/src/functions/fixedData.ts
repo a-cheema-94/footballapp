@@ -1,1 +1,6 @@
-export const POSITIONS: string[] = ['Goalkeeper', 'Defender', 'Midfielder', 'Attacker'];
+export const POSITIONS: string[] = [
+  "Goalkeeper",
+  "Defender",
+  "Midfielder",
+  "Attacker",
+];

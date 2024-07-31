@@ -23,4 +23,4 @@ export const standingsTypeDefs = `
     form: String
     all: TableStats
   }
-`
+`;

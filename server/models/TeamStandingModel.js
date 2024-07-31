@@ -1,9 +1,9 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
 const TeamSchema = new mongoose.Schema({
   id: Number,
-  name: String
-})
+  name: String,
+});
 
 const TableStats = new mongoose.Schema({
   played: Number,
@@ -12,9 +12,9 @@ const TableStats = new mongoose.Schema({
   lose: Number,
   goals: {
     for: Number,
-    against: Number
-  }
-})
+    against: Number,
+  },
+});
 
 const TeamStandingSchema = new mongoose.Schema({
   league: String,
@@ -23,8 +23,8 @@ const TeamStandingSchema = new mongoose.Schema({
   points: Number,
   goalsDiff: Number,
   form: String,
-  all: TableStats
-})
+  all: TableStats,
+});
 
 const TeamStanding = mongoose.model("Team Standing", TeamStandingSchema);
-export default TeamStanding
+export default TeamStanding;

@@ -1,10 +1,7 @@
-
-type Props = any
+type Props = any;
 
 const FootballNewsStory = ({ story }: Props) => {
-  return (
-    <div>{story.title}</div>
-  )
-}
+  return <div>{story.title}</div>;
+};
 
-export default FootballNewsStory
+export default FootballNewsStory;
