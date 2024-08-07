@@ -1,62 +1,77 @@
 // Functions
 
 import { ChangeEvent, KeyboardEvent, Dispatch } from "react";
-import { ACTIONS, SearchActionType } from "../reducer/searchReducer";
+import { SearchActionType } from "../reducer/searchReducer";
+import { SquadMemberType } from "../../../../queries/types/queryTypes";
 
-// export type DispatchType = Dispatch<SearchActionType>;
-
-const clearSearch = (dispatch: Dispatch<SearchActionType>) => {
-  dispatch({ type: ACTIONS.SET_SEARCH_QUERY, payload: { searchQuery: "" } });
+const clearSearch = (
+  dispatch: Dispatch<
+    SearchActionType<
+      | "SET_SEARCH_QUERY"
+      | "SET_AUTO_COMPLETE_RESULTS"
+      | "SET_AUTO_COMPLETE_INDEX"
+    >
+  >
+) => {
+  dispatch({ type: "SET_SEARCH_QUERY", payload: { searchQuery: "" } });
   dispatch({
-    type: ACTIONS.SET_AUTO_COMPLETE_RESULTS,
+    type: "SET_AUTO_COMPLETE_RESULTS",
     payload: { autoCompleteSuggestions: [] },
   });
   dispatch({
-    type: ACTIONS.SET_AUTO_COMPLETE_INDEX,
+    type: "SET_AUTO_COMPLETE_INDEX",
     payload: { autoCompleteSuggestionIndex: -1 },
   });
 };
 
 const handleSearch = (
   event: ChangeEvent<HTMLInputElement>,
-  dispatch: Dispatch<SearchActionType>
+  dispatch: Dispatch<SearchActionType<"SET_SEARCH_QUERY">>
 ) => {
   const value = event.target.value;
 
   dispatch({
-    type: ACTIONS.SET_SEARCH_QUERY,
+    type: "SET_SEARCH_QUERY",
     payload: { searchQuery: value },
   });
 };
 
 const handleKeyDown = (
   event: KeyboardEvent<HTMLInputElement>,
-  dispatch: Dispatch<SearchActionType>,
+  dispatch: Dispatch<
+    SearchActionType<
+      | "SET_AUTO_COMPLETE_INDEX"
+      | "FILTER_PLAYER_LEAGUE"
+      | "SET_SEARCH_QUERY"
+      | "SET_AUTO_COMPLETE_RESULTS"
+      | "TOGGLE_AUTOCOMPLETE_MENU"
+    >
+  >,
   autoCompleteSuggestionIndex: number,
-  autoCompleteSuggestions: any[]
+  autoCompleteSuggestions: SquadMemberType[]
 ) => {
   if (event.key === "ArrowUp") {
     dispatch({
-      type: ACTIONS.SET_AUTO_COMPLETE_INDEX,
-      payload: { autoCompleteSuggestionIndex: "Up" },
+      type: "SET_AUTO_COMPLETE_INDEX",
+      payload: { autoCompleteSuggestionIndex: 1 },
     });
   } else if (event.key === "ArrowDown") {
     dispatch({
-      type: ACTIONS.SET_AUTO_COMPLETE_INDEX,
-      payload: { autoCompleteSuggestionIndex: "Down" },
+      type: "SET_AUTO_COMPLETE_INDEX",
+      payload: { autoCompleteSuggestionIndex: 0 },
     });
   } else if (event.key === "Enter") {
     event.preventDefault();
     if (autoCompleteSuggestionIndex >= 0) {
       dispatch({
-        type: ACTIONS.FILTER_PLAYER_LEAGUE,
+        type: "FILTER_PLAYER_LEAGUE",
         payload: {
           playerLeague:
             autoCompleteSuggestions[autoCompleteSuggestionIndex].league,
         },
       });
       dispatch({
-        type: ACTIONS.SET_SEARCH_QUERY,
+        type: "SET_SEARCH_QUERY",
         payload: {
           searchQuery:
             autoCompleteSuggestions[autoCompleteSuggestionIndex].name,
@@ -66,11 +81,11 @@ const handleKeyDown = (
 
     setTimeout(() => {
       dispatch({
-        type: ACTIONS.TOGGLE_AUTOCOMPLETE_MENU,
+        type: "TOGGLE_AUTOCOMPLETE_MENU",
         payload: { showAutoCompleteSuggestions: false },
       });
       dispatch({
-        type: ACTIONS.SET_AUTO_COMPLETE_INDEX,
+        type: "SET_AUTO_COMPLETE_INDEX",
         payload: { autoCompleteSuggestionIndex: -1 },
       });
     }, 100);
@@ -79,79 +94,102 @@ const handleKeyDown = (
 
 const handleClickListItems = (
   index: number,
-  dispatch: Dispatch<SearchActionType>,
-  autoCompleteSuggestions: any[]
+  dispatch: Dispatch<
+    SearchActionType<
+      | "FILTER_PLAYER_LEAGUE"
+      | "SET_SEARCH_QUERY"
+      | "TOGGLE_AUTOCOMPLETE_MENU"
+      | "SET_AUTO_COMPLETE_INDEX"
+    >
+  >,
+  autoCompleteSuggestions: SquadMemberType[]
 ) => {
   dispatch({
-    type: ACTIONS.FILTER_PLAYER_LEAGUE,
+    type: "FILTER_PLAYER_LEAGUE",
     payload: {
       playerLeague: autoCompleteSuggestions[index].league,
     },
   });
   dispatch({
-    type: ACTIONS.SET_SEARCH_QUERY,
+    type: "SET_SEARCH_QUERY",
     payload: { searchQuery: autoCompleteSuggestions[index].name },
   });
   setTimeout(() => {
     dispatch({
-      type: ACTIONS.TOGGLE_AUTOCOMPLETE_MENU,
+      type: "TOGGLE_AUTOCOMPLETE_MENU",
       payload: { showAutoCompleteSuggestions: false },
     });
     dispatch({
-      type: ACTIONS.SET_AUTO_COMPLETE_INDEX,
+      type: "SET_AUTO_COMPLETE_INDEX",
       payload: { autoCompleteSuggestionIndex: -1 },
     });
   }, 100);
 };
 
 const handleSelectLeague = (
-  eventKey: any,
-  dispatch: Dispatch<SearchActionType>
+  eventKey: string,
+  dispatch: Dispatch<SearchActionType<"FILTER_PLAYER_LEAGUE">>
 ) =>
   dispatch({
-    type: ACTIONS.FILTER_PLAYER_LEAGUE,
+    type: "FILTER_PLAYER_LEAGUE",
     payload: {
       playerLeague: eventKey,
     },
   });
 
-const openFilters = (dispatch: Dispatch<SearchActionType>) =>
+const openFilters = (
+  dispatch: Dispatch<SearchActionType<"TOGGLE_SEARCH_FILTERS">>
+) =>
   dispatch({
-    type: ACTIONS.TOGGLE_SEARCH_FILTERS,
+    type: "TOGGLE_SEARCH_FILTERS",
     payload: { showFilters: true },
   });
 
-const resetFilters = (dispatch: Dispatch<SearchActionType>) => {
+const resetFilters = (
+  dispatch: Dispatch<
+    SearchActionType<
+      "FILTER_PLAYER_TEAM" | "FILTER_PLAYER_POSITION" | "FILTER_PLAYER_RANGE"
+    >
+  >
+) => {
   dispatch({
-    type: ACTIONS.FILTER_PLAYER_TEAM,
+    type: "FILTER_PLAYER_TEAM",
     payload: { playerTeam: null },
   });
   dispatch({
-    type: ACTIONS.FILTER_PLAYER_POSITION,
+    type: "FILTER_PLAYER_POSITION",
     payload: { playerPosition: null },
   });
   dispatch({
-    type: ACTIONS.FILTER_PLAYER_RANGE,
+    type: "FILTER_PLAYER_RANGE",
     payload: { playerRange: null },
   });
 };
 
-const closeFilters = (dispatch: Dispatch<SearchActionType>) => {
+const closeFilters = (
+  dispatch: Dispatch<
+    SearchActionType<
+      | "TOGGLE_SEARCH_FILTERS"
+      | "FILTER_PLAYER_TEAM"
+      | "FILTER_PLAYER_POSITION"
+      | "FILTER_PLAYER_RANGE"
+    >
+  >
+) => {
   dispatch({
-    type: ACTIONS.TOGGLE_SEARCH_FILTERS,
+    type: "TOGGLE_SEARCH_FILTERS",
     payload: { showFilters: false },
   });
   resetFilters(dispatch);
 };
 
-
 // search filter functions
 const handlePositionFilter = (
   eventKey: any,
-  dispatch: Dispatch<SearchActionType>
+  dispatch: Dispatch<SearchActionType<"FILTER_PLAYER_POSITION">>
 ) =>
   dispatch({
-    type: ACTIONS.FILTER_PLAYER_POSITION,
+    type: "FILTER_PLAYER_POSITION",
     payload: {
       playerPosition: eventKey,
     },
@@ -159,10 +197,10 @@ const handlePositionFilter = (
 
 const handleTeamsFilter = (
   eventKey: any,
-  dispatch: Dispatch<SearchActionType>
+  dispatch: Dispatch<SearchActionType<"FILTER_PLAYER_TEAM">>
 ) =>
   dispatch({
-    type: ACTIONS.FILTER_PLAYER_TEAM,
+    type: "FILTER_PLAYER_TEAM",
     payload: {
       playerTeam: eventKey,
     },
@@ -170,10 +208,10 @@ const handleTeamsFilter = (
 
 const handleRangeFilter = (
   ageRange: string,
-  dispatch: Dispatch<SearchActionType>
+  dispatch: Dispatch<SearchActionType<"FILTER_PLAYER_RANGE">>
 ) =>
   dispatch({
-    type: ACTIONS.FILTER_PLAYER_RANGE,
+    type: "FILTER_PLAYER_RANGE",
     payload: {
       playerRange: ageRange,
     },

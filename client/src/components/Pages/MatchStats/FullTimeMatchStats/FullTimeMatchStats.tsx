@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client"
 import { LAST_FIXTURE_INFO_QUERY } from "../../../../queries/fixtures/lastFixtureInfoQuery"
+import { FixtureLineupType, FixtureType, PlayerFixtureType } from "../../../../queries/types/queryTypes"
 
 type Props = {}
 
@@ -29,13 +30,13 @@ const FullTimeMatchStats = (props: Props) => {
       <div className="lineups d-flex gap-4">
         <div className="homeTeam">
           <p>{homeTeamLineup.coach.name}</p>
-          {homeTeamLineup.startXI.map((player: any, index: number) => (
+          {homeTeamLineup.startXI.map((player: PlayerFixtureType, index: number) => (
             <p key={index}>{player.player.name}</p>
           ))}
         </div>
         <div className="awayTeam">
           <p>{awayTeamLineup.coach.name}</p>
-          {awayTeamLineup.startXI.map((player: any, index: number) => (
+          {awayTeamLineup.startXI.map((player: PlayerFixtureType, index: number) => (
             <p key={index}>{player.player.name}</p>
           ))}
         </div>

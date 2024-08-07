@@ -6,9 +6,12 @@ import TooltipWrapper from "./TooltipWrapper.tsx";
 import { SearchActionType } from "../Navbar/searchPage/reducer/searchReducer.ts";
 
 type Props = {
-  selectLeague: (event: string, dispatch: Dispatch<SearchActionType>) => void;
+  selectLeague: (
+    eventKey: string,
+    dispatch: Dispatch<SearchActionType<"FILTER_PLAYER_LEAGUE">>
+  ) => void;
   playerLeague: string;
-  dispatch: Dispatch<SearchActionType>;
+  dispatch: Dispatch<SearchActionType<"FILTER_PLAYER_LEAGUE">>;
 };
 
 const LeagueSelector = ({ selectLeague, playerLeague, dispatch }: Props) => {

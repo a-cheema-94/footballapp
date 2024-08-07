@@ -3,22 +3,40 @@ import TooltipWrapper from "../../../reusable/TooltipWrapper";
 import { SearchActionType } from "../reducer/searchReducer";
 import { Dispatch } from "react";
 
-
 type Props = {
-  openFilters: (dispatch: Dispatch<SearchActionType>) => void;
-  closeFilters: (dispatch: Dispatch<SearchActionType>) => void;
+  openFilters: (
+    dispatch: Dispatch<SearchActionType<"TOGGLE_SEARCH_FILTERS">>
+  ) => void;
+  closeFilters: (
+    dispatch: Dispatch<
+      SearchActionType<
+        | "TOGGLE_SEARCH_FILTERS"
+        | "FILTER_PLAYER_TEAM"
+        | "FILTER_PLAYER_POSITION"
+        | "FILTER_PLAYER_RANGE"
+      >
+    >
+  ) => void;
   showFilters: boolean;
-  dispatch: Dispatch<SearchActionType>
+  dispatch: Dispatch<
+    SearchActionType<
+      | "TOGGLE_SEARCH_FILTERS"
+      | "FILTER_PLAYER_TEAM"
+      | "FILTER_PLAYER_POSITION"
+      | "FILTER_PLAYER_RANGE"
+    >
+  >;
 };
 
 // Tooltip Props
-const styleProps = {
-  placement: "right-end",
-  delay: {
-    show: 1500,
-    hide: 300,
-  },
-};
+const styleProps =
+  {
+    placement: "right-end",
+    delay: {
+      show: 1500,
+      hide: 300,
+    },
+  };
 
 const SearchFiltersBtn = ({
   openFilters,

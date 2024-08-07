@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client"
 import { TOP_NEWS_QUERY } from "../../../../queries/topNewsQuery"
 import FootballNewsStory from "./FootballNewsStory"
+import { NewsType } from "../../../../queries/types/queryTypes"
 
 type Props = {}
 
@@ -12,7 +13,7 @@ const TopFootballStories = (props: Props) => {
 
   return (
     <div className="d-flex flex-column gap-3">
-      {data.topFootballStories.slice(0, 10).map((story: any, index: number) => (
+      {data.topFootballStories.slice(0, 10).map((story: NewsType, index: number) => (
         <FootballNewsStory key={index} story={story}/>
       ))}
     </div>

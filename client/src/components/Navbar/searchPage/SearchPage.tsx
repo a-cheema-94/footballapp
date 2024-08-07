@@ -11,11 +11,7 @@ import SearchFiltersBtn from "./filters/SearchFiltersBtn";
 import SearchFilters from "./filters/SearchFilters";
 import PlayerSearchResult from "./searchResult/PlayerSearchResult";
 import AutoComplete from "./autoComplete/AutoComplete";
-import {
-  ACTIONS,
-  initialSearchState,
-  searchReducer,
-} from "./reducer/searchReducer";
+import { initialSearchState, searchReducer } from "./reducer/searchReducer";
 import {
   clearSearch,
   handleSearch,
@@ -29,6 +25,7 @@ import {
   handleTeamsFilter,
   resetFilters,
 } from "./searchFunctions/searchPageFunctions";
+import { SquadMemberType } from "../../../queries/types/queryTypes";
 
 type Props = {
   search: boolean;
@@ -67,7 +64,7 @@ const SearchPage = ({ search, close }: Props) => {
   ] = useLazyQuery(AUTOCOMPLETE_QUERY, {
     onCompleted: (autoCompleteData: any) => {
       dispatch({
-        type: ACTIONS.SET_AUTO_COMPLETE_RESULTS,
+        type: "SET_AUTO_COMPLETE_RESULTS",
         payload: {
           autoCompleteSuggestions: autoCompleteData?.autoCompletePlayer,
         },
@@ -84,7 +81,7 @@ const SearchPage = ({ search, close }: Props) => {
   ] = useLazyQuery(PLAYER_SEARCH_QUERY, {
     onCompleted: (playerSearchData: any) => {
       dispatch({
-        type: ACTIONS.SET_PLAYER_SEARCH_RESULTS,
+        type: "SET_PLAYER_SEARCH_RESULTS",
         payload: { playerSuggestions: playerSearchData?.playerSearch },
       });
     },
@@ -102,7 +99,7 @@ const SearchPage = ({ search, close }: Props) => {
   useEffect(() => {
     if (searchQuery !== "") {
       dispatch({
-        type: ACTIONS.TOGGLE_AUTOCOMPLETE_MENU,
+        type: "TOGGLE_AUTOCOMPLETE_MENU",
         payload: { showAutoCompleteSuggestions: true },
       });
       autoComplete({ variables: { query: searchQuery } });
@@ -121,7 +118,7 @@ const SearchPage = ({ search, close }: Props) => {
 
     return () =>
       dispatch({
-        type: ACTIONS.TOGGLE_AUTOCOMPLETE_MENU,
+        type: "TOGGLE_AUTOCOMPLETE_MENU",
         payload: { showAutoCompleteSuggestions: false },
       });
   }, [searchQuery, playerLeague, playerTeam, playerRange, playerPosition]);
@@ -130,11 +127,10 @@ const SearchPage = ({ search, close }: Props) => {
 
   const closeAutoComplete = () =>
     dispatch({
-      type: ACTIONS.TOGGLE_AUTOCOMPLETE_MENU,
+      type: "TOGGLE_AUTOCOMPLETE_MENU",
       payload: { showAutoCompleteSuggestions: false },
     });
   const autoCompleteRef = useContentVisible<HTMLDivElement>(closeAutoComplete);
-
 
   return (
     <div
@@ -221,7 +217,7 @@ const SearchPage = ({ search, close }: Props) => {
 
         {searchQuery ? (
           <div className="overflow-y-auto">
-            {playerSuggestions.map((player: any, index: number) => (
+            {playerSuggestions.map((player: SquadMemberType, index: number) => (
               <PlayerSearchResult player={player} key={index} />
             ))}
           </div>

@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/client"
 import { TOP_PLAYER_QUERY } from "../../../../queries/topPlayerQueries"
 import TopPlayerInfo from "./TopPlayerInfo";
+import { SquadMemberType } from "../../../../queries/types/queryTypes";
 
 type Props = {}
 
@@ -15,7 +16,7 @@ const TopPlayerData = (props: Props) => {
 
   return (
     <div>
-      {data.topPlayers.map((player: any, index: number) => (
+      {data.topPlayers.map((player: SquadMemberType, index: number) => (
         <TopPlayerInfo key={index} player={player}/>
       ))}
     </div>

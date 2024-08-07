@@ -5,6 +5,7 @@ import { useLazyQuery } from "@apollo/client";
 import { LEAGUE_TABLE_QUERY } from "../../../../queries/leagueTableQuery";
 import { getLogosAndImages } from "../../../../functions/logoFunction";
 import { SearchActionType } from "../reducer/searchReducer";
+import { TeamStandingType } from "../../../../queries/types/queryTypes";
 
 // according to react bootstrap docs the onSelect callback defines the eventKey: any
 
@@ -12,12 +13,30 @@ type Props = {
   playerLeague: string;
   selectedTeam: string | null;
   selectedPosition: string | null;
-  resetFilters: (dispatch: Dispatch<SearchActionType>) => void;
+  resetFilters: (
+    dispatch: Dispatch<
+      SearchActionType<
+        "FILTER_PLAYER_TEAM" | "FILTER_PLAYER_POSITION" | "FILTER_PLAYER_RANGE"
+      >
+    >
+  ) => void;
   selectedRange: string | null;
-  teamsFilter: (eventKey: any, dispatch: Dispatch<SearchActionType>) => void;
-  positionFilter: (eventKey: any, dispatch: Dispatch<SearchActionType>) => void;
-  rangeFilter: (ageRange: string, dispatch: Dispatch<SearchActionType>) => void;
-  dispatch: Dispatch<SearchActionType>;
+  teamsFilter: (
+    eventKey: any,
+    dispatch: Dispatch<SearchActionType<"FILTER_PLAYER_TEAM">>
+  ) => void;
+  positionFilter: (
+    eventKey: any,
+    dispatch: Dispatch<SearchActionType<"FILTER_PLAYER_POSITION">>
+  ) => void;
+  rangeFilter: (
+    ageRange: string,
+    dispatch: Dispatch<SearchActionType<"FILTER_PLAYER_RANGE">>
+  ) => void;
+  dispatch: Dispatch<SearchActionType<
+    "FILTER_PLAYER_TEAM" | "FILTER_PLAYER_POSITION" | "FILTER_PLAYER_RANGE" |
+    "FILTER_PLAYER_LEAGUE" 
+  >>;
 };
 
 type TeamType = {
@@ -46,7 +65,7 @@ const SearchFilters = ({
   const [teams, { data: teamData, loading: teamLoading, error: teamError }] =
     useLazyQuery(LEAGUE_TABLE_QUERY, {
       onCompleted: (teamData: any) => {
-        const filteredTeams = teamData.leagueStandings.map((team: any) => {
+        const filteredTeams = teamData.leagueStandings.map((team: TeamStandingType) => {
           const newTeam = team?.team;
           return newTeam;
         });

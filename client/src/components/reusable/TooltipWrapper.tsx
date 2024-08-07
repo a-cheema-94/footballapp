@@ -1,5 +1,5 @@
 import { ReactNode } from "react"
-import { OverlayTrigger, Tooltip } from "react-bootstrap"
+import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap"
 
 type Props = {
   children: ReactNode,
@@ -8,7 +8,7 @@ type Props = {
 }
 
 const TooltipWrapper = ({ children, message, styleProps }: Props) => {
-  const renderTooltip = (props: any) => (
+  const renderTooltip = (props: TooltipProps) => (
     <Tooltip {...props}>
       {message}
     </Tooltip>

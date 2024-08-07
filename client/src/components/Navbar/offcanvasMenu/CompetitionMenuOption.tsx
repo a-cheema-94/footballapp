@@ -11,6 +11,7 @@ import { getLogosAndImages } from "../../../functions/logoFunction";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import TooltipWrapper from "../../reusable/TooltipWrapper";
+import { TeamStandingType } from "../../../queries/types/queryTypes";
 
 type Props = {
   league: string;
@@ -50,7 +51,7 @@ const CompetitionMenuOption = ({ league }: Props) => {
         style={isDropDownOpen ? { height: "300px", overflowY: "scroll" } : {}}
         onToggle={toggleDropdown}
       >
-        {data.leagueStandings.map((team: any, index: number) => (
+        {data.leagueStandings.map((team: TeamStandingType, index: number) => (
           <NavDropdown.Item key={index} className="select-none">
             <TooltipWrapper message="Go to team page" styleProps={styleProps}>
               <Stack

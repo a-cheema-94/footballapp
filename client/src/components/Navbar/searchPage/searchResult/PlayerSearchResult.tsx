@@ -1,8 +1,9 @@
 import { Stack } from "react-bootstrap";
 import { getLogosAndImages } from "../../../../functions/logoFunction";
+import { SquadMemberType } from "../../../../queries/types/queryTypes";
 
 type Props = {
-  player: any;
+  player: SquadMemberType;
 };
 
 const PlayerSearchResult = ({ player }: Props) => {

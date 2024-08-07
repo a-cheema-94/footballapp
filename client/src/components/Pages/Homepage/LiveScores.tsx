@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client"
 import { LIVE_SCORES_QUERY } from "../../../queries/liveScoresQuery"
+import { FixtureType } from "../../../queries/types/queryTypes";
 
 type Props = {}
 
@@ -19,7 +20,7 @@ const LiveScores = (props: Props) => {
     <>
       {data.liveFixtures.length === 0 ? <div>No current live fixtures</div> : 
       
-      data.liveFixtures.map((fixture: any, index: number) => (
+      data.liveFixtures.map((fixture: FixtureType, index: number) => (
         <div key={index}>
           <p>{fixture.teams.home.name}</p>
           <p>{fixture.goals.home}, {fixture.goals.away}</p>
