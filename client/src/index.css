@@ -1,0 +1,8 @@
+.customTabs .nav-link {
+  color: black;
+}
+
+.customTabs .nav-link.active {
+  background-color: rgb(182, 59, 10);
+  color: white;
+}
