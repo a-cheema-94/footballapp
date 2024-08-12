@@ -70,7 +70,7 @@ export const sampleFixtures: FixtureType[] = [
     },
     teams: {
       home: {
-        id: 3,
+        id: 40,
         name: "Liverpool",
         winner: true,
       },

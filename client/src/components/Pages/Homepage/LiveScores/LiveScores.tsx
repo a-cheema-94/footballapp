@@ -5,6 +5,7 @@ import { sampleFixtures } from "./sampleLiveScoreData";
 import { useEffect, useState } from "react";
 import { LiveFixtures, sortLiveFixturesByLeague } from "./liveScoreFunctions";
 import LiveFixture from "./LiveFixture";
+import LiveMatchesByLeague from "./LiveMatchesByLeague";
 
 type Props = {};
 
@@ -40,12 +41,12 @@ const LiveScores = (props: Props) => {
       {sampleFixtures.length === 0 ? (
         <div>No current live fixtures</div>
       ) : (
-        <div className="d-flex gap-2">
-          {liveMatches.premierLeague.map(
-            (fixture: FixtureType, index: number) => (
-              <LiveFixture key={index} fixture={fixture} />
-            )
-          )}
+        <div className="d-flex flex-column gap-4">
+          <LiveMatchesByLeague liveFixtures={liveMatches.premierLeague}/>
+          {/* <LiveMatchesByLeague liveFixtures={liveMatches.bundesliga}/>
+          <LiveMatchesByLeague liveFixtures={liveMatches.laLiga}/>
+          <LiveMatchesByLeague liveFixtures={liveMatches.serieA}/> */}
+          
         </div>
       )}
     </div>
