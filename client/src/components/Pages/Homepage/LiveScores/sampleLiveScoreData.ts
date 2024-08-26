@@ -7,7 +7,7 @@ export const sampleFixtures: FixtureType[] = [
       type: new Date(),
     },
     live: {
-      type: false,
+      type: true,
     },
     league: "Premier League",
     fixture: {
@@ -27,12 +27,12 @@ export const sampleFixtures: FixtureType[] = [
     },
     teams: {
       home: {
-        id: 1,
+        id: 33,
         name: "Manchester United",
         winner: true,
       },
       away: {
-        id: 2,
+        id: 49,
         name: "Chelsea",
         winner: false,
       },
@@ -50,7 +50,7 @@ export const sampleFixtures: FixtureType[] = [
       type: new Date(),
     },
     live: {
-      type: false,
+      type: true,
     },
     league: "Premier League",
     fixture: {
@@ -75,7 +75,7 @@ export const sampleFixtures: FixtureType[] = [
         winner: true,
       },
       away: {
-        id: 4,
+        id: 42,
         name: "Arsenal",
         winner: false,
       },
@@ -93,7 +93,7 @@ export const sampleFixtures: FixtureType[] = [
       type: new Date(),
     },
     live: {
-      type: false,
+      type: true,
     },
     league: "Premier League",
     fixture: {
@@ -136,7 +136,7 @@ export const sampleFixtures: FixtureType[] = [
       type: new Date(),
     },
     live: {
-      type: false,
+      type: true,
     },
     league: "Premier League",
     fixture: {
@@ -181,7 +181,7 @@ export const sampleFixtures: FixtureType[] = [
       type: new Date(),
     },
     live: {
-      type: false,
+      type: true,
     },
     league: "Bundesliga",
     fixture: {
@@ -224,7 +224,7 @@ export const sampleFixtures: FixtureType[] = [
       type: new Date(),
     },
     live: {
-      type: false,
+      type: true,
     },
     league: "Bundesliga",
     fixture: {
@@ -267,7 +267,7 @@ export const sampleFixtures: FixtureType[] = [
       type: new Date(),
     },
     live: {
-      type: false,
+      type: true,
     },
     league: "Bundesliga",
     fixture: {
@@ -310,7 +310,7 @@ export const sampleFixtures: FixtureType[] = [
       type: new Date(),
     },
     live: {
-      type: false,
+      type: true,
     },
     league: "Bundesliga",
     fixture: {
@@ -355,7 +355,7 @@ export const sampleFixtures: FixtureType[] = [
       type: new Date(),
     },
     live: {
-      type: false,
+      type: true,
     },
     league: "La Liga",
     fixture: {
@@ -398,7 +398,7 @@ export const sampleFixtures: FixtureType[] = [
       type: new Date(),
     },
     live: {
-      type: false,
+      type: true,
     },
     league: "La Liga",
     fixture: {
@@ -441,7 +441,7 @@ export const sampleFixtures: FixtureType[] = [
       type: new Date(),
     },
     live: {
-      type: false,
+      type: true,
     },
     league: "La Liga",
     fixture: {
@@ -484,7 +484,7 @@ export const sampleFixtures: FixtureType[] = [
       type: new Date(),
     },
     live: {
-      type: false,
+      type: true,
     },
     league: "La Liga",
     fixture: {
@@ -529,7 +529,7 @@ export const sampleFixtures: FixtureType[] = [
       type: new Date(),
     },
     live: {
-      type: false,
+      type: true,
     },
     league: "Serie A",
     fixture: {
@@ -572,7 +572,7 @@ export const sampleFixtures: FixtureType[] = [
       type: new Date(),
     },
     live: {
-      type: false,
+      type: true,
     },
     league: "Serie A",
     fixture: {
@@ -615,7 +615,7 @@ export const sampleFixtures: FixtureType[] = [
       type: new Date(),
     },
     live: {
-      type: false,
+      type: true,
     },
     league: "Serie A",
     fixture: {
@@ -658,7 +658,7 @@ export const sampleFixtures: FixtureType[] = [
       type: new Date(),
     },
     live: {
-      type: false,
+      type: true,
     },
     league: "Serie A",
     fixture: {

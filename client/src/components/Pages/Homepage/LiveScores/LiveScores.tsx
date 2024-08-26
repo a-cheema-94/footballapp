@@ -22,19 +22,20 @@ const LiveScores = (props: Props) => {
     serieA: [],
   });
 
-  const { data, loading, error } = useQuery(LIVE_SCORES_QUERY, {
-    variables: {
-      leagues: ["Premier League", "Bundesliga", "Serie A", "La Liga"],
-    },
-  });
+  // TODO: integrate api with live fixture component
+  // const { data, loading, error } = useQuery(LIVE_SCORES_QUERY, {
+  //   variables: {
+  //     leagues: ["Premier League", "Bundesliga", "Serie A", "La Liga"],
+  //   },
+  // });
+  // if (error) return <div>An Error occurred: {error.message}</div>;
+  // if (loading) return <p>Loading ...</p>;
 
   useEffect(() => {
     setLiveMatches(sortLiveFixturesByLeague(sampleFixtures));
   }, []);
 
-  if (error) return <div>An Error occurred: {error.message}</div>;
-  if (loading) return <p>Loading ...</p>;
-
+  const { premierLeague, bundesliga, laLiga, serieA } = liveMatches;
   return (
     <div className="m-2">
       <h3>Live Scores</h3>
@@ -42,11 +43,10 @@ const LiveScores = (props: Props) => {
         <div>No current live fixtures</div>
       ) : (
         <div className="d-flex flex-column gap-4">
-          <LiveMatchesByLeague liveFixtures={liveMatches.premierLeague}/>
-          {/* <LiveMatchesByLeague liveFixtures={liveMatches.bundesliga}/>
-          <LiveMatchesByLeague liveFixtures={liveMatches.laLiga}/>
-          <LiveMatchesByLeague liveFixtures={liveMatches.serieA}/> */}
-          
+          <LiveMatchesByLeague liveFixtures={premierLeague} />
+          {/* <LiveMatchesByLeague liveFixtures={bundesliga}/>
+          <LiveMatchesByLeague liveFixtures={laLiga}/>
+          <LiveMatchesByLeague liveFixtures={serieA}/> */}
         </div>
       )}
     </div>

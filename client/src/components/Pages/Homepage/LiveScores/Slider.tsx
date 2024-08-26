@@ -17,20 +17,17 @@ const Slider = ({ liveFixtures }: Props) => {
   };
 
   const fixtureChunks = listToChunks(liveFixtures, 2);
-  console.log(fixtureChunks);
+  // console.log(fixtureChunks);
 
   return (
-    <Carousel slide={false}>
-      {fixtureChunks.map((fixtureChunk: FixtureType[], index: number) => (
-        <Carousel.Item key={index}>
-          <div>hi + {index}</div>
-        </Carousel.Item>
-      ))}
+    <Carousel className="p-5" slide={false} controls={true} interval={null}>
+      <Carousel.Item>
+        <LiveFixture fixture={liveFixtures[0]} />
+      </Carousel.Item>
 
-      {/* <Carousel.Item>3</Carousel.Item>
-      <Carousel.Item>4</Carousel.Item>
-      <Carousel.Item>3</Carousel.Item>
-      <Carousel.Item>2</Carousel.Item> */}
+      <Carousel.Item>
+        <LiveFixture fixture={liveFixtures[1]} />
+      </Carousel.Item>
     </Carousel>
   );
 };
