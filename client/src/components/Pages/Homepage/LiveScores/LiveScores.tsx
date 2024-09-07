@@ -36,17 +36,20 @@ const LiveScores = (props: Props) => {
   }, []);
 
   const { premierLeague, bundesliga, laLiga, serieA } = liveMatches;
+
   return (
     <div className="m-2">
-      <h3>Live Scores</h3>
       {sampleFixtures.length === 0 ? (
         <div>No current live fixtures</div>
       ) : (
-        <div className="d-flex flex-column gap-4">
-          <LiveMatchesByLeague liveFixtures={premierLeague} />
-          {/* <LiveMatchesByLeague liveFixtures={bundesliga}/>
-          <LiveMatchesByLeague liveFixtures={laLiga}/>
-          <LiveMatchesByLeague liveFixtures={serieA}/> */}
+        <div className="d-flex flex-column gap-3 mb-5">
+          <div className="align-self-end">
+            <a href="#Bundesliga">premier League</a>
+          </div>
+          <LiveMatchesByLeague liveFixtures={premierLeague} leagueName="Premier League"/>
+          <LiveMatchesByLeague liveFixtures={bundesliga} leagueName="Bundesliga"/>
+          <LiveMatchesByLeague liveFixtures={laLiga} leagueName="La Liga"/>
+          <LiveMatchesByLeague liveFixtures={serieA} leagueName="Serie A"/>
         </div>
       )}
     </div>

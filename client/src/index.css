@@ -1,3 +1,8 @@
+
+* {
+  box-sizing: border-box;
+}
+
 .customTabs .nav-link {
   color: black;
 }
@@ -10,13 +15,12 @@
 /* carousel */
 
 /* carousel buttons */
-.carousel .carousel-control-prev .carousel-control-prev-icon,
-.carousel .carousel-control-next .carousel-control-next-icon {
-  background-color: black;
-  border-radius: 50%;
+button.slick-prev:before,
+button.slick-next:before {
+  color: black;
 }
 
-/* carousel animation */
+/* live fixture card animation */
 .scale-up {
   animation: scaleUp 1s infinite;
 }

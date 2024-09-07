@@ -18,49 +18,53 @@ type FixtureNameAndLogoProps = {
 
 const LiveFixture = ({ fixture }: Props) => {
   return (
-    <div className="border border-black rounded p-4 d-flex align-items-center gap-3 m-2">
-      {/* home */}
-      <FixtureNameAndLogo
-        teamId={fixture?.teams.home.id}
-        teamName={fixture?.teams.home.name}
-      />
+    <div
+      className="border border-black rounded flex-grow-1 ratio ratio-16x9 p-2 w-100"
+      style={{
+        maxWidth: '280px'
+      }}
+    >
+      <div className="d-flex align-items-center">
 
-      {/* score */}
-      <div className="score d-flex  gap-2 fw-semibold fs-2">
-        {/* home score */}
-        <div className="home-score">{fixture?.goals.home}</div>
-        <p className="dash">-</p>
-        {/* away score */}
-        <div className="away-score">{fixture?.goals.away}</div>
-      </div>
+        {/* home */}
+        <FixtureNameAndLogo
+          teamId={fixture?.teams.home.id}
+          teamName={fixture?.teams.home.name}
+        />
 
-      {/* away */}
-      <FixtureNameAndLogo
-        teamId={fixture?.teams.away.id}
-        teamName={fixture?.teams.away.name}
-      />
-
-      {fixture?.live.type && (
-        <div className="live-fixture-icon align-self-start text-red-500 scale-up">
-          <FaRegCircleDot />
+        {/* score */}
+        <div className="score d-flex gap-2">
+          {/* home score */}
+          <div className="home-score">{fixture?.goals.home}</div>
+          <p className="dash">-</p>
+          {/* away score */}
+          <div className="away-score">{fixture?.goals.away}</div>
         </div>
-      )}
-    </div>
+
+        {/* away */}
+        <FixtureNameAndLogo
+          teamId={fixture?.teams.away.id}
+          teamName={fixture?.teams.away.name}
+        />
+
+        {fixture?.live.type && (
+          <div className="live-fixture-icon text-red-500 scale-up align-self-start me-2">
+            <FaRegCircleDot />
+          </div>
+        )}
+      </div>
+      </div>
   );
 };
 
 const FixtureNameAndLogo = ({ teamId, teamName }: FixtureNameAndLogoProps) => {
   return (
-    <div className="away d-flex flex-column align-items-center gap-2 ">
-      {/* logo */}
-      <div className="logo" style={{ width: "50px" }}>
-        <img className="w-100" src={getLogosAndImages("teams", teamId ?? 40)} />
+    <div className="away d-flex justify-content-center align-items-center flex-column">
+        {/* logo */}
+        <img className="w-75" src={getLogosAndImages("teams", teamId ?? 40)} />
+        {/* Team name */}
+        <p className="">{teamName}</p>
       </div>
-      {/* Team name */}
-      <p style={{ width: "100px" }} className="text-center">
-        {teamName}
-      </p>
-    </div>
   );
 };
 

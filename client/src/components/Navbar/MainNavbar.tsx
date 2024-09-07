@@ -14,15 +14,17 @@ type Props = {
   toggle: () => void;
 };
 
+// todo => want to create a smooth scrolling navbar. So when first scrolling the navbar fades out, then when user is no longer idle  or it has been a set amount of time it fades back in. It should fade out when scrolling up or down and slowly fade back in when scrolled to the top. Want to maintain smooth transitions throughout. Can use window.scrollY to get the scroll position => main number we base this around.
+
 const MainNavbar = ({ toggle }: Props) => {
-  const [isCompetitionMenu, setIsCompetitionMenu] = useState(false);
+  const [isCompetitionMenu, setIsCompetitionMenu] = useState<boolean>(false);
+  const [scrollPosition, setScrollPosition] = useState<number>(0);
 
   return (
     <>
       <Navbar
         expand={false}
         className="bg-orange-500 p-3 position-fixed w-100 z-3"
-        style={{ height: "100px" }}
       >
         <Container fluid>
           <Navbar.Toggle
