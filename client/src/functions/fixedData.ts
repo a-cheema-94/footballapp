@@ -10,4 +10,4 @@ export const LEAGUES = {
   "Bundesliga": 78,
   "Serie A": 135,
   "La Liga": 140
-}
+} 

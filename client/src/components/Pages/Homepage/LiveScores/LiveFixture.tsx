@@ -21,11 +21,10 @@ const LiveFixture = ({ fixture }: Props) => {
     <div
       className="border border-black rounded flex-grow-1 ratio ratio-16x9 p-2 w-100"
       style={{
-        maxWidth: '280px'
+        maxWidth: "280px",
       }}
     >
       <div className="d-flex align-items-center">
-
         {/* home */}
         <FixtureNameAndLogo
           teamId={fixture?.teams.home.id}
@@ -53,18 +52,18 @@ const LiveFixture = ({ fixture }: Props) => {
           </div>
         )}
       </div>
-      </div>
+    </div>
   );
 };
 
 const FixtureNameAndLogo = ({ teamId, teamName }: FixtureNameAndLogoProps) => {
   return (
     <div className="away d-flex justify-content-center align-items-center flex-column">
-        {/* logo */}
-        <img className="w-75" src={getLogosAndImages("teams", teamId ?? 40)} />
-        {/* Team name */}
-        <p className="">{teamName}</p>
-      </div>
+      {/* logo */}
+      <img className="w-75" src={getLogosAndImages("teams", teamId ?? 40)} />
+      {/* Team name */}
+      <p className="">{teamName}</p>
+    </div>
   );
 };
 

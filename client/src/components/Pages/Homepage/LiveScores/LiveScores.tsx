@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 import { LiveFixtures, sortLiveFixturesByLeague } from "./liveScoreFunctions";
 import LiveFixture from "./LiveFixture";
 import LiveMatchesByLeague from "./LiveMatchesByLeague";
+import { getLogosAndImages } from "../../../../functions/logoFunction";
+import { LEAGUES } from "../../../../functions/fixedData";
+import { Breadcrumb } from "react-bootstrap";
 
 type Props = {};
 
@@ -37,19 +40,42 @@ const LiveScores = (props: Props) => {
 
   const { premierLeague, bundesliga, laLiga, serieA } = liveMatches;
 
+  // todo: simplify.
+  type Leagues = "Premier League" | "Bundesliga" | "Serie A" | "La Liga";
+
+  type LeagueNamesType = Leagues[];
+
+  const leagueNames: LeagueNamesType = [
+    "Premier League",
+    "Bundesliga",
+    "Serie A",
+    "La Liga",
+  ];
+
   return (
-    <div className="m-2">
+    <div className="">
       {sampleFixtures.length === 0 ? (
         <div>No current live fixtures</div>
       ) : (
-        <div className="d-flex flex-column gap-3 mb-5">
-          <div className="align-self-end">
-            <a href="#Bundesliga">premier League</a>
-          </div>
-          <LiveMatchesByLeague liveFixtures={premierLeague} leagueName="Premier League"/>
-          <LiveMatchesByLeague liveFixtures={bundesliga} leagueName="Bundesliga"/>
-          <LiveMatchesByLeague liveFixtures={laLiga} leagueName="La Liga"/>
-          <LiveMatchesByLeague liveFixtures={serieA} leagueName="Serie A"/>
+        <div className="d-flex flex-column gap-3 my-2">
+          <Breadcrumb className="align-self-end me-3 mt-3">
+            {leagueNames.map((leagueName: Leagues, index) => (
+              <Breadcrumb.Item key={index} href={`#${leagueName}`}>
+                {leagueName}
+              </Breadcrumb.Item>
+            ))}
+          </Breadcrumb>
+
+          <LiveMatchesByLeague
+            liveFixtures={premierLeague}
+            leagueName="Premier League"
+          />
+          <LiveMatchesByLeague
+            liveFixtures={bundesliga}
+            leagueName="Bundesliga"
+          />
+          <LiveMatchesByLeague liveFixtures={serieA} leagueName="Serie A" />
+          <LiveMatchesByLeague liveFixtures={laLiga} leagueName="La Liga" />
         </div>
       )}
     </div>

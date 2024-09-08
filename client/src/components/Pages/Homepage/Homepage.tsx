@@ -4,17 +4,18 @@ import TopFootballStories from "./NewsStories/TopFootballStories";
 import TopPlayerData from "./TopPlayerData/TopPlayerData";
 import { useState } from "react";
 
-type Props = {};
+type Props = {
+};
 
-const Homepage = (props: Props) => {
-  const [tabKey, setTabKey] = useState<string | number>("football-news");
+const Homepage = ({ }: Props) => {
+  const [tabKey, setTabKey] = useState<string | number>("live-scores");
 
   const handleTab = (key: string | number | null): void => {
     if (key !== null) setTabKey(key);
   };
 
   return (
-    <div className="">
+    <div>
       <Tabs activeKey={tabKey} onSelect={handleTab} fill className="customTabs">
         <Tab eventKey="live-scores" title="Live Scores">
           <LiveScores />

@@ -16,6 +16,7 @@ import TestComponent from "./components/TestComponent";
 function App() {
   const [search, setSearch] = useState(false);
   const toggle = () => setSearch((prevSearch) => !prevSearch);
+  
 
   const close = () => setSearch(false);
 
@@ -23,7 +24,8 @@ function App() {
     <>
       <MainNavbar toggle={toggle} />
 
-      <div style={{ paddingTop: "100px" }}>
+      {/* todo: change this */}
+      <div style={{ paddingTop: `85px` }}>
         {search && <SearchPage search={search} close={close} />}
         {!search && (
           <Routes>

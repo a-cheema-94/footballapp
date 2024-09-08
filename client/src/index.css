@@ -3,6 +3,13 @@
   box-sizing: border-box;
 }
 
+/* Homepage Tabs */
+
+/* .customTabs {
+  position: fixed;
+  
+} */
+
 .customTabs .nav-link {
   color: black;
 }
@@ -10,6 +17,18 @@
 .customTabs .nav-link.active {
   background-color: rgb(182, 59, 10);
   color: white;
+}
+
+/* Navbar */
+
+.custom-navbar {
+  transition: opacity .75s ease-in-out;
+}
+
+/* leagues breadcrumb links */
+.breadcrumb-item a {
+  text-decoration: none;
+  color: black;
 }
 
 /* carousel */
