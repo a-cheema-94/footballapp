@@ -20,16 +20,16 @@ const Homepage = ({ }: Props) => {
         <Tab eventKey="live-scores" title="Live Scores">
           <LiveScores />
         </Tab>
-        <Tab eventKey="football-news" title="Latest News">
-          {/* <TopFootballStories /> */}
-          Football Stories
-        </Tab>
         <Tab
           eventKey="top-scorers-and-assists"
           title="Top Scorers/ Top Assists"
-        >
-          {/* <TopPlayerData /> */}
+          >
           Top Scorers / Assists
+          <TopPlayerData />
+        </Tab>
+        <Tab eventKey="football-news" title="Latest News">
+          {/* <TopFootballStories /> */}
+          Football Stories
         </Tab>
       </Tabs>
     </div>

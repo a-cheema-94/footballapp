@@ -3,20 +3,18 @@ import { FixtureType } from "../../../../queries/types/queryTypes";
 import LiveFixture from "./LiveFixture";
 import LiveFixtureSlider from "./LIveFixtureSlider";
 import { getLogosAndImages } from "../../../../functions/logoFunction";
-import { LEAGUES } from "../../../../functions/fixedData";
+import { LeagueNames, LEAGUES } from "../../../../functions/fixedData";
 
 type Props = {
   liveFixtures: FixtureType[];
-  leagueName: "Premier League" | "Serie A" | "Bundesliga" | "La Liga";
+  leagueName: LeagueNames;
 };
-
-// TODO: Slider implementation and dropdown
 
 const LiveMatchesByLeague = ({ liveFixtures, leagueName }: Props) => {
   return (
     <div
       id={leagueName}
-      className="d-flex flex-column justify-content-center align-items-center my-3"
+      className="d-flex flex-column justify-content-center align-items-center py-3"
     >
       {/* slider here */}
       <div className="d-flex align-items-center justify-content-center gap-2">

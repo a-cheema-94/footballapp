@@ -5,6 +5,7 @@ import TeamStanding from "../models/TeamStandingModel.js";
 import Player from "../models/TopPlayerModel.js";
 import SquadMember from "../models/SquadMemberModel.js";
 
+// NOTE: collection parameter is purely for console purposes NOT any functionality.
 export const makeInitialQuery  = async (apiCallFrequency, endpoint, apiCallCategory, queryParams, collection, league = null) => {
   try {
     if(await shouldMakeApiCall(apiCallFrequency, endpoint, apiCallCategory)) {

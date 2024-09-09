@@ -14,3 +14,4 @@ const toCamelCase = (str) => {
 console.log(toCamelCase("Amar Cheema"));
 console.log(toCamelCase("Calis Cheema"));
 console.log(toCamelCase("Liverpool Manchester United"));
+

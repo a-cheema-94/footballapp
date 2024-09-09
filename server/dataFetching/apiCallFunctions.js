@@ -40,8 +40,8 @@ export async function makeFootballApiCall(endpoint, params, league = null) {
   }
 
   
-
-  // delete live fixtures once all live fixtures are finished for that gameweek across all leagues.
+//  todo: determine whether this is needed.
+  // delete live fixtures once all live fixtures are finished (apiRes.data.response.length === 0) for that gameweek across all leagues.
   if(endpoint === 'fixtures' && league === null && apiRes.data.response.length === 0) {
     // clear live fixtures from database
     clearMongoCollection(Fixture, { live: true })

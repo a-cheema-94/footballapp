@@ -22,7 +22,8 @@ import {
 export const resolvers = {
   Query: {
     topPlayers: async (_, { league, limit = 20, sortBy }) => {
-      // clearMongoCollection(TopPlayer);
+      // clearMongoCollection(Player);
+      // clearMongoCollection(Fixture);
       // clearMongoCollection(LastApiCallTimes);
 
       let endpoint = "players/topscorers";
@@ -35,7 +36,7 @@ export const resolvers = {
         endpoint,
         league,
         { league: LEAGUES[league], season: SEASON },
-        "Top Players",
+        "Top Player",
         league
       );
 
@@ -208,7 +209,7 @@ export const resolvers = {
         league: LEAGUES[league],
         season: SEASON,
       };
-      fixtureParams[type] = 1; // can be last or next
+      fixtureParams[type] = 1; // type can be last or next
 
       await makeInitialQuery(
         "daily",
@@ -225,9 +226,9 @@ export const resolvers = {
       let sortingInfo = {};
 
       if (type === "next") {
-        sortingInfo["fixture.status.short"] = "NS";
+        sortingInfo["fixture.status.short"] = "NS"; // NS: fixture not started
       } else if (type === "last") {
-        sortingInfo["fixture.status.short"] = "FT";
+        sortingInfo["fixture.status.short"] = "FT"; // FT: full time 
       }
 
       try {
@@ -235,6 +236,7 @@ export const resolvers = {
           ...sortingInfo,
           $or: [{ "teams.home.name": team }, { "teams.away.name": team }],
         }).sort({ createdAt: -1 });
+        // .sort({ field: -1 }) => mongoDB method that sorts data in order either descending (-1) or ascending (1). can be applied to numerical, string or date fields. 
         console.log(chalk.green("data finalized"));
       } catch (error) {
         console.error(
@@ -464,7 +466,6 @@ export const resolvers = {
       return searchResults;
     },
 
-    // TODO: Decide if filtering autocomplete like playerSearch is worth it.
     autoCompletePlayer: async (_, { query }) => {
       let autoCompleteResults = [];
 

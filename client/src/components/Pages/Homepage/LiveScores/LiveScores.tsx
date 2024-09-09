@@ -7,7 +7,7 @@ import { LiveFixtures, sortLiveFixturesByLeague } from "./liveScoreFunctions";
 import LiveFixture from "./LiveFixture";
 import LiveMatchesByLeague from "./LiveMatchesByLeague";
 import { getLogosAndImages } from "../../../../functions/logoFunction";
-import { LEAGUES } from "../../../../functions/fixedData";
+import { LeagueNames, LEAGUES } from "../../../../functions/fixedData";
 import { Breadcrumb } from "react-bootstrap";
 
 type Props = {};
@@ -38,20 +38,6 @@ const LiveScores = (props: Props) => {
     setLiveMatches(sortLiveFixturesByLeague(sampleFixtures));
   }, []);
 
-  const { premierLeague, bundesliga, laLiga, serieA } = liveMatches;
-
-  // todo: simplify.
-  type Leagues = "Premier League" | "Bundesliga" | "Serie A" | "La Liga";
-
-  type LeagueNamesType = Leagues[];
-
-  const leagueNames: LeagueNamesType = [
-    "Premier League",
-    "Bundesliga",
-    "Serie A",
-    "La Liga",
-  ];
-
   return (
     <div className="">
       {sampleFixtures.length === 0 ? (
@@ -59,27 +45,26 @@ const LiveScores = (props: Props) => {
       ) : (
         <div className="d-flex flex-column gap-3 my-2">
           <Breadcrumb className="align-self-end me-3 mt-3">
-            {leagueNames.map((leagueName: Leagues, index) => (
+            {Object.keys(LEAGUES).map((leagueName, index) => (
               <Breadcrumb.Item key={index} href={`#${leagueName}`}>
                 {leagueName}
               </Breadcrumb.Item>
             ))}
           </Breadcrumb>
 
-          <LiveMatchesByLeague
-            liveFixtures={premierLeague}
-            leagueName="Premier League"
-          />
-          <LiveMatchesByLeague
-            liveFixtures={bundesliga}
-            leagueName="Bundesliga"
-          />
-          <LiveMatchesByLeague liveFixtures={serieA} leagueName="Serie A" />
-          <LiveMatchesByLeague liveFixtures={laLiga} leagueName="La Liga" />
+          {Object.values(liveMatches).map((liveFixturesByLeague, index) => (
+            <LiveMatchesByLeague
+              key={index}
+              liveFixtures={liveFixturesByLeague}
+              leagueName={Object.keys(LEAGUES)[index] as LeagueNames}
+            />
+          ))}
         </div>
       )}
     </div>
   );
 };
+
+// todo => have a arrow up button when link is clicked. => conditionally render when url params are added. The link would be to #, to go back to the top. Conditionally render to be fixed to bottom of the page.
 
 export default LiveScores;

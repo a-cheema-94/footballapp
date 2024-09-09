@@ -1,7 +1,6 @@
 import { FixtureType } from "../../../../queries/types/queryTypes";
 import LiveFixture from "./LiveFixture";
 import Slider from "react-slick";
-// Todo: react slick docs and sort out imports.
 
 type Props = {
   liveFixtures: FixtureType[];

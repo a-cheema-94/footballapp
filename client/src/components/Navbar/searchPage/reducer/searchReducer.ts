@@ -30,8 +30,6 @@ const initialSearchState: SearchStateType = {
   playerRange: null,
 };
 
-// TODO => sort out action type for the payload.
-
 type SearchActionMap = {
   TOGGLE_SEARCH_FILTERS: { showFilters: boolean };
   TOGGLE_AUTOCOMPLETE_MENU: { showAutoCompleteSuggestions: boolean };
