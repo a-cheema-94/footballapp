@@ -1,25 +1,36 @@
-import { Dropdown, Stack } from "react-bootstrap";
+import { Dropdown, Spinner, Stack } from "react-bootstrap";
 import { getLogosAndImages } from "../../functions/logoFunction";
 import { LEAGUES } from "../../../../shared/fixedData.ts";
-import { Dispatch } from "react";
+import { Dispatch, useState } from "react";
 import TooltipWrapper from "./TooltipWrapper.tsx";
 import { SearchActionType } from "../Navbar/searchPage/reducer/searchReducer.ts";
+import { LeagueNames } from "../../functions/fixedData.ts";
+import { StringIterator } from "lodash";
 
 type Props = {
-  selectLeague: (
+  setPlayerLeague?: (league: LeagueNames) => void;
+  selectLeague?: (
     eventKey: string,
     dispatch: Dispatch<SearchActionType<"FILTER_PLAYER_LEAGUE">>
   ) => void;
-  playerLeague: string;
-  dispatch: Dispatch<SearchActionType<"FILTER_PLAYER_LEAGUE">>;
+  dispatch?: Dispatch<SearchActionType<"FILTER_PLAYER_LEAGUE">>;
+  league: string;
 };
 
-const LeagueSelector = ({ selectLeague, playerLeague, dispatch }: Props) => {
-  const leagues = Object.keys(LEAGUES);
+const LeagueSelector = ({ selectLeague, dispatch, setPlayerLeague, league }: Props) => {
+  const leagues = Object.keys(LEAGUES) as LeagueNames[];
   const leagueIds = Object.values(LEAGUES);
 
-  const handleDropdownSelect = (index: number) => {
-    selectLeague(leagues[index], dispatch);
+
+  const handleDropdownSelect = (league: LeagueNames) => {
+    setTimeout(() => {
+      if (selectLeague && dispatch) {
+        selectLeague(league, dispatch);
+      }
+      if (setPlayerLeague) {
+        setPlayerLeague(league);
+      }
+    }, 500);
   };
 
   // Tooltip Props
@@ -36,7 +47,7 @@ const LeagueSelector = ({ selectLeague, playerLeague, dispatch }: Props) => {
       <TooltipWrapper message="Select League" styleProps={styleProps}>
         <Dropdown.Toggle className="bg-transparent text-black border-0">
           <img
-            src={getLogosAndImages("leagues", LEAGUES[playerLeague])}
+            src={getLogosAndImages("leagues", LEAGUES[league])}
             alt=""
             width={40}
             height={40}
@@ -48,7 +59,7 @@ const LeagueSelector = ({ selectLeague, playerLeague, dispatch }: Props) => {
         {leagues.map((league, index) => (
           <Dropdown.Item
             key={index}
-            onClick={() => handleDropdownSelect(index)}
+            onClick={() => handleDropdownSelect(league)}
           >
             <Stack direction="horizontal" className="gap-2">
               <p>{league}</p>

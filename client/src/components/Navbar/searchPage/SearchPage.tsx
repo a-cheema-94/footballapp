@@ -26,7 +26,6 @@ import {
   resetFilters,
 } from "./searchFunctions/searchPageFunctions";
 import { SquadMemberType } from "../../../queries/types/queryTypes";
-import LeagueSelectorTest from "../../reusable/TestLeagueSelector";
 
 type Props = {
   search: boolean;
@@ -142,9 +141,10 @@ const SearchPage = ({ search, close }: Props) => {
       <div className="d-flex justify-content-between position-fixed bg-white w-100 z-3 p-2">
         <Form className="d-flex w-50 ms-4 gap-2 align-items-center">
           
-          <LeagueSelectorTest
+          <LeagueSelector
             selectLeague={handleSelectLeague}
             dispatch={dispatch}
+            league={playerLeague}
           />
 
           <div className="w-100 position-relative">

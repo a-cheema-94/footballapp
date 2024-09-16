@@ -24,7 +24,6 @@ const Homepage = ({ }: Props) => {
           eventKey="top-scorers-and-assists"
           title="Top Scorers/ Top Assists"
           >
-          Top Scorers / Assists
           <TopPlayerData />
         </Tab>
         <Tab eventKey="football-news" title="Latest News">
