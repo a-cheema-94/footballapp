@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 const GeneralPlayerSchema = new mongoose.Schema({
   id: Number,
@@ -8,72 +8,72 @@ const GeneralPlayerSchema = new mongoose.Schema({
   age: Number,
   nationality: String,
   height: String,
-  weight: String
-})
+  weight: String,
+});
 
 const PlayerStatisticsSchema = new mongoose.Schema({
   team: {
     id: Number,
-    name: String
+    name: String,
   },
   games: {
-    appearances: Number,
+    appearences: Number,
     minutes: Number,
     position: String,
-    captain: Boolean
+    captain: Boolean,
   },
   substitutions: {
     in: Number,
-    out: Number
+    out: Number,
   },
   shots: {
     total: Number,
-    on: Number
+    on: Number,
   },
   goals: {
     total: Number,
     conceded: Number,
     assists: Number,
-    saves: Number
+    saves: Number,
   },
   passes: {
     total: Number,
     key: Number,
-    accuracy: Number
+    accuracy: Number,
   },
   tackles: {
     total: Number,
     blocks: Number,
-    interceptions: Number
+    interceptions: Number,
   },
   duels: {
-    won: Number
+    won: Number,
   },
   dribbles: {
     attempts: Number,
     success: Number,
-    past: Number
+    past: Number,
   },
   fouls: {
     drawn: Number,
-    committed: Number
+    committed: Number,
   },
   cards: {
     yellow: Number,
-    red: Number
+    red: Number,
   },
   penalty: {
     scored: Number,
     missed: Number,
-    saved: Number
+    saved: Number,
   },
-})
+});
 
 const PlayerSchema = new mongoose.Schema({
   league: String,
   general: GeneralPlayerSchema,
   statistics: PlayerStatisticsSchema,
-})
+});
 
-const Player = mongoose.model('Player', PlayerSchema);
-export default Player
+const Player = mongoose.model("Player", PlayerSchema);
+export default Player;

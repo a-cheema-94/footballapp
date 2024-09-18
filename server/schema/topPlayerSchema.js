@@ -20,7 +20,7 @@ export const topPlayerTypeDefs = `
 
   type PlayerStatistics {
     team: Team!
-    game: GameInfo
+    games: GameInfo
     substitutions: Substitutions!
     shots: Shots!
     goals: Goals!
@@ -39,7 +39,7 @@ export const topPlayerTypeDefs = `
   }
 
   type GameInfo {
-    appearances: Int
+    appearences: Int
     minutes: Int
     position: String
     captain: Boolean

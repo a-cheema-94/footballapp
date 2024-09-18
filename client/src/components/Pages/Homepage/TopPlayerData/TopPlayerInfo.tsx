@@ -3,26 +3,43 @@ import CircularImageContainer from "../../../reusable/CircularImageContainer";
 import PlayerCard from "./PlayerCard";
 
 // TODO: sort out player type.
-type Props = any;
+type Props = {
+  player: any
+};
 
 const TopPlayerInfo = ({ player }: Props) => {
-  // console.log(player?.general.id)
 
-  // TODO: sort out top player query on front end so it requests all stats that are wanted.
+  // style={{
+  //   textOverflow: "ellipsis",
+  //   whiteSpace: "nowrap",
+  //   overflow: "hidden",
+  //   fontSize: ".8em",
+  // }}
 
   return (
-    <tr className="d-flex gap-2 ">
-      <td className="d-flex flex-column align-items-center gap-1 text-center">
+    <tr className="text-center text-nowrap fw-normal fs-6" style={{ verticalAlign: 'middle' }}>
+      <td className="">
         {/* player card */}
         <PlayerCard player={player}/>
       </td>
-      <td>
+      <td className="">
         {player.statistics.goals.total}
       </td>
       <td>
         {player.statistics.goals.assists}
       </td>
-      
+      <td>
+        {player.statistics.dribbles.success ?? 'n / a'}
+      </td>
+      <td>
+        {player.statistics.games.appearences}
+      </td>
+      <td>
+        {player.statistics.passes.total} / {player.statistics.passes.accuracy} %
+      </td>
+      <td>
+        {player.statistics.shots.total} / {player.statistics.shots.on} %
+      </td>
     </tr>
   );
 };

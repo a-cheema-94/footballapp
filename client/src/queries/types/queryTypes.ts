@@ -29,7 +29,7 @@ type PlayerStatisticsType = {
     name: string;
   };
   games: {
-    appearances: number;
+    appearences: number;
     minutes: number;
     position: string;
     captain: boolean;

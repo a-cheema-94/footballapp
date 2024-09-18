@@ -56,3 +56,7 @@ button.slick-next:before {
     transform: scale(1);
   }
 }
+
+th {
+  font-weight: 500;
+}

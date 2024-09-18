@@ -24,7 +24,8 @@ export const resolvers = {
     topPlayers: async (_, { league, limit = 20, sortBy }) => {
       // clearMongoCollection(Player);
       // clearMongoCollection(Fixture);
-      // clearMongoCollection(LastApiCallTimes);
+      // clearMongoCollection(LastApiCallTimes, { endpoint: 'players/topscorers' });
+      // clearMongoCollection(LastApiCallTimes, { endpoint: 'players/topassists' });
 
       let endpoint = "players/topscorers";
       if (sortBy === "assists") endpoint = "players/topassists";
