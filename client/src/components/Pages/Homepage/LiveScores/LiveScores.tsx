@@ -65,6 +65,4 @@ const LiveScores = (props: Props) => {
   );
 };
 
-// todo => have a arrow up button when link is clicked. => conditionally render when url params are added. The link would be to #, to go back to the top. Conditionally render to be fixed to bottom of the page.
-
 export default LiveScores;

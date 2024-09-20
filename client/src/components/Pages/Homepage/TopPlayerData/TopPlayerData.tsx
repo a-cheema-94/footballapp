@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { TOP_PLAYER_QUERY } from "../../../../queries/topPlayerQueries";
 import TopPlayerInfo from "./TopPlayerInfo";
-import { SquadMemberType } from "../../../../queries/types/queryTypes";
+import { PlayerType, SquadMemberType } from "../../../../queries/types/queryTypes";
 import LeagueSelector from "../../../reusable/leagueSelector";
 import { useState } from "react";
 import { LeagueNames } from "../../../../functions/fixedData";
@@ -25,17 +25,18 @@ const TopPlayerData = (props: Props) => {
 
   const handlePlayerLeague = (league: LeagueNames) => setLeague(league)
 
-  // TODO => see if can simplify.
   return (
     <div className="">
       <div className="d-flex gap-2 justify-content-center m-2">
-        <Button onClick={() => setGoalsOrAssists('goals')} className={`border-0 ${goalsOrAssists === 'goals' ? 'bg-orange-600 text-white' : 'bg-white text-black'}`}>Top Goals</Button>
-        <Button onClick={() => setGoalsOrAssists('assists')} className={`border-0 ${goalsOrAssists === 'assists' ? 'bg-orange-600 text-white' : 'bg-white text-black'}`}>Top Assists</Button>
+        
         <LeagueSelector setPlayerLeague={handlePlayerLeague} league={league}/>
+        {['goals', 'assists'].map((dataType, index) => (
+          <Button key={index} onClick={() => setGoalsOrAssists(`${dataType}`)} className={`border-0 ${goalsOrAssists === dataType ? 'bg-orange-600 text-white' : 'bg-white text-black'}`}>Top {dataType}</Button>
+        ))}
       </div>
 
       {/* <Container className="rounded border border-black"> */}
-        <Table responsive="md" borderless={true} style={{ width: '90%', margin: '0 auto' }}>
+        <Table hover responsive="md" borderless style={{ width: '90%', margin: '0 auto', borderRadius: '10%' }}>
           <thead className="fw-bold">
             <tr className="text-center">
               <th></th>
@@ -49,9 +50,9 @@ const TopPlayerData = (props: Props) => {
               <th>Shots (Total / On Target)</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody >
 
-            {data.topPlayers.map((player: any, index: number) => (
+            {data.topPlayers.map((player: PlayerType, index: number) => (
               <TopPlayerInfo key={index} player={player} />
             ))}
           </tbody>

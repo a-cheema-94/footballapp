@@ -1,20 +1,13 @@
 import { getLogosAndImages } from "../../../../functions/logoFunction";
+import { PlayerType } from "../../../../queries/types/queryTypes";
 import CircularImageContainer from "../../../reusable/CircularImageContainer";
 import PlayerCard from "./PlayerCard";
 
-// TODO: sort out player type.
 type Props = {
-  player: any
+  player: PlayerType
 };
 
 const TopPlayerInfo = ({ player }: Props) => {
-
-  // style={{
-  //   textOverflow: "ellipsis",
-  //   whiteSpace: "nowrap",
-  //   overflow: "hidden",
-  //   fontSize: ".8em",
-  // }}
 
   return (
     <tr className="text-center text-nowrap fw-normal fs-6" style={{ verticalAlign: 'middle' }}>
@@ -45,16 +38,3 @@ const TopPlayerInfo = ({ player }: Props) => {
 };
 
 export default TopPlayerInfo;
-
-// <tr>
-{
-  /* <th>Name</th>
-<th>Club</th>
-<th>Goals</th>
-<th>Assists</th>
-<th>Successful Dribbles</th>
-<th>Appearances</th>
-<th>Passes (Total / Accuracy)</th>
-<th>Shots (Total / On Target)</th>
-</tr> */
-}

@@ -31,12 +31,12 @@ export const shouldMakeApiCall = async (freq, endpoint, parameter) => {
   console.log(chalk.black.bgYellow(freq, endpoint, parameter))
   cachedFreq = lastApiCallTimes?.freq[freq.toLowerCase()];
 
-  // todo: to delete
-  console.log(chalk.bold.bgRed('loooook BELOW'))
-  console.log("current Time: ", currentTime)
-  console.log("cached time: ", cachedFreq)
-  console.log("api frequency: ", apiFreq)
-  console.log(chalk.bold.bgRed('loooook ABOVE'))
+  // todo: to delete => follow up with all unnecessary consoles done for debugging purposes.
+  // console.log(chalk.bold.bgRed('loooook BELOW'))
+  // console.log("current Time: ", currentTime)
+  // console.log("cached time: ", cachedFreq)
+  // console.log("api frequency: ", apiFreq)
+  // console.log(chalk.bold.bgRed('loooook ABOVE'))
 
   if(cachedFreq && ((currentTime - cachedFreq) < apiFreq)) {
     console.log(chalk.bgMagenta('call time is cached and NOT expired'))

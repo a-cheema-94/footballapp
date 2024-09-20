@@ -1,8 +1,9 @@
 import { Card } from "react-bootstrap";
 import { getLogosAndImages } from "../../../../functions/logoFunction";
+import { PlayerType } from "../../../../queries/types/queryTypes";
 
 type Props = {
-  player: any;
+  player: PlayerType;
 };
 
 const PlayerCard = ({ player }: Props) => {
@@ -36,7 +37,8 @@ const PlayerCard = ({ player }: Props) => {
               }}
             />
             <Card.Text
-              className="w-100 "
+              title={player.statistics.team.name}
+              className="w-100 homepage-playerData-text"
               style={{
                 textOverflow: "ellipsis",
                 whiteSpace: "nowrap",

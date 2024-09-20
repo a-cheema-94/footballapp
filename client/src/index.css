@@ -60,3 +60,11 @@ button.slick-next:before {
 th {
   font-weight: 500;
 }
+tr td:hover {
+  cursor: pointer;
+}
+
+.homepage-playerData-text:hover::after {
+  content: attr(title);
+  
+}
