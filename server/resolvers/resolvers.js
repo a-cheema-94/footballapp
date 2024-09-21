@@ -229,7 +229,7 @@ export const resolvers = {
       if (type === "next") {
         sortingInfo["fixture.status.short"] = "NS"; // NS: fixture not started
       } else if (type === "last") {
-        sortingInfo["fixture.status.short"] = "FT"; // FT: full time 
+        sortingInfo["fixture.status.short"] = "FT"; // FT: full time
       }
 
       try {
@@ -237,7 +237,7 @@ export const resolvers = {
           ...sortingInfo,
           $or: [{ "teams.home.name": team }, { "teams.away.name": team }],
         }).sort({ createdAt: -1 });
-        // .sort({ field: -1 }) => mongoDB method that sorts data in order either descending (-1) or ascending (1). can be applied to numerical, string or date fields. 
+        // .sort({ field: -1 }) => mongoDB method that sorts data in order either descending (-1) or ascending (1). can be applied to numerical, string or date fields.
         console.log(chalk.green("data finalized"));
       } catch (error) {
         console.error(
@@ -361,11 +361,16 @@ export const resolvers = {
     },
 
     topFootballStories: async () => {
+      // clearMongoCollection(LastApiCallTimes, { endpoint: 'news' });
+
       try {
         if (
           await shouldMakeApiCall("daily", "news", "top football headlines")
         ) {
           console.log(chalk.bold("news"));
+          // TODO delete old news stories functionality
+          console.log(chalk.bold("Delete previous stories from DB"));
+          clearMongoCollection(News);
           console.log(chalk.green("Call Api!!!"));
           await makeNewsApiCall();
           console.log(chalk.green("async happening"));
@@ -378,6 +383,7 @@ export const resolvers = {
       try {
         topFootballHeadlines = await News.find()
           .sort({ publishedAt: -1 })
+          .limit(10)
           .exec();
 
         console.log(chalk.green("data finalized"));

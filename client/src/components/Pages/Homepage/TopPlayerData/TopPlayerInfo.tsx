@@ -28,10 +28,10 @@ const TopPlayerInfo = ({ player }: Props) => {
         {player.statistics.games.appearences}
       </td>
       <td>
-        {player.statistics.passes.total} / {player.statistics.passes.accuracy} %
+        {player.statistics.passes.total} / {player.statistics.passes.accuracy}
       </td>
       <td>
-        {player.statistics.shots.total} / {player.statistics.shots.on} %
+        {player.statistics.shots.total} / {player.statistics.shots.on}
       </td>
     </tr>
   );

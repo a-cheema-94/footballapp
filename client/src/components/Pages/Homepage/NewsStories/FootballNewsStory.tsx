@@ -1,7 +1,14 @@
-type Props = any;
+import { Card } from "react-bootstrap";
+import { NewsType } from "../../../../queries/types/queryTypes";
+
+type Props = {
+  story: NewsType
+};
 
 const FootballNewsStory = ({ story }: Props) => {
-  return <div>{story.title}</div>;
+  return (
+    <p>news story</p>
+  );
 };
 
 export default FootballNewsStory;

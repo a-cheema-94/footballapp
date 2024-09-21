@@ -27,8 +27,7 @@ const Homepage = ({ }: Props) => {
           <TopPlayerData />
         </Tab>
         <Tab eventKey="football-news" title="Latest News">
-          {/* <TopFootballStories /> */}
-          Football Stories
+          <TopFootballStories />
         </Tab>
       </Tabs>
     </div>
