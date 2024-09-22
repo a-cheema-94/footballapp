@@ -3,17 +3,13 @@ import { TOP_NEWS_QUERY } from "../../../../queries/topNewsQuery";
 import FootballNewsStory from "./FootballNewsStory";
 import { NewsType } from "../../../../queries/types/queryTypes";
 import { Col, Container, Row } from "react-bootstrap";
+import useMediaQuery from "../../../reusable/customHooks/useMediaQuery";
 
 type Props = {};
 
-const TopFootballStories = (props: Props) => {
-  const { data, loading, error } = useQuery(TOP_NEWS_QUERY);
-
-  if (loading) return <p>Loading ...</p>;
-  if (error) return <p>An Error occurred: {error.message}</p>;
-
+const ConfigOne = () => {
   return (
-    <Container className="bg-orange-200 border border-black">
+    <>
       <Row className="border border-black">
         <Col>Item 1</Col>
         <Col>
@@ -46,29 +42,41 @@ const TopFootballStories = (props: Props) => {
         <Col>Item 9</Col>
         <Col>Item 10</Col>
       </Row>
-      
-      {/* <Row>
-        <Col>Item 1</Col>
-        <Col>Item 2</Col>
-      </Row>
-      <Row>
-        <Col>Item 3</Col>
-        <Col>Item 4</Col>
-      </Row>
-      <Row>
-        <Col>Item 5</Col>
-        <Col>Item 6</Col>
-      </Row>
-      <Row>
-        <Col>Item 7</Col>
-        <Col>Item 8</Col>
-      </Row>
-      <Row>
-        <Col>Item 9</Col>
-        <Col>Item 10</Col>
-      </Row> */}
+    </>
+  );
+};
 
-      {/* <Row>
+const ConfigTwo = () => {
+  return (
+    <>
+      <Row>
+        <Col>Item 1</Col>
+        <Col>Item 2</Col>
+      </Row>
+      <Row>
+        <Col>Item 3</Col>
+        <Col>Item 4</Col>
+      </Row>
+      <Row>
+        <Col>Item 5</Col>
+        <Col>Item 6</Col>
+      </Row>
+      <Row>
+        <Col>Item 7</Col>
+        <Col>Item 8</Col>
+      </Row>
+      <Row>
+        <Col>Item 9</Col>
+        <Col>Item 10</Col>
+      </Row>
+    </>
+  );
+};
+
+const ConfigThree = () => {
+  return (
+    <>
+      <Row>
         <Col>Item 1</Col>
       </Row>
       <Row>
@@ -97,7 +105,25 @@ const TopFootballStories = (props: Props) => {
       </Row>
       <Row>
         <Col>Item 10</Col>
-      </Row> */}
+      </Row>
+    </>
+  )
+}
+
+const TopFootballStories = (props: Props) => {
+  const isScreenLarge = useMediaQuery('(min-width: 1200px)');
+  
+  const { data, loading, error } = useQuery(TOP_NEWS_QUERY);
+
+  if (loading) return <p>Loading ...</p>;
+  if (error) return <p>An Error occurred: {error.message}</p>;
+
+  return (
+    <Container className="bg-orange-200 border border-black">
+      {isScreenLarge && <ConfigOne />}
+      {/* {isScreenMedium && <ConfigTwo />}
+      {isScreenSmall && <ConfigThree />} */}
+      
     </Container>
   );
 };
