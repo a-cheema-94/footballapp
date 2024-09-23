@@ -7,7 +7,7 @@ import useMediaQuery from "../../../reusable/customHooks/useMediaQuery";
 
 type Props = {};
 
-const ConfigOne = () => {
+const ConfigOne = ({ newsStories }: { newsStories: NewsType[] }) => {
   return (
     <>
       <Row className="border border-black">
@@ -46,7 +46,7 @@ const ConfigOne = () => {
   );
 };
 
-const ConfigTwo = () => {
+const ConfigTwo = ({ newsStories }: { newsStories: NewsType[] }) => {
   return (
     <>
       <Row>
@@ -73,7 +73,7 @@ const ConfigTwo = () => {
   );
 };
 
-const ConfigThree = () => {
+const ConfigThree = ({ newsStories }: { newsStories: NewsType[] }) => {
   return (
     <>
       <Row>
@@ -111,21 +111,30 @@ const ConfigThree = () => {
 }
 
 const TopFootballStories = (props: Props) => {
-  const isScreenLarge = useMediaQuery('(min-width: 1200px)');
-  const isScreenMedium = useMediaQuery('(max-width: 1199px) and (min-width: 768px)');
-  const isScreenSmall = useMediaQuery('(max-width: 767px)');
+  // const isScreenLarge = useMediaQuery('(min-width: 1000px)');
+  // const isScreenMedium = useMediaQuery('(max-width: 999px) and (min-width: 768px)');
+  // const isScreenSmall = useMediaQuery('(max-width: 767px)');
   
   const { data, loading, error } = useQuery(TOP_NEWS_QUERY);
+
+  const newsStories: NewsType[] = data ? data["topFootballStories"] : [];
 
   if (loading) return <p>Loading ...</p>;
   if (error) return <p>An Error occurred: {error.message}</p>;
 
   return (
-    <Container className="bg-orange-200 border border-black">
-      {isScreenLarge && <ConfigOne />}
-      {isScreenMedium && <ConfigTwo />}
-      {isScreenSmall && <ConfigThree />}
+    // <Container className="bg-orange-200 border border-black">
+    //   {isScreenLarge && <ConfigOne newsStories={newsStories}/>}
+    //   {isScreenMedium && <ConfigTwo newsStories={newsStories}/>}
+    //   {isScreenSmall && <ConfigThree newsStories={newsStories}/>}
+    // </Container>
+    <Container className="">
+      {newsStories.map((story: NewsType, index: number) => (
+        <FootballNewsStory key={index} story={story}/>
+      ))}
+
     </Container>
+    // <FootballNewsStory story={newsStories[0]}/>
   );
 };
 

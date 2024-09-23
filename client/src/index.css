@@ -68,3 +68,13 @@ tr td:hover {
   content: attr(title);
   
 }
+
+/* football news */
+
+.news-story-container {
+  container-type: inline-size;
+}
+
+.news-story-container > * {
+  font-size: 5cqi;
+}
