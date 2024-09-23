@@ -112,6 +112,8 @@ const ConfigThree = () => {
 
 const TopFootballStories = (props: Props) => {
   const isScreenLarge = useMediaQuery('(min-width: 1200px)');
+  const isScreenMedium = useMediaQuery('(max-width: 1199px) and (min-width: 768px)');
+  const isScreenSmall = useMediaQuery('(max-width: 767px)');
   
   const { data, loading, error } = useQuery(TOP_NEWS_QUERY);
 
@@ -121,9 +123,8 @@ const TopFootballStories = (props: Props) => {
   return (
     <Container className="bg-orange-200 border border-black">
       {isScreenLarge && <ConfigOne />}
-      {/* {isScreenMedium && <ConfigTwo />}
-      {isScreenSmall && <ConfigThree />} */}
-      
+      {isScreenMedium && <ConfigTwo />}
+      {isScreenSmall && <ConfigThree />}
     </Container>
   );
 };
