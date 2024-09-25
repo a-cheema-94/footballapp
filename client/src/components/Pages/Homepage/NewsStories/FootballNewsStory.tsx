@@ -6,29 +6,39 @@ type Props = {
   story: NewsType;
 };
 
+// TODO => make date
+
 const FootballNewsStory = ({ story }: Props) => {
-
-
   return (
-    <Stack
-      direction="vertical"
-      className="gap-2 border border-black p-3 my-4 mx-auto rounded w-75"
-      
-    >
+    <>
+      {
+        <Stack
+          className="gap-2 border shadow p-3 rounded"
+          style={{
+            maxWidth: "20em",
+          }}
+        >
+          {/* image */}
+          <img
+            src={story.urlToImage}
+            width="100%"
+            className="object-fit-contain border rounded"
+          />
 
-        {/* image */}
-        <img src={story.urlToImage} width="100%" className="object-fit-contain border rounded"/>
+          {/* source */}
+          <p>Four Four Two</p>
 
-        {/* text */}
-        <div className="d-flex flex-column w-100 news-story-container" >
-          <h6 style={{ maxHeight: '20%' }}>{story.title}</h6>
-          <div className="d-flex gap-2">
-            <p>3 hours ago</p>
-            <p>{story.author}</p>
+          {/* text */}
+          <div className="d-flex flex-column w-100 news-story-container">
+            <h2>{story.title}</h2>
+            <div className="d-flex gap-2 ">
+              <p className="fw-lighter">3 hours ago</p>
+              <p>By {story.author}</p>
+            </div>
           </div>
-        </div>
-
-    </Stack>
+        </Stack>
+      }
+    </>
   );
 };
 

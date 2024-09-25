@@ -71,10 +71,15 @@ tr td:hover {
 
 /* football news */
 
+/* make font size relative to the container. */
 .news-story-container {
   container-type: inline-size;
 }
 
-.news-story-container > * {
-  font-size: 5cqi;
+.news-story-container > h2 {
+  font-size: 5.5cqi;
+}
+
+.news-story-container > div > p {
+  font-size: 4cqi;
 }

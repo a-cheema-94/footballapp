@@ -368,7 +368,6 @@ export const resolvers = {
           await shouldMakeApiCall("daily", "news", "top football headlines")
         ) {
           console.log(chalk.bold("news"));
-          // TODO delete old news stories functionality
           console.log(chalk.bold("Delete previous stories from DB"));
           clearMongoCollection(News);
           console.log(chalk.green("Call Api!!!"));
