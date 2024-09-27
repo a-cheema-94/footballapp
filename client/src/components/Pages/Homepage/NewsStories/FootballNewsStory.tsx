@@ -1,42 +1,66 @@
 import { Card, Stack } from "react-bootstrap";
 import { NewsType } from "../../../../queries/types/queryTypes";
 import { CSSProperties } from "react";
+import { convertPublishedAtString } from "../../../../functions/partArray";
 
 type Props = {
   story: NewsType;
+  noImage?: boolean;
+  largeConfig?: boolean;
+  smallImage?: boolean;
 };
 
-// TODO => make date
+const FootballNewsStory = ({ story, noImage, largeConfig }: Props) => {
+  const resetLinkStyles = {
+    textDecoration: "none",
+    color: "inherit",
+  };
 
-const FootballNewsStory = ({ story }: Props) => {
+  const publishedAtTime = convertPublishedAtString(story.publishedAt);
+
   return (
     <>
       {
-        <Stack
-          className="gap-2 border shadow p-3 rounded"
-          style={{
-            maxWidth: "20em",
-          }}
+        <a
+          href={story.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Visit article site (Four Four Two article opened in new tab)"
+          style={resetLinkStyles}
         >
-          {/* image */}
-          <img
-            src={story.urlToImage}
-            width="100%"
-            className="object-fit-contain border rounded"
-          />
+          <Stack
+            className="gap-2 border shadow p-3 rounded"
+            // 40em at large screens with images and 20em at smaller screen sizes. 30em for large screens with no images.
+            style={{
+              maxWidth: `${largeConfig ? (noImage ? "30em" : "40em") : "20em"}`,
+            }}
+          >
+            {/* image */}
+            {!noImage && (
+              <img
+                src={story.urlToImage}
+                width="100%"
+                className="object-fit-contain border rounded"
+              />
+            )}
 
-          {/* source */}
-          <p>Four Four Two</p>
+            {/* source */}
+            <p>Four Four Two</p>
 
-          {/* text */}
-          <div className="d-flex flex-column w-100 news-story-container">
-            <h2>{story.title}</h2>
-            <div className="d-flex gap-2 ">
-              <p className="fw-lighter">3 hours ago</p>
-              <p>By {story.author}</p>
+            {/* text */}
+            <div
+              className={`d-flex flex-column w-100 news-story-container ${
+                largeConfig ? "large-screen" : ""
+              }`}
+            >
+              <h2>{story.title}</h2>
+              <div className="d-flex gap-2 ">
+                <p className="fw-lighter">{publishedAtTime}</p>
+                <p>By {story.author}</p>
+              </div>
             </div>
-          </div>
-        </Stack>
+          </Stack>
+        </a>
       }
     </>
   );
