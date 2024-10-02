@@ -39,11 +39,10 @@ function App() {
   }, []);
 
   return (
-    <>
+    <div>
       <MainNavbar toggle={toggle} />
-
       {/* todo: change this */}
-      <div style={{ paddingTop: `85px` }}>
+      <div style={{ paddingTop: `85px` }} >
         {search && <SearchPage search={search} close={close} />}
         {!search && (
           <Routes>
@@ -62,7 +61,7 @@ function App() {
 
         {showNavUpBtn && <NavigateUpBtn />}
       </div>
-    </>
+    </div>
   );
 }
 

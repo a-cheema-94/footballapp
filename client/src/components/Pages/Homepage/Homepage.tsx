@@ -15,12 +15,13 @@ const Homepage = ({ }: Props) => {
   };
 
   return (
-    <div>
-      <Tabs activeKey={tabKey} onSelect={handleTab} fill className="customTabs">
+    <div className="">
+      <Tabs activeKey={tabKey} onSelect={handleTab} fill className="customTabs ">
         <Tab eventKey="live-scores" title="Live Scores">
           <LiveScores />
         </Tab>
         <Tab
+          
           eventKey="top-scorers-and-assists"
           title="Top Scorers/ Top Assists"
           >

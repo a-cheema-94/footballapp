@@ -33,10 +33,10 @@ const MainNavbar = ({ toggle }: Props) => {
   }, []);
 
   return (
-    <>
+    <div >
       <Navbar
         expand={false}
-        className={`custom-navbar bg-orange-500 p-3 position-fixed w-100 z-3 ${
+        className={` custom-navbar p-3 position-fixed w-100 z-3 ${
           isNavVisible ? "opacity-100" : "opacity-0"
         }`}
       >
@@ -64,7 +64,7 @@ const MainNavbar = ({ toggle }: Props) => {
           />
         </Container>
       </Navbar>
-    </>
+    </div>
   );
 };
 
