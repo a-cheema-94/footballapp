@@ -1,14 +1,24 @@
-import { createContext } from "react"
+import { createContext, ReactNode, useMemo, useState } from "react";
 
-type Props = {}
+type Props = {
+  children: ReactNode
+};
 
-// const ThemeContext = createContext();
+export const ThemeContext = createContext({} as any);
 
-const ThemeProvider = (props: Props) => {
+const ThemeProvider = ({ children }: Props) => {
+
+  const [theme, setTheme] = useState<string>('light');
+
+  const changeTheme = () => setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+
+  const values = useMemo(() => ({ theme, changeTheme }), [theme])
 
   return (
-    <div>ThemeProvider</div>
-  )
-}
+    <ThemeContext.Provider value={values}>
+      <div data-bs-theme={theme}>{children}</div>
+    </ThemeContext.Provider>
+  );
+};
 
-export default ThemeProvider
+export default ThemeProvider;

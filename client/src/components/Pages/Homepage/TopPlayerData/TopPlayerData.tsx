@@ -31,7 +31,7 @@ const TopPlayerData = (props: Props) => {
         
         <LeagueSelector setPlayerLeague={handlePlayerLeague} league={league}/>
         {['goals', 'assists'].map((dataType, index) => (
-          <Button key={index} onClick={() => setGoalsOrAssists(`${dataType}`)} className={`border-0 ${goalsOrAssists === dataType ? 'bg-orange-600 text-white' : 'bg-white text-black'}`}>Top {dataType}</Button>
+          <Button key={index} onClick={() => setGoalsOrAssists(`${dataType}`)} className={`border-0 ${goalsOrAssists === dataType ? 'bg-teal-600 text-white' : 'bg-white text-black'}`}>Top {dataType}</Button>
         ))}
       </div>
 

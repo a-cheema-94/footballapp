@@ -5,6 +5,7 @@ import './index.css'
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { BrowserRouter as Router } from 'react-router-dom'
 import './sass/custom.scss';
+import ThemeProvider from './context/ThemeProvider.tsx';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/',
@@ -17,7 +18,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Router>
       <ApolloProvider client={client}>
-        <App />
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
       </ApolloProvider>
     </Router>
   </React.StrictMode>,
