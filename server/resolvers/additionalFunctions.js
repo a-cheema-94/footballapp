@@ -66,6 +66,7 @@ export const searchDatabase = async (searchQuery, matchFields) => {
       }
     ]);
 
+    console.log(searchResults)
     return searchResults
     
   } catch (error) {

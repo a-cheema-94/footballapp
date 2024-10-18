@@ -25,18 +25,20 @@ const TopPlayerData = (props: Props) => {
 
   const handlePlayerLeague = (league: LeagueNames) => setLeague(league)
 
+  // style={{ backgroundColor: '#212529' }}
   return (
-    <div className="">
+    <div className="pt-2 rounded d-block mx-4 mt-5" style={{ border: 'solid white 1px', backgroundColor: '#212529' }}>
       <div className="d-flex gap-2 justify-content-center m-2">
         
+        {/* todo: darkmode styling */}
         <LeagueSelector setPlayerLeague={handlePlayerLeague} league={league}/>
         {['goals', 'assists'].map((dataType, index) => (
-          <Button key={index} onClick={() => setGoalsOrAssists(`${dataType}`)} className={`border-0 ${goalsOrAssists === dataType ? 'bg-teal-600 text-white' : 'bg-white text-black'}`}>Top {dataType}</Button>
+          <Button style={{ backgroundColor: '#212529' }} key={index} onClick={() => setGoalsOrAssists(`${dataType}`)} className={`${goalsOrAssists === dataType ? 'bg-teal-600 border-0' : 'border-white'}`}>Top {dataType}</Button>
         ))}
       </div>
 
       {/* <Container className="rounded border border-black"> */}
-        <Table hover responsive="md" borderless style={{ width: '90%', margin: '0 auto', borderRadius: '10%' }}>
+        <Table hover responsive="md" >
           <thead className="fw-bold">
             <tr className="text-center">
               <th></th>

@@ -45,7 +45,7 @@ const AutoComplete = ({
       {showAutoCompleteSuggestions && !showFilters && (
         <ListGroup
           ref={autoCompleteRef}
-          className="position-absolute bg-white start-0 w-100 list-unstyled top-100 rounded"
+          className="position-absolute bg-white start-0 w-100 list-unstyled top-100 rounded z-3"
         >
           {autoCompleteSuggestions.map(
             (suggestion: SquadMemberType, index: number) => (

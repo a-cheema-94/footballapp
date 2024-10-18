@@ -82,7 +82,7 @@ const SearchFilters = ({
   const matchTeam = filterTeams.find((team) => team.name === selectedTeam);
 
   return (
-    <Stack className="ms-4 p-3 bg-teal-200 gap-3 w-50 rounded">
+    <Stack className="ms-4 p-3 bg-teal-200 gap-3 w-50 rounded z-2">
       <Dropdown
         onSelect={(eventKey: any) => teamsFilter(eventKey, dispatch)}
         onClick={() => teams({ variables: { league: playerLeague } })}

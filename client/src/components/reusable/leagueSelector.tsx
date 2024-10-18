@@ -45,7 +45,7 @@ const LeagueSelector = ({ selectLeague, dispatch, setPlayerLeague, league }: Pro
   return (
     <Dropdown>
       <TooltipWrapper message="Select League" styleProps={styleProps}>
-        <Dropdown.Toggle className="bg-transparent text-black border-0">
+        <Dropdown.Toggle className="bg-teal-300 text-black border-0">
           <img
             src={getLogosAndImages("leagues", LEAGUES[league])}
             alt=""

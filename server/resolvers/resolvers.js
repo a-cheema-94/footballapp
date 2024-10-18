@@ -19,6 +19,8 @@ import {
   searchDatabase,
 } from "./additionalFunctions.js";
 
+// todo: make flow chart of resolver query logic
+
 export const resolvers = {
   Query: {
     topPlayers: async (_, { league, limit = 20, sortBy }) => {
@@ -396,10 +398,14 @@ export const resolvers = {
       return topFootballHeadlines;
     },
 
+    // todo: Make flow chart of both search and autocomplete.
     playerSearch: async (
       _,
       { query, league, team = null, position = null, range = null }
     ) => {
+      // clearMongoCollection(LastApiCallTimes)
+      // todo: put in a suggested tooltip to include a team whilst searching if your desired player doesn't show up.
+
       let searchResults = [];
       let teamId;
       let endpoint = "players/squads";
@@ -440,7 +446,7 @@ export const resolvers = {
         if (searchResults.length === 0 && team !== null) {
           console.log(
             chalk.bold.bgYellowBright.black(
-              "player/players NOT in database already need to call API"
+              "player/players NOT in database already, need to call API"
             )
           );
 

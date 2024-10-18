@@ -34,6 +34,7 @@ const PlayerCard = ({ player }: Props) => {
                 height: "30px",
                 objectFit: "contain",
                 objectPosition: "center",
+
               }}
             />
             <Card.Text

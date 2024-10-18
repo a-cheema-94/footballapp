@@ -38,8 +38,9 @@ function App() {
     return () => document.removeEventListener("scroll", scrollFunction);
   }, []);
 
+  // todo: darkmode styling
   return (
-    <div>
+    <div className="bg-white">
       <MainNavbar toggle={toggle} />
       {/* todo: change this */}
       <div style={{ paddingTop: `85px` }} >

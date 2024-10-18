@@ -39,14 +39,14 @@ const LiveScores = (props: Props) => {
   }, []);
 
   return (
-    <div className="">
+    <div className="" >
       {sampleFixtures.length === 0 ? (
         <div>No current live fixtures</div>
       ) : (
-        <div className="d-flex flex-column gap-3 my-2">
+        <div className="d-flex flex-column gap-3 my-2 ">
           <Breadcrumb className="align-self-end me-3 mt-3">
             {Object.keys(LEAGUES).map((leagueName, index) => (
-              <Breadcrumb.Item key={index} href={`#${leagueName}`}>
+              <Breadcrumb.Item  key={index} href={`#${leagueName}`}>
                 {leagueName}
               </Breadcrumb.Item>
             ))}
