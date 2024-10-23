@@ -14,12 +14,15 @@ import chalk from "chalk";
 import Fixture from "../models/fixtures/FixtureModel.js";
 import News from "../models/NewsModel.js";
 import {
+  getLiveLeagueIds,
   getTeamOrPlayerId,
   makeInitialQuery,
-  searchDatabase,
+  squadMemberAggregateSearch,
 } from "./additionalFunctions.js";
 
 // todo: make flow chart of resolver query logic
+// todo: double check for naming conventions. Make more readable.
+// NOTE: On some resolvers we will need id's from the players or teams since if api call is need, this is required in the request url. E.g. playerSquads resolver needs team id, since the query to the endpoint: players/squads on the api needs team id in the request.
 
 export const resolvers = {
   Query: {
@@ -29,11 +32,13 @@ export const resolvers = {
       // clearMongoCollection(LastApiCallTimes, { endpoint: 'players/topscorers' });
       // clearMongoCollection(LastApiCallTimes, { endpoint: 'players/topassists' });
 
+      // setup endpoint and handle parameter values
       let endpoint = "players/topscorers";
       if (sortBy === "assists") endpoint = "players/topassists";
 
       if (!Object.keys(LEAGUES).includes(league)) league = "Premier League";
 
+      // decide if should query api.
       await makeInitialQuery(
         "daily",
         endpoint,
@@ -43,12 +48,15 @@ export const resolvers = {
         league
       );
 
+      // sorting logic
       let sortingInformation = {};
       let category = "total";
       if (sortBy === "assists") {
         category = "assists";
       }
       sortingInformation[`statistics.goals.${category}`] = -1;
+
+      // query database
       let topPlayers;
       try {
         topPlayers = await Player.find({ league })
@@ -57,7 +65,6 @@ export const resolvers = {
           .exec();
 
         console.log(chalk.green("data finalized"));
-        // console.log(topPlayers.length)
       } catch (error) {
         console.error(
           `some error occurred when fetching players from database: ${error}`
@@ -70,9 +77,11 @@ export const resolvers = {
       // clearMongoCollection(TeamStanding)
       // clearMongoCollection(LastApiCallTimes);
 
+      // setup endpoint and handle parameter values
       let endpoint = "standings";
       if (!Object.keys(LEAGUES).includes(league)) league = "Premier League";
 
+      // decide if should query api.
       await makeInitialQuery(
         "daily",
         endpoint,
@@ -82,9 +91,11 @@ export const resolvers = {
         league
       );
 
+      // sorting logic
       let sortingInformation = {};
       sortingInformation[`rank`] = 1;
 
+      // query database
       let teamStandings;
       try {
         teamStandings = await TeamStanding.find({ league })
@@ -105,12 +116,14 @@ export const resolvers = {
       // clearMongoCollection(LastApiCallTimes, { endpoint: 'players/squads' });
       // clearMongoCollection(SquadMember)
 
+      // setup endpoint and handle parameter values
       let endpoint = "players/squads";
       // teamId
       let teamId = await getTeamOrPlayerId(TeamStanding, { "team.name": team });
 
       console.log(chalk.yellow(team, ": ", teamId));
 
+      // decide if should query api.
       await makeInitialQuery(
         "weekly",
         endpoint,
@@ -120,6 +133,7 @@ export const resolvers = {
         league
       );
 
+      // query database
       let squad;
       try {
         squad = await SquadMember.find({ team }).exec();
@@ -137,11 +151,13 @@ export const resolvers = {
       // clearMongoCollection(LastApiCallTimes);
       // clearMongoCollection(TeamStats)
 
+      // setup endpoint and handle parameter values
       let endpoint = "teams/statistics";
       // team Id
       let teamId = await getTeamOrPlayerId(TeamStanding, { "team.name": team });
       console.log(teamId);
 
+      // decide if should query api
       await makeInitialQuery(
         "weekly",
         endpoint,
@@ -151,8 +167,8 @@ export const resolvers = {
         league
       );
 
+      // query database
       let teamStats;
-
       try {
         teamStats = await TeamStats.findOne({ "team.name": team });
         console.log(chalk.green("data finalized"));
@@ -168,12 +184,12 @@ export const resolvers = {
       // clearMongoCollection(Player);
       // clearMongoCollection(LastApiCallTimes);
 
+      // setup endpoint and handle parameter values
       let endpoint = "players";
-
       let teamId = await getTeamOrPlayerId(TeamStanding, { "team.name": team });
-
       let playerId = await getTeamOrPlayerId(SquadMember, { name: player });
 
+      // decide if should query api
       await makeInitialQuery(
         "weekly",
         endpoint,
@@ -183,6 +199,7 @@ export const resolvers = {
         league
       );
 
+      // query database
       let playerStats;
       try {
         playerStats = await Player.findOne({ "general.id": playerId });
@@ -202,11 +219,13 @@ export const resolvers = {
       //   { 'teams.home.name': team },
       // ] })
 
+      // setup endpoint and handle parameter values
       let endpoint = "fixtures";
 
       let teamId = await getTeamOrPlayerId(TeamStanding, { "team.name": team });
       console.log(chalk.yellow(team, ": ", teamId));
 
+      // needed if api call becomes necessary
       const fixtureParams = {
         team: teamId,
         league: LEAGUES[league],
@@ -214,6 +233,7 @@ export const resolvers = {
       };
       fixtureParams[type] = 1; // type can be last or next
 
+      // decide if should query api
       await makeInitialQuery(
         "daily",
         endpoint,
@@ -223,23 +243,23 @@ export const resolvers = {
         league
       );
 
-      let finalFixture;
-
-      // get latest fixture i.e. latest last fixture and latest next fixture for a particular team, so use .sort after query has been sorted.
+      // sorting logic
       let sortingInfo = {};
-
       if (type === "next") {
         sortingInfo["fixture.status.short"] = "NS"; // NS: fixture not started
       } else if (type === "last") {
         sortingInfo["fixture.status.short"] = "FT"; // FT: full time
       }
 
+      // query database
+      let finalFixture;
       try {
         finalFixture = await Fixture.findOne({
           ...sortingInfo,
           $or: [{ "teams.home.name": team }, { "teams.away.name": team }],
         }).sort({ createdAt: -1 });
-        // .sort({ field: -1 }) => mongoDB method that sorts data in order either descending (-1) or ascending (1). can be applied to numerical, string or date fields.
+        // get latest fixture i.e. latest last fixture and latest next fixture for a particular team, so use .sort after query has been sorted.
+        // NOTE: .sort({ field: -1 }) => mongoDB method that sorts data in order either descending (-1) or ascending (1). can be applied to numerical, string or date fields.
         console.log(chalk.green("data finalized"));
       } catch (error) {
         console.error(
@@ -251,23 +271,25 @@ export const resolvers = {
     },
 
     getLastFixtureInfo: async (_, { team, league }) => {
-      // need fixture id of last fixture
       // clearMongoCollection(Fixture)
       // clearMongoCollection(LastApiCallTimes)
 
+      // query database for last fixture.
       let lastFixture = await Fixture.findOne({
         $or: [{ "teams.home.name": team }, { "teams.away.name": team }],
         "fixture.status.short": "FT",
       }).sort({ createdAt: -1 });
 
+      // need fixture id of last fixture so we destructure the lastFixture and rename.
       const {
-        fixture: { id: lastFixtureId } = {}, // case where fixture might be undefined => avoid errors
+        fixture: { id: lastFixtureId } = {},
         events: fixtureEvents,
         lineups: fixtureLineups,
         statistics: fixtureStatistics,
       } = lastFixture || {};
+      // if fixture.id or lastFixture is undefined we have it default to an empty object to stop code from breaking.
 
-      // if the events/lineups/statistics are empty call api.
+      // Sometimes the events/lineups/statistics are empty so we may need to call api to populate the fields.
       const fixtureInfoData = [
         fixtureEvents,
         fixtureLineups,
@@ -275,7 +297,7 @@ export const resolvers = {
       ];
 
       try {
-        if (fixtureInfoData.every((array) => array.length === 0)) {
+        if (fixtureInfoData.every((infoArray) => infoArray.length === 0)) {
           // call api for endpoints events/lineups/statistics
           const fixtureInfoCalls = FIXTURES_ENDPOINTS.map((endpoint) =>
             makeFootballApiCall(
@@ -293,7 +315,7 @@ export const resolvers = {
         );
       }
 
-      // look for fixture again and then return
+      // look for fixture again in database and then return
       let finalFixture;
       try {
         finalFixture = await Fixture.findOne({ "fixture.id": lastFixtureId });
@@ -308,13 +330,11 @@ export const resolvers = {
       // clearMongoCollection(Fixture, { live: true })
       // clearMongoCollection(LastApiCallTimes, { parameter: 'live' })
 
-      let liveLeagueIds = "";
-      leagues.forEach((league) => (liveLeagueIds += `${LEAGUES[league]}-`));
-      liveLeagueIds = liveLeagueIds.split("-");
-      liveLeagueIds.pop();
-      liveLeagueIds = liveLeagueIds.join("-");
+      // sort out endpoint and get league ids for live fixtures
+      const liveLeagueIds = getLiveLeagueIds(leagues);
       let endpoint = "fixtures";
 
+      // decide if should query api
       await makeInitialQuery(
         "minute",
         endpoint,
@@ -323,10 +343,8 @@ export const resolvers = {
         "Live Fixture"
       );
 
-      // more complex since I want Premier league live fixtures first followed by the rest, so use an aggregation pipeline.
-
+      // more complex since I want Premier league live fixtures first followed by the rest, so use an aggregation pipeline in database query.
       let liveFixtures;
-
       try {
         liveFixtures = await Fixture.aggregate([
           {
@@ -365,13 +383,14 @@ export const resolvers = {
     topFootballStories: async () => {
       // clearMongoCollection(LastApiCallTimes, { endpoint: 'news' });
 
+      // determine whether we should make api call. If should we first delete previous news stories from database and then call api to populate database with new stories.
       try {
         if (
           await shouldMakeApiCall("daily", "news", "top football headlines")
         ) {
           console.log(chalk.bold("news"));
           console.log(chalk.bold("Delete previous stories from DB"));
-          clearMongoCollection(News);
+          await clearMongoCollection(News);
           console.log(chalk.green("Call Api!!!"));
           await makeNewsApiCall();
           console.log(chalk.green("async happening"));
@@ -380,6 +399,7 @@ export const resolvers = {
         throw new Error(`Top news stories failed to fetch: ${error.message}`);
       }
 
+      // query database
       let topFootballHeadlines;
       try {
         topFootballHeadlines = await News.find()
@@ -399,18 +419,19 @@ export const resolvers = {
     },
 
     // todo: Make flow chart of both search and autocomplete.
+    // todo: put in a suggested tooltip to include a team whilst searching if your desired player doesn't show up.
     playerSearch: async (
       _,
       { query, league, team = null, position = null, range = null }
     ) => {
       // clearMongoCollection(LastApiCallTimes)
-      // todo: put in a suggested tooltip to include a team whilst searching if your desired player doesn't show up.
 
+      // sort out endpoint and define sorting variables and parameters.
       let searchResults = [];
       let teamId;
       let endpoint = "players/squads";
 
-      const playerSearchParams = {};
+      const playerSearchQueryParams = {};
 
       // FILTERS
       const matchFields = [
@@ -424,7 +445,7 @@ export const resolvers = {
 
       if (team !== null) {
         teamId = await getTeamOrPlayerId(TeamStanding, { "team.name": team });
-        playerSearchParams.team = teamId;
+        playerSearchQueryParams.team = teamId;
         matchFields.push({ text: { query: team, path: "team" } });
       }
 
@@ -441,7 +462,8 @@ export const resolvers = {
 
       // QUERIES
       try {
-        searchResults = await searchDatabase(query, matchFields);
+        searchResults = await squadMemberAggregateSearch(query, matchFields);
+        // search database first if no results, decide if should make query to api.
 
         if (searchResults.length === 0 && team !== null) {
           console.log(
@@ -454,7 +476,7 @@ export const resolvers = {
             "weekly",
             endpoint,
             team,
-            playerSearchParams,
+            playerSearchQueryParams,
             "Squad Members",
             league
           );
@@ -462,7 +484,8 @@ export const resolvers = {
           // add a delay, to ensure database has processed data.
           await new Promise((resolve) => setTimeout(resolve, 1000));
 
-          searchResults = await searchDatabase(query, matchFields);
+          // query database again
+          searchResults = await squadMemberAggregateSearch(query, matchFields);
         } else {
           console.log(
             chalk.bold.bgMagenta("player/players in database already")
@@ -481,6 +504,7 @@ export const resolvers = {
     autoCompletePlayer: async (_, { query }) => {
       let autoCompleteResults = [];
 
+      // query squad member database collection with autocomplete logic in the aggregate pipeline.
       try {
         autoCompleteResults = await SquadMember.aggregate([
           {

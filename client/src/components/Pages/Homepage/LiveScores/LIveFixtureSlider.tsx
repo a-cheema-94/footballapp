@@ -37,7 +37,7 @@ const LiveFixtureSlider: React.FC<Props> = ({ liveFixtures }: Props) => {
 
   // todo: darkmode styling
   return (
-    <div className="d-block text-black " style={{ width: "90%" }}>
+    <div className="d-block text-white " style={{ width: "90%" }}>
       <Slider className="text-center p-3" {...sliderSettings}>
         {liveFixtures.map((fixture, index) => (
           <div key={index} className="d-flex justify-content-center">

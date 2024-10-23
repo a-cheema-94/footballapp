@@ -40,7 +40,7 @@ function App() {
 
   // todo: darkmode styling
   return (
-    <div className="bg-white">
+    <div style={{ backgroundColor: '#212529' }}>
       <MainNavbar toggle={toggle} />
       {/* todo: change this */}
       <div style={{ paddingTop: `85px` }} >

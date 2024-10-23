@@ -2,7 +2,13 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import { IoSearchOutline } from "react-icons/io5";
-import { MutableRefObject, useContext, useEffect, useRef, useState } from "react";
+import {
+  MutableRefObject,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import SideMenu from "./offcanvasMenu/SideMenu";
 import { ThemeContext } from "../../context/ThemeProvider";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
@@ -12,9 +18,8 @@ type Props = {
 };
 
 const MainNavbar = ({ toggle }: Props) => {
+  const { theme, toggleTheme } = useContext(ThemeContext);
 
-  const {theme, changeTheme} = useContext(ThemeContext);
-  
   const [isCompetitionMenu, setIsCompetitionMenu] = useState<boolean>(false);
   const scrollPositionRef: MutableRefObject<number> = useRef<number>(0);
   const [isNavVisible, setIsNavVisible] = useState<boolean>(true);
@@ -38,7 +43,7 @@ const MainNavbar = ({ toggle }: Props) => {
   }, []);
 
   return (
-    <div >
+    <div>
       <Navbar
         expand={false}
         className={`bg-teal-400 custom-navbar p-3 position-fixed w-100 z-3 ${
@@ -56,14 +61,16 @@ const MainNavbar = ({ toggle }: Props) => {
             <img src={`./fstat_logo.svg`} alt="" width="150px" />
           </Navbar.Brand>
 
-          <Button className="bg-transparent text-black border-0" onClick={changeTheme} >
-            {theme === 'light' ? (
-              <MdLightMode size={20}/>
-            ) : (
+          <Button
+            className="bg-transparent text-black border-0"
+            onClick={toggleTheme}
+          >
+            {theme === "light" ? (
               <MdDarkMode size={20} />
+            ) : (
+              <MdLightMode size={20} />
             )}
           </Button>
-
 
           <Button
             onClick={() => toggle()}

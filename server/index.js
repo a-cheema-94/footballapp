@@ -4,19 +4,19 @@ import { ApolloServer } from '@apollo/server'
 import { startStandaloneServer } from '@apollo/server/standalone'
 import { typeDefs } from './schema/schema.js'
 import { resolvers } from './resolvers/resolvers.js'
-// const connectDB = require('./config/database.js/index.js');
 import connectDB from './config/database.js'
 import chalk from 'chalk'
 
 // connect to database
 connectDB();
 
-
+// setup graph ql apollo server
 const server = new ApolloServer({
   typeDefs,
   resolvers
 });
 
+// connect to server
 const { url } = await startStandaloneServer(server, {
   listen: { port: 4000 }
 });

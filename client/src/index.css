@@ -20,6 +20,10 @@
   background-color: teal;
 }
 
+/* side menu */
+
+
+/* M10 10 L90 M90 10 L10 90 */
 
 
 /* Navbar */
@@ -38,8 +42,8 @@
 /* todo: darkmode styling */
 .breadcrumb-item a {
   text-decoration: none;
-  color: black;
-  /* color: white; */
+  /* color: black; */
+  color: white;
 }
 
 /* carousel */
@@ -48,6 +52,12 @@
 button.slick-prev:before,
 button.slick-next:before {
   color: black;
+}
+
+/* todo: darkmode styling */
+/* dropdown side menu */
+.dropdown-menu.show {
+  background-color: black;
 }
 
 /* live fixture card animation */

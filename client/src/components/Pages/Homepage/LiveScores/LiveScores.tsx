@@ -38,9 +38,11 @@ const LiveScores = (props: Props) => {
     setLiveMatches(sortLiveFixturesByLeague(sampleFixtures));
   }, []);
 
+  const noLiveMatches = Object.values(liveMatches).every(league => league.length === 0);
+
   return (
-    <div className="" >
-      {sampleFixtures.length === 0 ? (
+    <div className="bg-gray-900" >
+      {noLiveMatches ? (
         <div>No current live fixtures</div>
       ) : (
         <div className="d-flex flex-column gap-3 my-2 ">

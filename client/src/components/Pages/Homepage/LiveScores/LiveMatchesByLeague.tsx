@@ -11,19 +11,22 @@ type Props = {
 };
 
 const LiveMatchesByLeague = ({ liveFixtures, leagueName }: Props) => {
+
+
   return (
     <div
       id={leagueName}
-      className="d-flex flex-column justify-content-center align-items-center py-3"
+      className="d-flex flex-column align-items-center py-3"
     >
       {/* slider here */}
-      <div className="d-flex align-items-center justify-content-center gap-2">
+      <div className="d-flex align-items-center justify-content-center gap-3 rounded py-3">
         <img
-          className="w-25"
+          className="w-25 bg-dark-lighter-2 rounded p-2 border"
           src={getLogosAndImages("leagues", LEAGUES[leagueName])}
         />
-        <p className="fw-semibold fs-5">{leagueName}</p>
+        <p className="fw-semibold fs-5 my-2">{leagueName}</p>
       </div>
+
       <LiveFixtureSlider liveFixtures={liveFixtures} />
     </div>
   );

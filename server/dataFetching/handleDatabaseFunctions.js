@@ -16,7 +16,7 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
     case 'players/topassists':
       final = data.map(player => {
         const { player: general, statistics } = player;
-
+        
         const updatedPlayer = { league, general: filterObj(general, PROPS_TO_FILTER.topPlayers.general), statistics: filterObj(statistics[0], PROPS_TO_FILTER.topPlayers.statistics) };
         return updatedPlayer;
       })
@@ -77,7 +77,7 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
       if(data.length > 1) {
         final = data.map(liveFixture => {
           const { league: { name }, events } = liveFixture;
-          delete liveFixture.events;
+          delete liveFixture.events; // needed for the filterObj, moving events since that is how model is created.
           const updatedLiveFixture = { live: true, league: name, ...filterObj(liveFixture, PROPS_TO_FILTER.fixtures.fixture), events, statistics: [], lineups: [] };
           return updatedLiveFixture
         });
@@ -130,6 +130,7 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
       try {
         for (let article of data) {
           await News.findOneAndUpdate({ 'title': article.title }, article, { upsert: true });
+          // { upsert: true } => either updates an existing document that matches the query or inserts a new one if no matching document to the query is found.
         }
 
         console.log(chalk.bgGreen('news articles now in database'))
@@ -146,6 +147,7 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
 
 }
 
+// inputting into database functions.
 async function processSingleMongooseQuery(data, Model, queryParam = null) {
   let query = {};
   if(!queryParam) {
@@ -161,11 +163,14 @@ async function processSingleMongooseQuery(data, Model, queryParam = null) {
   }
 }
 
+// todo => looping through array and inputting in DB is slowing down performance. Use bulkWrite to run the DB inserts in parallel. Understand then implement.
 async function inputDataInDatabase(data, Model, queryParam) {
   try {
     if(Array.isArray(data)) {
       for(let item of data) {
+        console.time(`testing sorting and filtering of data of ${item}`)
         await processSingleMongooseQuery(item, Model, queryParam);
+        console.timeEnd(`testing sorting and filtering of data of ${item}`)
       }
     } else {
       await processSingleMongooseQuery(data, Model, queryParam);
@@ -187,6 +192,7 @@ async function inputFixtureInfo(endpoint, league, data) {
   }
 }
 
+// delete collections function
 export async function clearMongoCollection(mongoModel, deleteParams = {}) {
   try {
     const output = await mongoModel.deleteMany(deleteParams);

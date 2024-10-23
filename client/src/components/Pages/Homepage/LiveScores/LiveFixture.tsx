@@ -19,7 +19,7 @@ type FixtureNameAndLogoProps = {
 const LiveFixture = ({ fixture }: Props) => {
   return (
     <div
-      className="border border-black rounded flex-grow-1 ratio ratio-16x9 p-2 w-100"
+      className="rounded border flex-grow-1 ratio ratio-16x9 p-2 w-100 bg-dark-lighter-1"
       style={{
         maxWidth: "280px",
       }}

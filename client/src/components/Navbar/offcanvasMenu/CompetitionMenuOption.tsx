@@ -41,8 +41,8 @@ const CompetitionMenuOption = ({ league }: Props) => {
   };
 
   return (
-    <Stack >
-      <Link to="/competition" className="nav-link">
+    <Stack>
+      <Link to="/competition" className="nav-link ">
         {league}
       </Link>
       <NavDropdown
@@ -50,10 +50,10 @@ const CompetitionMenuOption = ({ league }: Props) => {
         id={`offcanvasNavbarDropdown-expand-${false}`}
         style={isDropDownOpen ? { height: "300px", overflowY: "scroll" } : {}}
         onToggle={toggleDropdown}
-        
+        className=""
       >
         {data.leagueStandings.map((team: TeamStandingType, index: number) => (
-          <NavDropdown.Item key={index} className="select-none">
+          <NavDropdown.Item key={index} className="select-none bg-black text-white">
             <TooltipWrapper message="Go to team page" styleProps={styleProps}>
               <Stack
                 direction="horizontal"

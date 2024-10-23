@@ -10,20 +10,7 @@ const newsApiKey = process.env.NEWS_API_KEY;
 
 
 export async function makeFootballApiCall(endpoint, params, league = null) {
-  const footballApiClient = axios.create(); // create axios instance
-  // footballApiClient.interceptors.request.use(options => {
-  //   const headers = options.headers;
-  //   const neededHeaders = ["x-apisports-key"];
-    
-  //   // remove unnecessary headers
-  //   for(let header in headers) {
-  //     if(!neededHeaders.includes(header)) {
-  //       delete headers[header]
-  //     }
-  //   }
-
-  //   return options;
-  // })
+  const footballApiClient = axios.create();
 
   let apiRes;
 
@@ -34,7 +21,7 @@ export async function makeFootballApiCall(endpoint, params, league = null) {
         "x-apisports-key": footballApiKey
       }
     })
-    
+    console.log(chalk.bgBlueBright('finished api call from api sports'))
   } catch (error) {
     console.error(`Error fetching data from football api: ${error}`)
   }
@@ -49,14 +36,16 @@ export async function makeFootballApiCall(endpoint, params, league = null) {
   }
 
   try {
+    console.time('testing manipulateAndInputData function')
     await manipulateAndInputData(apiRes.data.response, endpoint, league)
+    console.timeEnd('testing manipulateAndInputData function')
   } catch (error) {
     console.error(`Error sorting and putting data in database: ${error}`)
   }
 
 }
 
-export async function makeNewsApiCall(query = null) {
+export async function makeNewsApiCall() {
   const newsApiClient = axios.create();
   let newsApiRes;
   try {

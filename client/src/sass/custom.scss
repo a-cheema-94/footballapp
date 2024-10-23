@@ -1,20 +1,63 @@
 // $orange: #36C217;
-@use 'sass:meta';
-@use 'sass:list';
-@use 'sass:map';
-@use 'sass:string';
-@import 'helperFunctions';
-@import '../../node_modules/bootstrap/scss/functions';
-@import '../../node_modules/bootstrap/scss/variables';
+@use "sass:meta";
+@use "sass:list";
+@use "sass:map";
+@use "sass:string";
+@import "helperFunctions";
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/variables-dark";
 
 
-$all-colors: multiple-map-merge($blues, $indigos, $purples, $pinks, $reds, $oranges, $yellows, $greens, $teals, $cyans);
+// todo => light-map? Also, organize styling in general and get rid of any unnecessary css or classes. Should additional styling be in sass file or normal css? universal styles for the themes maybe to cut down on class declarations in jsx?
 
-$all-colors: map.merge($all-colors, ("white": $white, "black": $black));
+$dark-map: (
+  "dark-lighter-2": lighten($dark, 20%),
+  "dark-lighter-1": lighten($dark, 5%),
+  "dark": $dark,
+  "dark-darker-1": darken($dark, 5%),
+  "dark-darker-2": darken($dark, 10%),
+);
+
+// add gray colors for dark mode.
+$new-grays: ();
+
+@each $key, $value in $grays {
+  $new-key: gray-#{$key};
+
+  $new-grays: map.set($new-grays, $new-key, $value);
+}
+
+$all-colors: multiple-map-merge(
+  $dark-map,
+  $new-grays,
+  $blues,
+  $indigos,
+  $purples,
+  $pinks,
+  $reds,
+  $oranges,
+  $yellows,
+  $greens,
+  $teals,
+  $cyans
+);
+
+$all-colors: map.merge(
+  $all-colors,
+  (
+    "white": $white,
+    "black": $black,
+  )
+);
 
 @each $name, $color in $all-colors {
   .text-#{$name} {
     color: $color !important;
+  }
+
+  .border-#{$name} {
+    border: solid 1px $color;
   }
 
   .bg-#{$name} {
@@ -24,19 +67,24 @@ $all-colors: map.merge($all-colors, ("white": $white, "black": $black));
   .bg-hover-#{$name}:hover {
     cursor: pointer;
     background-color: $color !important;
-    
-    @if(string.index($name, '-')) {
-      $number: string.slice($string: $name, $start-at: string.index($name, '-') + 1, $end-at: -1);
-      
+
+    @if (string.index($name, "-")) {
+      $number: string.slice(
+        $string: $name,
+        $start-at: string.index($name, "-") + 1,
+        $end-at: -1,
+      );
+
       @if (string-to-number($number) > 300) {
         color: $white;
       }
-
     } @else {
       color: $black;
-    };
-
+    }
   }
 }
+
+// todo: darkmode styling => sort out custom sass classes. shades and tints.
+
 
 // @debug meta.type-of(string-to-number('3323'));
