@@ -27,7 +27,7 @@ export async function makeFootballApiCall(endpoint, params, league = null) {
   }
 
   
-//  todo: determine whether this is needed.
+//  todo: determine whether this is needed, when integrating live fixtures in UI.
   // delete live fixtures once all live fixtures are finished (apiRes.data.response.length === 0) for that gameweek across all leagues.
   if(endpoint === 'fixtures' && league === null && apiRes.data.response.length === 0) {
     // clear live fixtures from database
@@ -36,9 +36,7 @@ export async function makeFootballApiCall(endpoint, params, league = null) {
   }
 
   try {
-    // console.time('testing manipulateAndInputData function')
     await manipulateAndInputData(apiRes.data.response, endpoint, league)
-    // console.timeEnd('testing manipulateAndInputData function')
   } catch (error) {
     console.error(`Error sorting and putting data in database: ${error}`)
   }

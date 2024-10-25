@@ -10,7 +10,7 @@ import { LEAGUES } from "../fixedData/fixedData.js";
 export const makeInitialQuery = async (
   apiCallFrequency,
   endpoint,
-  apiCallCategory, // rename if possible: this variable sets the fields inside the LastApiCallTimes documents when created.
+  apiCallCategory, // This variable sets the fields inside the LastApiCallTimes documents when created.
   queryParams,
   collection,
   league = null

@@ -24,7 +24,7 @@ export const filterObj  = (objToFilter, propsToFilter) => {
       .filter((prop) => prop.split(".")[0] === key)
       .map((filteredProp) => filteredProp.split(".").slice(1).join("."));
 
-    // recursive call, while also ensuring only objects get passed to function. NOTE: typeof null === 'object' so we add this condition.
+    // recursive call, while also ensuring only objects get passed to function. NOTE: typeof null === 'object' so we add not null check condition.
     filteredObj[key] =
       (objToFilter[key] !== null && typeof objToFilter[key] === "object")
         ? filterObj(objToFilter[key], newPropsToFilter)

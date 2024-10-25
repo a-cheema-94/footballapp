@@ -24,7 +24,6 @@ export const shouldMakeApiCall = async (freq, endpoint, parameter) => {
     lastApiCallTimes = await LastApiCallTimes.findOne({ endpoint, parameter });
   } catch (error) {
     console.error("An error occurred getting lastApiCallTimes: ", error);
-    return true; // todo: investigate, see if needed and why.
   }
 
   console.log(chalk.black.bgYellow(freq, endpoint, parameter));
@@ -35,6 +34,7 @@ export const shouldMakeApiCall = async (freq, endpoint, parameter) => {
     console.log(chalk.bgMagenta("call time is cached and NOT expired"));
     return false;
   }
+  // should not call api if the time since last api is LESS than given api frequency.
 
   try {
     // creating a completely new document
