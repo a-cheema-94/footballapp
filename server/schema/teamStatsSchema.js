@@ -4,7 +4,7 @@ export const teamStatsTypeDefs =  `
   type TeamInfo {
     id: Int,
     name: String
-  }
+  }   
 
   type FixtureInfo {
     played: FixtureTotalInfo

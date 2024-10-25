@@ -36,9 +36,9 @@ export async function makeFootballApiCall(endpoint, params, league = null) {
   }
 
   try {
-    console.time('testing manipulateAndInputData function')
+    // console.time('testing manipulateAndInputData function')
     await manipulateAndInputData(apiRes.data.response, endpoint, league)
-    console.timeEnd('testing manipulateAndInputData function')
+    // console.timeEnd('testing manipulateAndInputData function')
   } catch (error) {
     console.error(`Error sorting and putting data in database: ${error}`)
   }
