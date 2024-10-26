@@ -5,6 +5,7 @@ import { SquadMemberType } from "../../../../queries/types/queryTypes";
 
 type Props = {};
 
+// todo:  rename player card component 
 const PlayerCards = (props: Props) => {
   const { data, loading, error } = useQuery(SQUAD_MEMBER_QUERY, {
     variables: {

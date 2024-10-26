@@ -130,7 +130,12 @@ const SearchPage = ({ search, close }: Props) => {
       type: "TOGGLE_AUTOCOMPLETE_MENU",
       payload: { showAutoCompleteSuggestions: false },
     });
+
   const autoCompleteRef = useContentVisible<HTMLDivElement>(closeAutoComplete);
+
+  // if search query matches on player suggestion exactly.
+
+  const queryMatchesPlayer =  playerSuggestions.some(player => player.name === searchQuery);
 
   return (
     <div
@@ -216,8 +221,10 @@ const SearchPage = ({ search, close }: Props) => {
           />
         )}
 
-        {searchQuery ? (
-          <div className="overflow-y-auto">
+        {searchQuery ? queryMatchesPlayer ? (
+          <PlayerSearchResult player={playerSuggestions[0]} />
+        ) : (
+          <div className="overflow-y-auto d-flex justify-content-center gap-2 flex-wrap">
             {playerSuggestions.map((player: SquadMemberType, index: number) => (
               <PlayerSearchResult player={player} key={index} />
             ))}

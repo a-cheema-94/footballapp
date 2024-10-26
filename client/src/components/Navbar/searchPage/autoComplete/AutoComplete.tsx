@@ -2,6 +2,7 @@ import { Dispatch, Ref } from "react";
 import { ListGroup } from "react-bootstrap";
 import { SearchActionType } from "../reducer/searchReducer";
 import { SquadMemberType } from "../../../../queries/types/queryTypes";
+import { getLogosAndImages } from "../../../../functions/logoFunction";
 
 type Props = {
   showAutoCompleteSuggestions: boolean;
@@ -55,11 +56,15 @@ const AutoComplete = ({
                 }
                 key={index}
                 active={index === autoCompleteSuggestionIndex}
-                className={`bg-hover-green-500 ${
+                className={`bg-hover-green-500 d-flex gap-3 align-items-center ${
                   index === autoCompleteSuggestionIndex ? "bg-green-500" : ""
                 }`}
               >
-                {suggestion.name}
+                <img src={getLogosAndImages("players", suggestion.id)} style={{ width: '3rem' }}/>
+                <p>{suggestion.name}</p>
+                
+
+
               </ListGroup.Item>
             )
           )}

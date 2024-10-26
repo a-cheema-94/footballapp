@@ -76,7 +76,6 @@ export const squadMemberAggregateSearch = async (searchQuery, matchFields) => {
       },
     ]);
 
-    console.log(searchResults);
     return searchResults;
   } catch (error) {
     console.error(`Error when searching the database documents: ${error}`);

@@ -21,7 +21,7 @@ const LiveMatchesByLeague = ({ liveFixtures, leagueName }: Props) => {
       {/* slider here */}
       <div className="d-flex align-items-center justify-content-center gap-3 rounded py-3">
         <img
-          className="w-25 bg-dark-lighter-2 rounded p-2 border"
+          className="w-25 bg-teal-400 rounded p-2 border"
           src={getLogosAndImages("leagues", LEAGUES[leagueName])}
         />
         <p className="fw-semibold fs-5 my-2">{leagueName}</p>
