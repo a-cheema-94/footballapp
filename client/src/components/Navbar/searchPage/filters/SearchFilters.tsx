@@ -33,10 +33,14 @@ type Props = {
     ageRange: string,
     dispatch: Dispatch<SearchActionType<"FILTER_PLAYER_RANGE">>
   ) => void;
-  dispatch: Dispatch<SearchActionType<
-    "FILTER_PLAYER_TEAM" | "FILTER_PLAYER_POSITION" | "FILTER_PLAYER_RANGE" |
-    "FILTER_PLAYER_LEAGUE" 
-  >>;
+  dispatch: Dispatch<
+    SearchActionType<
+      | "FILTER_PLAYER_TEAM"
+      | "FILTER_PLAYER_POSITION"
+      | "FILTER_PLAYER_RANGE"
+      | "FILTER_PLAYER_LEAGUE"
+    >
+  >;
 };
 
 type TeamType = {
@@ -65,10 +69,12 @@ const SearchFilters = ({
   const [teams, { data: teamData, loading: teamLoading, error: teamError }] =
     useLazyQuery(LEAGUE_TABLE_QUERY, {
       onCompleted: (teamData: any) => {
-        const filteredTeams = teamData.leagueStandings.map((team: TeamStandingType) => {
-          const newTeam = team?.team;
-          return newTeam;
-        });
+        const filteredTeams = teamData.leagueStandings.map(
+          (team: TeamStandingType) => {
+            const newTeam = team?.team;
+            return newTeam;
+          }
+        );
         setFilterTeams(filteredTeams);
       },
     });
@@ -82,38 +88,42 @@ const SearchFilters = ({
   const matchTeam = filterTeams.find((team) => team.name === selectedTeam);
 
   return (
-    <Stack className="ms-4 p-3 bg-teal-200 gap-3 w-50 rounded z-2">
+    <Stack direction="horizontal" className="d-flex gap-3 rounded me-5 mt-2">
+      {/* Team Filter */}
       <Dropdown
         onSelect={(eventKey: any) => teamsFilter(eventKey, dispatch)}
         onClick={() => teams({ variables: { league: playerLeague } })}
       >
-        <Dropdown.Toggle className="bg-white text-black border-black d-flex align-items-center gap-2">
-          <p className="mt-2">{selectedTeam ? selectedTeam : "Select Team"}</p>
+        <Dropdown.Toggle className="d-flex gap-2 align-items-center bg-teal-300 text-black border-0">
           {matchTeam ? (
-            <img
-              src={getLogosAndImages("teams", matchTeam.id)}
-              alt=""
-              width={40}
-              height={40}
-            />
-          ) : (
-            ""
-          )}
+            <p className="mb-0">{selectedTeam}</p>
+          ): "Team"}
+          
         </Dropdown.Toggle>
-        <Dropdown.Menu>
+        <Dropdown.Menu className="w-25">
           {filterTeams.map((team: TeamType, index: number) => (
-            <Dropdown.Item key={index} eventKey={team.name}>
+            <Dropdown.Item 
+              key={index} 
+              eventKey={team.name}
+              style={{
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                
+              }}  
+            >
               {team.name}
             </Dropdown.Item>
           ))}
         </Dropdown.Menu>
       </Dropdown>
 
+      {/* Position Filter */}
       <Dropdown
         onSelect={(eventKey: any) => positionFilter(eventKey, dispatch)}
       >
-        <Dropdown.Toggle className="bg-white text-black border-black">
-          {selectedPosition ? selectedPosition : "Select Position"}
+        <Dropdown.Toggle className="bg-teal-300 text-black border-0">
+          {selectedPosition ? selectedPosition : "Position"}
         </Dropdown.Toggle>
         <Dropdown.Menu>
           {POSITIONS.map((position: string, index: number) => (
@@ -124,7 +134,36 @@ const SearchFilters = ({
         </Dropdown.Menu>
       </Dropdown>
 
-      <div className="range">
+      <Dropdown
+        onSelect={(eventKey: any) => rangeFilter(eventKey, dispatch)}
+      >
+        <Dropdown.Toggle className="bg-teal-300 text-black border-0">
+          {selectedRange ? selectedRange : "Age"}
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          {PLAYER_AGE_RANGES.map((ageRange: string, index: number) => (
+            <Dropdown.Item eventKey={ageRange} key={index}>
+              {ageRange}
+            </Dropdown.Item>
+          ))}
+        </Dropdown.Menu>
+      </Dropdown>
+
+      <Button
+        className="bg-red-400 border-0 w-50"
+        onClick={() => resetFilters(dispatch)}
+      >
+        Reset
+      </Button>
+    </Stack>
+  );
+};
+
+export default SearchFilters;
+
+
+      {/* Age Range Filter */}
+      {/* <div className="range">
         <p>Choose Age Range</p>
         <Stack direction="horizontal">
           {PLAYER_AGE_RANGES.map((ageRange, index) => (
@@ -137,16 +176,18 @@ const SearchFilters = ({
             />
           ))}
         </Stack>
-      </div>
+      </div> */}
 
-      <Button
-        className="bg-red-400 border-black w-50"
-        onClick={() => resetFilters(dispatch)}
-      >
-        Reset Filters
-      </Button>
-    </Stack>
-  );
-};
+      {/* selectedRange = age range state */}
 
-export default SearchFilters;
+{/* {matchTeam ? (
+            <img
+              src={getLogosAndImages("teams", matchTeam.id)}
+              alt=""
+              width={40}
+              height={40}
+              className="ratio-1x1"
+            />
+          ) : (
+            ""
+          )} */}

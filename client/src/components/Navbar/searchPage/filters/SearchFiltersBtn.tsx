@@ -45,7 +45,6 @@ const SearchFiltersBtn = ({
   dispatch,
 }: Props) => {
   return (
-    <TooltipWrapper message="Search Filters" styleProps={styleProps}>
       <div>
         {!showFilters ? (
           <MdFilterList
@@ -61,7 +60,6 @@ const SearchFiltersBtn = ({
           />
         )}
       </div>
-    </TooltipWrapper>
   );
 };
 

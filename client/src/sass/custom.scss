@@ -56,10 +56,6 @@ $all-colors: map.merge(
     color: $color !important;
   }
 
-  .border-#{$name} {
-    border: solid 1px $color;
-  }
-
   .bg-#{$name} {
     background-color: $color !important;
   }

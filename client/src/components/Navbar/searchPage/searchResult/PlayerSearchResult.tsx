@@ -9,23 +9,29 @@ type Props = {
 const PlayerSearchResult = ({ player }: Props) => {
   return (
     <Stack
-      className="align-items-center border rounded gap-3 m-2 p-2 bg-hover-teal-100 shadow"
+      className="align-items-center border rounded bg-hover-red-800 shadow"
       role="button"
       style={{
-        maxWidth: '12rem'
+        maxWidth: "12rem",
+        minWidth: "10rem",
       }}
     >
       <img
         src={getLogosAndImages("players", player.id)}
         alt=""
-        style={{ width: "150px", height: "150px" }}
-        
+        style={{ width: "100%" }}
       />
 
-      <div className="d-flex flex-column gap-2 m-3 ">
-        <p className="">Name: {player.name}</p>
-        <p>Age: {player.age}</p>
-        <p>Position: {player.position}</p>
+      <div className="d-flex justify-content-center align-items-center w-100 gap-4 pt-2">
+        {/* Number */}
+        <p className="playfair-display-400 " style={{ fontSize: "3rem" }}>
+          {player.number}
+        </p>
+        {/* info */}
+        <div className="info">
+          <p className="fw-bolder">{player.name}</p>
+          <p className="">{player.position}</p>
+        </div>
       </div>
     </Stack>
   );

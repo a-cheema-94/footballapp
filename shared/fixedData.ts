@@ -26,4 +26,4 @@ export const LEAGUES: { [key: string]: number } = {
   "La Liga": 140
 }
 
-export const SEASON = 2023
+export const SEASON = 2024

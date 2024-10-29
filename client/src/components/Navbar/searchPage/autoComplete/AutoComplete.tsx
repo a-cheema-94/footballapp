@@ -41,9 +41,10 @@ const AutoComplete = ({
   showFilters,
   dispatch,
 }: Props) => {
+
   return (
     <div>
-      {showAutoCompleteSuggestions && !showFilters && (
+      {showAutoCompleteSuggestions && (
         <ListGroup
           ref={autoCompleteRef}
           className="position-absolute bg-white start-0 w-100 list-unstyled top-100 rounded z-3"

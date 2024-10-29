@@ -32,6 +32,8 @@ type Props = {
   close: () => void;
 };
 
+// todo: clear all any types.
+
 const SearchPage = ({ search, close }: Props) => {
   // reducer for searchPage state
   const [searchPageState, dispatch] = useReducer(
@@ -131,21 +133,21 @@ const SearchPage = ({ search, close }: Props) => {
       payload: { showAutoCompleteSuggestions: false },
     });
 
+  // we can click outside of autocomplete suggestions to close suggestions using this ref.
   const autoCompleteRef = useContentVisible<HTMLDivElement>(closeAutoComplete);
 
   // if search query matches on player suggestion exactly.
 
-  const queryMatchesPlayer =  playerSuggestions.some(player => player.name === searchQuery);
+  const queryMatchesPlayer = playerSuggestions.some(
+    (player) => player.name === searchQuery
+  );
 
   return (
     <div
-      className={`w-100 bg-white d-flex flex-column gap-3 ${
-        search ? "active" : ""
-      }`}
+      className="w-100 bg-white d-flex flex-column gap-3"
     >
-      <div className="d-flex justify-content-between position-fixed bg-white w-100 z-3 p-2">
-        <Form className="d-flex w-50 ms-4 gap-2 align-items-center">
-          
+      <div className="d-flex justify-content-between w-100 p-2 flex-wrap">
+        <Form className="d-flex w-50 gap-2 align-items-center">
           <LeagueSelector
             selectLeague={handleSelectLeague}
             dispatch={dispatch}
@@ -168,8 +170,10 @@ const SearchPage = ({ search, close }: Props) => {
               }
               type="text"
               placeholder="search for players by last name ..."
+              name="search"
               aria-label="Search"
               className="outline-none"
+              style={{ minWidth: '200px' }}
             />
             {searchQuery && (
               <CloseButton
@@ -198,15 +202,6 @@ const SearchPage = ({ search, close }: Props) => {
           <br />
         </Form>
 
-        <Button
-          onClick={() => close()}
-          className="me-3 bg-transparent text-black border-0"
-        >
-          <IoMdClose />
-        </Button>
-      </div>
-
-      <div style={{ marginTop: "5rem" }}>
         {showFilters && (
           <SearchFilters
             resetFilters={resetFilters}
@@ -220,15 +215,29 @@ const SearchPage = ({ search, close }: Props) => {
             dispatch={dispatch}
           />
         )}
+        <Button
+          onClick={() => close()}
+          className="me-3 bg-transparent text-black border-0 position-absolute end-0 mt-2"
+          
+        >
+          <IoMdClose />
+        </Button>
+      </div>
 
-        {searchQuery ? queryMatchesPlayer ? (
-          <PlayerSearchResult player={playerSuggestions[0]} />
-        ) : (
-          <div className="overflow-y-auto d-flex justify-content-center gap-2 flex-wrap">
-            {playerSuggestions.map((player: SquadMemberType, index: number) => (
-              <PlayerSearchResult player={player} key={index} />
-            ))}
-          </div>
+      <div style={{ marginTop: "" }}>
+
+        {searchQuery ? (
+          queryMatchesPlayer ? (
+            <PlayerSearchResult player={playerSuggestions[0]} />
+          ) : (
+            <div className="overflow-y-auto d-flex justify-content-center gap-2 flex-wrap">
+              {playerSuggestions.map(
+                (player: SquadMemberType, index: number) => (
+                  <PlayerSearchResult player={player} key={index} />
+                )
+              )}
+            </div>
+          )
         ) : (
           <p className="text-green-500 text-hover-purple-500">
             No current search results

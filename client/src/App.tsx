@@ -40,10 +40,10 @@ function App() {
 
   // todo: darkmode styling
   return (
-    <div style={{ backgroundColor: '#212529' }}>
+    <div style={{ backgroundColor: "#212529" }}>
       <MainNavbar toggle={toggle} />
       {/* todo: change this */}
-      <div style={{ paddingTop: `85px` }} >
+      <div style={{ paddingTop: `85px` }}>
         {search && <SearchPage search={search} close={close} />}
         {!search && (
           <Routes>

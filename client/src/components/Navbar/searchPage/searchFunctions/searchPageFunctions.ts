@@ -50,6 +50,8 @@ const handleKeyDown = (
   autoCompleteSuggestionIndex: number,
   autoCompleteSuggestions: SquadMemberType[]
 ) => {
+  // we set the index of the autocomplete suggestions on arrow up and down to move through the suggestions using keys and on the enter key we switch to the right league and set the search query to our selected autocomplete suggestion.
+
   if (event.key === "ArrowUp") {
     dispatch({
       type: "SET_AUTO_COMPLETE_INDEX",
