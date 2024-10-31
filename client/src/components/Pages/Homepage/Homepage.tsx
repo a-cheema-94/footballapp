@@ -16,7 +16,7 @@ const Homepage = ({}: Props) => {
 
   return (
     // todo: darkmode styling
-    <div className="text-white" style={{ backgroundColor: '#212529',  }}>
+    <div >
       <Tabs
         activeKey={tabKey}
         onSelect={handleTab}

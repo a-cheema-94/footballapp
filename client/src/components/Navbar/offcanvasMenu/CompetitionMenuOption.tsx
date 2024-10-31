@@ -8,10 +8,11 @@ import {
   OverlayTrigger,
 } from "react-bootstrap";
 import { getLogosAndImages } from "../../../functions/logoFunction";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import TooltipWrapper from "../../reusable/TooltipWrapper";
 import { TeamStandingType } from "../../../queries/types/queryTypes";
+import { ThemeContext } from "../../../context/ThemeProvider";
 
 type Props = {
   league: string;
@@ -19,6 +20,7 @@ type Props = {
 
 const CompetitionMenuOption = ({ league }: Props) => {
   const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
+  const {theme} = useContext(ThemeContext);
 
   const { data, loading, error } = useQuery(LEAGUE_TABLE_QUERY, {
     variables: {
@@ -40,9 +42,11 @@ const CompetitionMenuOption = ({ league }: Props) => {
     },
   };
 
+
+  // todo: darkmode styling DONE
   return (
     <Stack>
-      <Link to="/competition" className="nav-link ">
+      <Link to="/competition" className="nav-link">
         {league}
       </Link>
       <NavDropdown
@@ -53,7 +57,10 @@ const CompetitionMenuOption = ({ league }: Props) => {
         className=""
       >
         {data.leagueStandings.map((team: TeamStandingType, index: number) => (
-          <NavDropdown.Item key={index} className="select-none bg-black text-white">
+          <NavDropdown.Item
+            key={index}
+            className={`select-none p-2 ${theme === 'light' ? 'bg-light text-dark bg-hover-gray-300' : 'bg-dark text-light bg-hover-dark-lighter-1'} `}
+          >
             <TooltipWrapper message="Go to team page" styleProps={styleProps}>
               <Stack
                 direction="horizontal"
@@ -65,8 +72,8 @@ const CompetitionMenuOption = ({ league }: Props) => {
                   src={getLogosAndImages("teams", team.team.id)}
                   width={30}
                   style={{
-                    aspectRatio: '1 / 1',
-                    objectFit: 'contain'
+                    aspectRatio: "1 / 1",
+                    objectFit: "contain",
                   }}
                 />
               </Stack>

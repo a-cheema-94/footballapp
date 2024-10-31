@@ -9,22 +9,42 @@ import { StringIterator } from "lodash";
 
 type Props = {
   setPlayerLeague?: (league: LeagueNames) => void;
+  resetFilters?: (
+    dispatch: React.Dispatch<
+      SearchActionType<
+        "FILTER_PLAYER_TEAM" | "FILTER_PLAYER_POSITION" | "FILTER_PLAYER_RANGE"
+      >
+    >
+  ) => void;
   selectLeague?: (
     eventKey: string,
     dispatch: Dispatch<SearchActionType<"FILTER_PLAYER_LEAGUE">>
   ) => void;
-  dispatch?: Dispatch<SearchActionType<"FILTER_PLAYER_LEAGUE">>;
+  dispatch?: Dispatch<
+    SearchActionType<
+      | "FILTER_PLAYER_LEAGUE"
+      | "FILTER_PLAYER_TEAM"
+      | "FILTER_PLAYER_POSITION"
+      | "FILTER_PLAYER_RANGE"
+    >
+  >;
   league: string;
 };
 
-const LeagueSelector = ({ selectLeague, dispatch, setPlayerLeague, league }: Props) => {
+const LeagueSelector = ({
+  selectLeague,
+  dispatch,
+  setPlayerLeague,
+  league,
+  resetFilters,
+}: Props) => {
   const leagues = Object.keys(LEAGUES) as LeagueNames[];
   const leagueIds = Object.values(LEAGUES);
 
-
   const handleDropdownSelect = (league: LeagueNames) => {
     setTimeout(() => {
-      if (selectLeague && dispatch) {
+      if (selectLeague && dispatch && resetFilters) {
+        resetFilters(dispatch);
         selectLeague(league, dispatch);
       }
       if (setPlayerLeague) {

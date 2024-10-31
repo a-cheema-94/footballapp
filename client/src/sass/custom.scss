@@ -8,7 +8,6 @@
 @import "../../node_modules/bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/variables-dark";
 
-
 // todo => light-map? Also, organize styling in general and get rid of any unnecessary css or classes. Should additional styling be in sass file or normal css? universal styles for the themes maybe to cut down on class declarations in jsx?
 
 $dark-map: (
@@ -81,6 +80,14 @@ $all-colors: map.merge(
 }
 
 // todo: darkmode styling => sort out custom sass classes. shades and tints.
+// todo: move all css into sass custom sheets => reorganize.
+/* todo: darkmode styling */
+.customTabs .nav-link {
+  color: $light;
+  background-color: $dark;
+}
 
-
-// @debug meta.type-of(string-to-number('3323'));
+.customTabs .nav-link.active {
+  color: $light;
+  background-color: teal;
+}

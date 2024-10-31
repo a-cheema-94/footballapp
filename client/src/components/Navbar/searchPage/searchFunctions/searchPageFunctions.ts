@@ -219,6 +219,8 @@ const handleRangeFilter = (
     },
   });
 
+// const handleLeagueTeams = () => dispatch({ type: "", payload: { currentLeagueTeams:  } })
+
 export {
   clearSearch,
   handleSearch,

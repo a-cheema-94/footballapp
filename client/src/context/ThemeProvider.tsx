@@ -4,6 +4,7 @@ type Props = {
   children: ReactNode;
 };
 
+// Theme context
 export const ThemeContext = createContext({} as any);
 
 const ThemeProvider = ({ children }: Props) => {

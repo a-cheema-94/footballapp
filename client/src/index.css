@@ -21,16 +21,7 @@
   
 } */
 
-/* todo: darkmode styling */
-.customTabs .nav-link {
-  color: white;
-  /* color: black; */
-}
 
-.customTabs .nav-link.active {
-  color: white;
-  background-color: teal;
-}
 
 /* side menu */
 
@@ -69,7 +60,8 @@ button.slick-next:before {
 /* todo: darkmode styling */
 /* dropdown side menu */
 .dropdown-menu.show {
-  background-color: black;
+  padding: 0;
+  border: none;
 }
 
 /* live fixture card animation */

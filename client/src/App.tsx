@@ -9,16 +9,20 @@ import LiveMatchStats from "./components/Pages/MatchStats/LiveMatchStats/LiveMat
 import FullTimeMatchStats from "./components/Pages/MatchStats/FullTimeMatchStats/FullTimeMatchStats";
 import { Route, Routes } from "react-router-dom";
 import MainNavbar from "./components/Navbar/MainNavbar";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import SearchPage from "./components/Navbar/searchPage/SearchPage";
 import TestComponent from "./components/TestComponent";
 import NavigateUpBtn from "./components/NavigateUpBtn";
+import { ThemeContext } from "./context/ThemeProvider";
 
 function App() {
   // search state and functions
   const [search, setSearch] = useState<boolean>(false);
   const toggle = () => setSearch((prevSearch) => !prevSearch);
   const close = () => setSearch(false);
+
+  // theme context
+  const {theme} = useContext(ThemeContext);
 
   // up nav button state
   const [showNavUpBtn, setShowNavUpBtn] = useState<boolean>(false);
@@ -38,9 +42,9 @@ function App() {
     return () => document.removeEventListener("scroll", scrollFunction);
   }, []);
 
-  // todo: darkmode styling
+  // todo: darkmode styling DONE
   return (
-    <div style={{ backgroundColor: "#212529" }}>
+    <div className={`${theme === 'light' ? 'bg-gray-100' : 'bg-dark'}`}>
       <MainNavbar toggle={toggle} />
       {/* todo: change this */}
       <div style={{ paddingTop: `85px` }}>

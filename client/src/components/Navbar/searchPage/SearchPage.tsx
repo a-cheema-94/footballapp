@@ -25,7 +25,11 @@ import {
   handleTeamsFilter,
   resetFilters,
 } from "./searchFunctions/searchPageFunctions";
-import { SquadMemberType } from "../../../queries/types/queryTypes";
+import {
+  SquadMemberType,
+  TeamStandingType,
+} from "../../../queries/types/queryTypes";
+import { LEAGUE_TABLE_QUERY } from "../../../queries/leagueTableQuery";
 
 type Props = {
   search: boolean;
@@ -53,9 +57,13 @@ const SearchPage = ({ search, close }: Props) => {
     playerLeague,
     autoCompleteSuggestions,
     autoCompleteSuggestionIndex,
+    currentLeagueTeams,
   } = searchPageState;
 
   // QUERIES
+  // todo: go over query logic and see if can optimize.
+
+  // autocomplete
   const [
     autoComplete,
     {
@@ -73,6 +81,8 @@ const SearchPage = ({ search, close }: Props) => {
       });
     },
   });
+
+  // search query
   const [
     playerSearch,
     {
@@ -89,6 +99,17 @@ const SearchPage = ({ search, close }: Props) => {
     },
   });
 
+  // team standings
+  const [teams, { data: teamData, loading: teamLoading, error: teamError }] =
+    useLazyQuery(LEAGUE_TABLE_QUERY, {
+      onCompleted: (teamData: any) => {
+        dispatch({
+          type: "SET_CURRENT_LEAGUE_TEAMS",
+          payload: { currentLeagueTeams: teamData?.leagueStandings },
+        });
+      },
+    });
+
   // Error states
 
   if (playerSearchError)
@@ -96,6 +117,8 @@ const SearchPage = ({ search, close }: Props) => {
 
   if (autoCompleteError)
     return <div>An Error occurred: {autoCompleteError.message}</div>;
+
+  if (teamError) return <div>An Error occurred: {teamError.message}</div>;
 
   // effect to handle search and autocomplete queries.
   useEffect(() => {
@@ -125,6 +148,11 @@ const SearchPage = ({ search, close }: Props) => {
       });
   }, [searchQuery, playerLeague, playerTeam, playerRange, playerPosition]);
 
+  //query Team standings when playerLeague changes use useEffect.
+  useEffect(() => {
+    teams({ variables: { league: playerLeague } });
+  }, [playerLeague]);
+
   // close auto complete menu when clicking outside.
 
   const closeAutoComplete = () =>
@@ -143,13 +171,12 @@ const SearchPage = ({ search, close }: Props) => {
   );
 
   return (
-    <div
-      className="w-100 bg-white d-flex flex-column gap-3"
-    >
+    <div className="w-100 bg-white d-flex flex-column gap-3">
       <div className="d-flex justify-content-between w-100 p-2 flex-wrap">
         <Form className="d-flex w-50 gap-2 align-items-center">
           <LeagueSelector
             selectLeague={handleSelectLeague}
+            resetFilters={resetFilters}
             dispatch={dispatch}
             league={playerLeague}
           />
@@ -173,7 +200,7 @@ const SearchPage = ({ search, close }: Props) => {
               name="search"
               aria-label="Search"
               className="outline-none"
-              style={{ minWidth: '200px' }}
+              style={{ minWidth: "200px" }}
             />
             {searchQuery && (
               <CloseButton
@@ -205,7 +232,6 @@ const SearchPage = ({ search, close }: Props) => {
         {showFilters && (
           <SearchFilters
             resetFilters={resetFilters}
-            playerLeague={playerLeague}
             selectedTeam={playerTeam}
             selectedPosition={playerPosition}
             selectedRange={playerRange}
@@ -213,33 +239,39 @@ const SearchPage = ({ search, close }: Props) => {
             positionFilter={handlePositionFilter}
             rangeFilter={handleRangeFilter}
             dispatch={dispatch}
+            leagueTeams={currentLeagueTeams}
           />
         )}
         <Button
           onClick={() => close()}
           className="me-3 bg-transparent text-black border-0 position-absolute end-0 mt-2"
-          
         >
           <IoMdClose />
         </Button>
       </div>
 
       <div style={{ marginTop: "" }}>
-
         {searchQuery ? (
           queryMatchesPlayer ? (
-            <PlayerSearchResult player={playerSuggestions[0]} />
+            <PlayerSearchResult
+              player={playerSuggestions[0]}
+              team={currentLeagueTeams}
+            />
           ) : (
-            <div className="overflow-y-auto d-flex justify-content-center gap-2 flex-wrap">
+            <div className="overflow-y-auto d-flex justify-content-center gap-2 flex-wrap m-2">
               {playerSuggestions.map(
                 (player: SquadMemberType, index: number) => (
-                  <PlayerSearchResult player={player} key={index} />
+                  <PlayerSearchResult
+                    player={player}
+                    team={currentLeagueTeams}
+                    key={index}
+                  />
                 )
               )}
             </div>
           )
         ) : (
-          <p className="text-green-500 text-hover-purple-500">
+          <p className="text-teal-400 text-hover-purple-500">
             No current search results
           </p>
         )}

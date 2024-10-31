@@ -11,13 +11,8 @@ type Props = {
 };
 
 const LiveMatchesByLeague = ({ liveFixtures, leagueName }: Props) => {
-
-
   return (
-    <div
-      id={leagueName}
-      className="d-flex flex-column align-items-center py-3"
-    >
+    <div id={leagueName} className="d-flex flex-column align-items-center py-3">
       {/* slider here */}
       <div className="d-flex align-items-center justify-content-center gap-3 rounded py-3">
         <img

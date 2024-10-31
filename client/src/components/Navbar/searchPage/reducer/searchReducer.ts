@@ -1,4 +1,4 @@
-import { SquadMemberType } from "../../../../queries/types/queryTypes";
+import { SquadMemberType, TeamStandingType } from "../../../../queries/types/queryTypes";
 
 // types
 
@@ -13,6 +13,7 @@ type SearchStateType = {
   playerTeam: string | null;
   playerPosition: string | null;
   playerRange: string | null;
+  currentLeagueTeams: TeamStandingType[] | []
 };
 
 // state and action setup
@@ -28,6 +29,7 @@ const initialSearchState: SearchStateType = {
   playerTeam: null,
   playerPosition: null,
   playerRange: null,
+  currentLeagueTeams: []
 };
 
 type SearchActionMap = {
@@ -41,6 +43,7 @@ type SearchActionMap = {
   FILTER_PLAYER_TEAM: { playerTeam: string | null };
   FILTER_PLAYER_POSITION: { playerPosition: string | null };
   FILTER_PLAYER_RANGE: { playerRange: string | null };
+  SET_CURRENT_LEAGUE_TEAMS: { currentLeagueTeams: TeamStandingType[] | [] }
 };
 
 type SearchActionType<T extends keyof SearchActionMap> = {
@@ -145,6 +148,12 @@ const actionHandlers: SearchActionHandlersType = {
   ) => {
     return { ...state, playerRange: action.payload.playerRange };
   },
+  ["SET_CURRENT_LEAGUE_TEAMS"]: (
+    state: SearchStateType,
+    action: SearchActionType<"SET_CURRENT_LEAGUE_TEAMS">
+  ) => {
+    return { ...state, currentLeagueTeams: action.payload.currentLeagueTeams }
+  }
 };
 
 // search reducer

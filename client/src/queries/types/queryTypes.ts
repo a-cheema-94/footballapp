@@ -326,6 +326,7 @@ type FixtureType = {
 export type {
   SquadMemberType,
   PlayerType,
+  TeamType,
   TeamStatsType,
   TeamStandingType,
   NewsType,
