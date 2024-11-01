@@ -2,6 +2,8 @@ import { Container, Stack } from "react-bootstrap";
 import { FixtureType } from "../../../../queries/types/queryTypes";
 import { getLogosAndImages } from "../../../../functions/logoFunction";
 import { FaRegCircleDot } from "react-icons/fa6";
+import { useContext } from "react";
+import { ThemeContext } from "../../../../context/ThemeProvider";
 
 type Props = {
   fixture: FixtureType;
@@ -17,9 +19,15 @@ type FixtureNameAndLogoProps = {
 // .goals[home/away]
 
 const LiveFixture = ({ fixture }: Props) => {
+  const { theme } = useContext(ThemeContext);
+
   return (
     <div
-      className="rounded border flex-grow-1 ratio ratio-16x9 p-2 w-100 bg-dark-lighter-1"
+      className={`rounded border flex-grow-1 ratio ratio-16x9 p-2 w-100 ${
+        theme === "light"
+          ? "bg-gray-200 bg-hover-gray-300"
+          : "bg-dark-lighter-1 bg-hover-dark-lighter-2"
+      }   shadow`}
       style={{
         maxWidth: "280px",
       }}

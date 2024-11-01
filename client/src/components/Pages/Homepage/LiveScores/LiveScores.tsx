@@ -2,13 +2,14 @@ import { useQuery } from "@apollo/client";
 import { LIVE_SCORES_QUERY } from "../../../../queries/liveScoresQuery";
 import { FixtureType } from "../../../../queries/types/queryTypes";
 import { sampleFixtures } from "./sampleLiveScoreData";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LiveFixtures, sortLiveFixturesByLeague } from "./liveScoreFunctions";
 import LiveFixture from "./LiveFixture";
 import LiveMatchesByLeague from "./LiveMatchesByLeague";
 import { getLogosAndImages } from "../../../../functions/logoFunction";
 import { LeagueNames, LEAGUES } from "../../../../functions/fixedData";
 import { Breadcrumb } from "react-bootstrap";
+import { ThemeContext } from "../../../../context/ThemeProvider";
 
 type Props = {};
 
@@ -24,6 +25,8 @@ const LiveScores = (props: Props) => {
     laLiga: [],
     serieA: [],
   });
+
+  const {theme} = useContext(ThemeContext);
 
   // TODO: integrate api with live fixture component
   // const { data, loading, error } = useQuery(LIVE_SCORES_QUERY, {
@@ -41,7 +44,7 @@ const LiveScores = (props: Props) => {
   const noLiveMatches = Object.values(liveMatches).every(league => league.length === 0);
 
   return (
-    <div className="bg-gray-900" >
+    <div  >
       {noLiveMatches ? (
         <div>No current live fixtures</div>
       ) : (
@@ -49,7 +52,7 @@ const LiveScores = (props: Props) => {
           <Breadcrumb className="align-self-end me-3 mt-3">
             {Object.keys(LEAGUES).map((leagueName, index) => (
               <Breadcrumb.Item  key={index} href={`#${leagueName}`}>
-                {leagueName}
+                <span className={`${theme === 'light' ? 'text-dark bg-hover-teal-300' : 'text-light bg-hover-teal-700'}  rounded px-2 py-1`}>{leagueName}</span>
               </Breadcrumb.Item>
             ))}
           </Breadcrumb>

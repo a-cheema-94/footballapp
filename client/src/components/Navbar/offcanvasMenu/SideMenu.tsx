@@ -22,7 +22,10 @@ const SideMenu = ({ isCompetitionMenu, setIsCompetitionMenu }: Props) => {
       onHide={() => setIsCompetitionMenu(false)}
       className={`${theme === 'light' ? "bg-gray-100" : "bg-dark text-light"}`}
     >
-      <Offcanvas.Header closeButton closeVariant={`${theme === 'dark' && "white"}`}>
+
+        {/* Useful: since closeVariant doesn't have a default value we have to conditionally render the prop. A pattern to remember: {...(condition ? { prop: 'something' }: {})} => will spread an empty object if condition is not met.*/}
+
+      <Offcanvas.Header closeButton {...(theme === 'dark' ? { closeVariant: "white" } : {})}>
         <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${false}`}>
           Competitions
         </Offcanvas.Title>

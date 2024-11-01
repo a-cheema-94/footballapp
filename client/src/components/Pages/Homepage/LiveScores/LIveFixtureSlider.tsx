@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { ThemeContext } from "../../../../context/ThemeProvider";
 import { FixtureType } from "../../../../queries/types/queryTypes";
 import LiveFixture from "./LiveFixture";
 import Slider from "react-slick";
@@ -7,6 +9,8 @@ type Props = {
 };
 
 const LiveFixtureSlider: React.FC<Props> = ({ liveFixtures }: Props) => {
+  const {theme} = useContext(ThemeContext)
+
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -35,10 +39,10 @@ const LiveFixtureSlider: React.FC<Props> = ({ liveFixtures }: Props) => {
     ],
   };
 
-  // todo: darkmode styling
+  // todo: darkmode styling: DONE
   return (
-    <div className="d-block text-white " style={{ width: "90%" }}>
-      <Slider className="text-center p-3" {...sliderSettings}>
+    <div className="d-block rounded " style={{ width: "90%" }}>
+      <Slider className={`text-center p-3 ${theme === 'dark' ? 'dark-dots' : ''} `} {...sliderSettings}>
         {liveFixtures.map((fixture, index) => (
           <div key={index} className="d-flex justify-content-center">
             <LiveFixture fixture={fixture} />

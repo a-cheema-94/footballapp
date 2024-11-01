@@ -40,8 +40,10 @@ const ConfigOne = ({ newsStories }: { newsStories: NewsType[] }) => {
           </Col>
         ))}
       </Row>
+
+
       <Row className="m-4">
-        <Col>
+        <Col className="d-flex flex-column justify-content-center gap-3">
           {newsStories.slice(6, 9).map((story, index) => (
             <Col key={index}>
               <FootballNewsStory

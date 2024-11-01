@@ -81,13 +81,39 @@ $all-colors: map.merge(
 
 // todo: darkmode styling => sort out custom sass classes. shades and tints.
 // todo: move all css into sass custom sheets => reorganize.
+
 /* todo: darkmode styling */
-.customTabs .nav-link {
+
+// tabs in HomePage
+.customTabs.light .nav-link {
+  color: $dark;
+  background-color: $light;
+}
+
+.customTabs.light .nav-link.active {
+  color: $dark;
+  background-color: map-get($map: $teals, $key: 'teal-300');
+}
+
+.customTabs.dark .nav-link {
   color: $light;
   background-color: $dark;
 }
 
-.customTabs .nav-link.active {
+.customTabs.dark .nav-link.active {
   color: $light;
-  background-color: teal;
+  background-color: map-get($map: $teals, $key: 'teal-600');
+}
+
+// class for progress dots in LiveScores:
+.dark-dots .slick-dots li button:before {
+  color: $light;
+}
+
+.dark-dots .slick-dots li.slick-active button:before {
+  color: $light;
+}
+
+.dark-dots button.slick-prev:before, .dark-dots button.slick-next:before {
+  color: $light;
 }
