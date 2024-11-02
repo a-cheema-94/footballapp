@@ -4,6 +4,8 @@ import {
   TeamStandingType,
 } from "../../../../queries/types/queryTypes";
 import LogoOrPlayerImage from "../../../reusable/LogoOrPlayerImage";
+import { ThemeContext } from "../../../../context/ThemeProvider";
+import { useContext } from "react";
 
 type Props = {
   player: SquadMemberType;
@@ -11,11 +13,13 @@ type Props = {
 };
 
 const PlayerSearchResult = ({ player, team }: Props) => {
+  const {theme} = useContext(ThemeContext);
+  
   const teamId = team.find((team) => team.team.name === player.team)?.team.id;
 
   return (
     <Stack
-      className="align-items-center border rounded bg-hover-teal-600 shadow position-relative"
+      className={`align-items-center border rounded ${theme === 'light' ? 'bg-hover-gray-200' : 'bg-hover-dark-lighter-1'} shadow position-relative`}
       role="button"
       style={{
         maxWidth: "12rem",

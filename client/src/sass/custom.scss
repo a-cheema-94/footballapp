@@ -230,3 +230,8 @@ tr td:hover {
 .dark-dots button.slick-next:before {
   color: $light;
 }
+
+// change blue / primary bg color when clicking a dropdown item
+.dropdown-item:focus {
+  background-color: map-get($map: $teals, $key: "teal-700");
+}

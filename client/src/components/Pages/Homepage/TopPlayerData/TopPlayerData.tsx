@@ -27,7 +27,7 @@ const TopPlayerData = (props: Props) => {
   });
 
   if (error) return <div>An Error occurred: {error.message}</div>;
-  if (loading) return <p>Loading ...</p>;
+  if (loading) return <div style={{ minHeight: '100dvh' }}>Loading ...</div>;
 
   const handlePlayerLeague = (league: LeagueNames) => setLeague(league);
 

@@ -56,8 +56,8 @@ const AutoComplete = ({
                 }
                 key={index}
                 active={index === autoCompleteSuggestionIndex}
-                className={`bg-hover-teal-400 d-flex gap-3 align-items-center ${
-                  index === autoCompleteSuggestionIndex ? "bg-teal-400" : ""
+                className={`border bg-hover-teal-600 d-flex gap-3 align-items-center ${
+                  index === autoCompleteSuggestionIndex ? "bg-teal-600" : ""
                 }`}
               >
 

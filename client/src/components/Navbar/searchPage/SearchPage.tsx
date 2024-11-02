@@ -214,7 +214,7 @@ const SearchPage = ({ search, close }: Props) => {
               placeholder="search for players by last name ..."
               name="search"
               aria-label="Search"
-              className="outline-none"
+              className=""
               style={{ minWidth: "200px" }}
             />
             {searchQuery && (

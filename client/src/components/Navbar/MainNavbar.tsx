@@ -42,14 +42,14 @@ const MainNavbar = ({ toggle }: Props) => {
     };
   }, []);
 
-  // todo => when scrolling down set display to none.
+  // At low opacity set pointer events of Navbar to none so content under the faded navbar is clickable.
 
   return (
     <div>
       <Navbar
         expand={false}
         className={`bg-teal-400 custom-navbar p-3 position-fixed w-100 z-3 ${
-          isNavVisible ? "opacity-100" : "opacity-0"
+          isNavVisible ? "opacity-100" : "opacity-0 pe-none"
         }`}
       >
         <Container fluid>

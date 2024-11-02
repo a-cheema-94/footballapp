@@ -22,7 +22,7 @@ const LiveFixture = ({ fixture }: Props) => {
 
   return (
     <div
-      className={`rounded border flex-grow-1 ratio ratio-16x9 p-2 w-100 ${
+      className={`position-relative rounded border flex-grow-1 ratio ratio-16x9 p-2 w-100 ${
         theme === "light"
           ? "bg-gray-200 bg-hover-gray-300 shadow"
           : "bg-dark-lighter-1 bg-hover-dark-lighter-2"
@@ -31,7 +31,7 @@ const LiveFixture = ({ fixture }: Props) => {
         maxWidth: "280px",
       }}
     >
-      <div className="d-flex align-items-center">
+      <div className="d-flex justify-content-center align-items-center">
         {/* home */}
         <FixtureNameAndLogo
           teamId={fixture?.teams.home.id}
@@ -39,12 +39,12 @@ const LiveFixture = ({ fixture }: Props) => {
         />
 
         {/* score */}
-        <div className="score d-flex gap-2">
+        <div className="d-flex gap-2 fs-5">
           {/* home score */}
-          <div className="home-score">{fixture?.goals.home}</div>
-          <p className="dash">-</p>
+          <div className="fw-semibold">{fixture?.goals.home}</div>
+          <p className="">-</p>
           {/* away score */}
-          <div className="away-score">{fixture?.goals.away}</div>
+          <div className="fw-semibold">{fixture?.goals.away}</div>
         </div>
 
         {/* away */}
@@ -54,7 +54,7 @@ const LiveFixture = ({ fixture }: Props) => {
         />
 
         {fixture?.live.type && (
-          <div className="live-fixture-icon text-red-500 scale-up align-self-start me-2">
+          <div className="text-red-500 scale-up position-absolute top-0 end-0">
             <FaRegCircleDot />
           </div>
         )}
@@ -65,9 +65,9 @@ const LiveFixture = ({ fixture }: Props) => {
 
 const FixtureNameAndLogo = ({ teamId, teamName }: FixtureNameAndLogoProps) => {
   return (
-    <div className="away d-flex justify-content-center align-items-center flex-column">
+    <div className="away d-flex justify-content-center align-items-center flex-column gap-1 w-50">
       {/* logo */}
-      <LogoOrPlayerImage category="teams" dimension="75%" id={teamId ?? 40}/>
+      <LogoOrPlayerImage category="teams" dimension="60%" id={teamId ?? 40}/>
       {/* Team name */}
       <p className="">{teamName}</p>
     </div>

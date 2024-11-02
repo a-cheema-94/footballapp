@@ -66,7 +66,7 @@ const SearchFilters = ({
   const matchTeam = filterTeams.some((team) => team.name === selectedTeam);
 
   const filterBtnDarkModeStyles = `${
-    theme === "light" ? "bg-teal-300 text-dark" : "bg-teal-700 text-light"
+    theme === "light" ? "bg-teal-300 text-dark" : "bg-teal-600 text-light"
   } border-0`;
 
   return (
