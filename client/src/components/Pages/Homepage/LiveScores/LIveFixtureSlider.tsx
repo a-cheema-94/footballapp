@@ -39,7 +39,6 @@ const LiveFixtureSlider: React.FC<Props> = ({ liveFixtures }: Props) => {
     ],
   };
 
-  // todo: darkmode styling: DONE
   return (
     <div className="d-block rounded " style={{ width: "90%" }}>
       <Slider className={`text-center p-3 ${theme === 'dark' ? 'dark-dots' : ''} `} {...sliderSettings}>

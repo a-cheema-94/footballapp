@@ -9,7 +9,6 @@ type Props = {
   setIsCompetitionMenu: Dispatch<SetStateAction<boolean>>;
 };
 
-// todo: darkmode styling DONE
 const SideMenu = ({ isCompetitionMenu, setIsCompetitionMenu }: Props) => {
   const {theme} = useContext(ThemeContext);
 

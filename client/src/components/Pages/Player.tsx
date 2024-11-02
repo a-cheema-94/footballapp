@@ -1,6 +1,5 @@
 import { useQuery } from "@apollo/client"
 import { PLAYER_STATS_QUERY } from "../../queries/playerStatsQuery"
-import { getLogosAndImages } from "../../functions/logoFunction"
 
 type Props = {}
 
@@ -22,7 +21,7 @@ const Player = (props: Props) => {
     <div className="">
       {/* general stats */}
       <div className="d-flex gap-2">
-        <img style={{ objectFit: 'cover', width: '30%', height: '30%' }} src={getLogosAndImages('players', general.id)} alt="" />
+        
         <div>
           <p>{general.name}</p>
           <p>{general.firstname}</p>

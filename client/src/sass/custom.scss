@@ -1,4 +1,3 @@
-// $orange: #36C217;
 @use "sass:meta";
 @use "sass:list";
 @use "sass:map";
@@ -8,7 +7,7 @@
 @import "../../node_modules/bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/variables-dark";
 
-// todo => light-map? Also, organize styling in general and get rid of any unnecessary css or classes. Should additional styling be in sass file or normal css? universal styles for the themes maybe to cut down on class declarations in jsx?
+// COLOR config
 
 $dark-map: (
   "dark-lighter-2": lighten($dark, 20%),
@@ -50,6 +49,8 @@ $all-colors: map.merge(
   )
 );
 
+// use created map of $all-colors to create custom classes for text, bg and bg-hover with the colors attached.
+
 @each $name, $color in $all-colors {
   .text-#{$name} {
     color: $color !important;
@@ -79,30 +80,141 @@ $all-colors: map.merge(
   }
 }
 
-// todo: darkmode styling => sort out custom sass classes. shades and tints.
-// todo: move all css into sass custom sheets => reorganize.
+/* FONTS */
 
-/* todo: darkmode styling */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins&display=swap");
+
+.playfair-display-400 {
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: italic;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Navbar */
+
+.custom-navbar {
+  transition: opacity 0.75s ease-in-out;
+}
+
+/* override the change to white hamburger menu icon with new svg for both modes in black */
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 0, 0, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* leagues breadcrumb links */
+.breadcrumb-item a {
+  text-decoration: none;
+  color: white;
+}
+
+/* carousel */
+
+/* carousel buttons */
+button.slick-prev:before,
+button.slick-next:before {
+  color: black;
+}
+
+/* dropdown side menu */
+.dropdown-menu.show {
+  padding: 0;
+  border: none;
+}
+
+/* live fixture card animation */
+.scale-up {
+  animation: scaleUp 1s infinite;
+}
+
+@keyframes scaleUp {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* top player table styles */
+th {
+  font-weight: 500;
+}
+tr td:hover {
+  cursor: pointer;
+}
+
+.homepage-playerData-text:hover::after {
+  content: attr(title);
+}
+
+/* football news */
+
+/* make font size relative to the container. */
+.news-story-container {
+  container-type: inline-size;
+}
+
+.news-story-container > h2:hover {
+  text-decoration: underline;
+}
+
+.news-story-container > h2 {
+  font-size: 5.5cqi;
+}
+
+.news-story-container.large-screen > h2 {
+  font-size: 4cqi;
+}
+
+.news-story-container > div > p {
+  font-size: 4cqi;
+}
+
+.news-story-container.large-screen > div > p {
+  font-size: 3cqi;
+}
 
 // tabs in HomePage
+
+// tabs => light mode
 .customTabs.light .nav-link {
   color: $dark;
   background-color: $light;
 }
 
+.customTabs.light .nav-link:hover {
+  background-color: map-get($map: $teals, $key: "teal-100");
+}
+
 .customTabs.light .nav-link.active {
   color: $dark;
-  background-color: map-get($map: $teals, $key: 'teal-300');
+  background-color: map-get($map: $teals, $key: "teal-300");
 }
+
+// tabs => dark mode
 
 .customTabs.dark .nav-link {
   color: $light;
   background-color: $dark;
 }
 
+.customTabs.dark .nav-link:hover {
+  background-color: map-get($map: $teals, $key: "teal-700");
+}
+
 .customTabs.dark .nav-link.active {
   color: $light;
-  background-color: map-get($map: $teals, $key: 'teal-600');
+  background-color: map-get($map: $teals, $key: "teal-600");
 }
 
 // class for progress dots in LiveScores:
@@ -114,6 +226,7 @@ $all-colors: map.merge(
   color: $light;
 }
 
-.dark-dots button.slick-prev:before, .dark-dots button.slick-next:before {
+.dark-dots button.slick-prev:before,
+.dark-dots button.slick-next:before {
   color: $light;
 }

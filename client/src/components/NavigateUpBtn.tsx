@@ -16,7 +16,6 @@ const NavigateUpBtn = (props: Props) => {
       className="position-sticky bottom-0 bg-transparent opacity-75 border-0"
       style={{ left: "calc(50% - 12.5px)" }}
     >
-      {/* todo: darkmode styling: DONE */}
       <FaCircleArrowUp size={25} className={`${theme === 'light' ? 'text-dark' : 'text-gray-100'}`}/>
     </Button>
   );

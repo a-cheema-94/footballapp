@@ -1,7 +1,6 @@
 import { useQuery } from "@apollo/client"
 import { LEAGUE_TABLE_QUERY } from "../../queries/leagueTableQuery"
 import TopPlayerData from "./Homepage/TopPlayerData/TopPlayerData"
-import { getLogosAndImages } from "../../functions/logoFunction"
 import { TeamStandingType } from "../../queries/types/queryTypes"
 
 type Props = {}
@@ -20,8 +19,6 @@ const Competition = (props: Props) => {
       {data.leagueStandings.map((team: TeamStandingType, index: number) => (
         <div className="d-flex gap-2" key={index}>
           <div>{team.team.name}</div>
-          {/* <div>ID: {team.team.id}</div>
-          <img src={getLogosAndImages('teams', team.team.id)}/> */}
           <div>{team.points}</div>
           <div>{team.rank}</div>
         </div>

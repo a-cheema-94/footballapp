@@ -1,12 +1,7 @@
-import { useQuery } from "@apollo/client";
-import { LIVE_SCORES_QUERY } from "../../../../queries/liveScoresQuery";
-import { FixtureType } from "../../../../queries/types/queryTypes";
 import { sampleFixtures } from "./sampleLiveScoreData";
 import { useContext, useEffect, useState } from "react";
 import { LiveFixtures, sortLiveFixturesByLeague } from "./liveScoreFunctions";
-import LiveFixture from "./LiveFixture";
 import LiveMatchesByLeague from "./LiveMatchesByLeague";
-import { getLogosAndImages } from "../../../../functions/logoFunction";
 import { LeagueNames, LEAGUES } from "../../../../functions/fixedData";
 import { Breadcrumb } from "react-bootstrap";
 import { ThemeContext } from "../../../../context/ThemeProvider";
@@ -44,7 +39,7 @@ const LiveScores = (props: Props) => {
   const noLiveMatches = Object.values(liveMatches).every(league => league.length === 0);
 
   return (
-    <div  >
+    <div style={{ minHeight: '100dvh' }}>
       {noLiveMatches ? (
         <div>No current live fixtures</div>
       ) : (

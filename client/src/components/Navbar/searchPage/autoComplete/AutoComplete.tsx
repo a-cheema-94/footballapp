@@ -2,7 +2,7 @@ import { Dispatch, Ref } from "react";
 import { ListGroup } from "react-bootstrap";
 import { SearchActionType } from "../reducer/searchReducer";
 import { SquadMemberType } from "../../../../queries/types/queryTypes";
-import { getLogosAndImages } from "../../../../functions/logoFunction";
+import LogoOrPlayerImage from "../../../reusable/LogoOrPlayerImage";
 
 type Props = {
   showAutoCompleteSuggestions: boolean;
@@ -60,10 +60,8 @@ const AutoComplete = ({
                   index === autoCompleteSuggestionIndex ? "bg-teal-400" : ""
                 }`}
               >
-                <img
-                  src={getLogosAndImages("players", suggestion.id)}
-                  style={{ width: "3rem" }}
-                />
+
+                <LogoOrPlayerImage category="players" dimension="3rem" id={suggestion.id} key={index}/>
                 <p>{suggestion.name}</p>
               </ListGroup.Item>
             )

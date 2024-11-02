@@ -1,4 +1,10 @@
-import { ChangeEvent, KeyboardEvent, useEffect, useReducer } from "react";
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  useContext,
+  useEffect,
+  useReducer,
+} from "react";
 import { CloseButton, Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import { IoMdClose } from "react-icons/io";
@@ -6,7 +12,7 @@ import { useLazyQuery } from "@apollo/client";
 import { AUTOCOMPLETE_QUERY } from "../../../queries/search/autocompleteQuery";
 import { PLAYER_SEARCH_QUERY } from "../../../queries/search/playerSearchQuery";
 import LeagueSelector from "../../reusable/leagueSelector";
-import useContentVisible from "../../reusable/useContentVisible";
+import useContentVisible from "../../reusable/customHooks/useContentVisible";
 import SearchFiltersBtn from "./filters/SearchFiltersBtn";
 import SearchFilters from "./filters/SearchFilters";
 import PlayerSearchResult from "./searchResult/PlayerSearchResult";
@@ -30,15 +36,18 @@ import {
   TeamStandingType,
 } from "../../../queries/types/queryTypes";
 import { LEAGUE_TABLE_QUERY } from "../../../queries/leagueTableQuery";
+import { ThemeContext } from "../../../context/ThemeProvider";
 
 type Props = {
   search: boolean;
   close: () => void;
 };
 
-// todo: clear all any types.
+// todo: clear all :any types.
 
 const SearchPage = ({ search, close }: Props) => {
+  const { theme } = useContext(ThemeContext);
+
   // reducer for searchPage state
   const [searchPageState, dispatch] = useReducer(
     searchReducer,
@@ -170,8 +179,14 @@ const SearchPage = ({ search, close }: Props) => {
     (player) => player.name === searchQuery
   );
 
+  // navbar height: 85px,
+
   return (
-    <div className="w-100 bg-white d-flex flex-column gap-3">
+    <div
+      className={`${
+        theme === "light" ? "bg-light text-dark" : "bg-dark text-light"
+      } w-100 d-flex flex-column gap-3 pb-1`}
+    >
       <div className="d-flex justify-content-between w-100 p-2 flex-wrap">
         <Form className="d-flex w-50 gap-2 align-items-center">
           <LeagueSelector
@@ -244,13 +259,15 @@ const SearchPage = ({ search, close }: Props) => {
         )}
         <Button
           onClick={() => close()}
-          className="me-3 bg-transparent text-black border-0 position-absolute end-0 mt-2"
+          className={`me-3 bg-transparent ${
+            theme === "light" ? "text-dark" : "text-light"
+          } border-0 position-absolute end-0 mt-2`}
         >
           <IoMdClose />
         </Button>
       </div>
 
-      <div style={{ marginTop: "" }}>
+      <div style={{ minHeight: "100dvh" }}>
         {searchQuery ? (
           queryMatchesPlayer ? (
             <PlayerSearchResult
@@ -271,8 +288,12 @@ const SearchPage = ({ search, close }: Props) => {
             </div>
           )
         ) : (
-          <p className="text-teal-400 text-hover-purple-500">
-            No current search results
+          <p
+            className={` ${
+              theme === "light" ? "text-teal-700" : "text-teal-400"
+            } ms-2`}
+          >
+            No current search results, try specifying a team.
           </p>
         )}
       </div>

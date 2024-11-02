@@ -17,14 +17,14 @@ const Homepage = ({}: Props) => {
   };
 
   return (
-    // todo: darkmode styling
     <div className={`${theme === 'light' ? 'bg-light text-dark' : 'bg-dark text-light'}`}>
       <Tabs
         activeKey={tabKey}
         onSelect={handleTab}
         fill
         justify
-        className={`customTabs ${theme === 'light' ? 'light' : 'dark'}`}
+        className={`shadow text-truncate customTabs ${theme === 'light' ? 'light' : 'dark'}`}
+        
       >
         <Tab eventKey="live-scores" title="Live Scores">
           <LiveScores />

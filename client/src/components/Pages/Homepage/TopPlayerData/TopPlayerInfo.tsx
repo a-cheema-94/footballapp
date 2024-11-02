@@ -1,6 +1,4 @@
-import { getLogosAndImages } from "../../../../functions/logoFunction";
 import { PlayerType } from "../../../../queries/types/queryTypes";
-import CircularImageContainer from "../../../reusable/CircularImageContainer";
 import PlayerCard from "./PlayerCard";
 
 type Props = {
@@ -10,7 +8,7 @@ type Props = {
 const TopPlayerInfo = ({ player }: Props) => {
 
   return (
-    <tr className="text-center text-nowrap fw-normal fs-6" style={{ verticalAlign: 'middle' }}>
+    <tr className="text-center text-nowrap fw-light fs-6" style={{ verticalAlign: 'middle' }}>
       <td className="">
         {/* player card */}
         <PlayerCard player={player}/>

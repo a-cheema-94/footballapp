@@ -42,7 +42,6 @@ function App() {
     return () => document.removeEventListener("scroll", scrollFunction);
   }, []);
 
-  // todo: darkmode styling DONE
   return (
     <div className={`${theme === 'light' ? 'bg-gray-100' : 'bg-dark'}`}>
       <MainNavbar toggle={toggle} />
@@ -54,12 +53,13 @@ function App() {
             <Route path="/" element={<Homepage />} />
             <Route path="/competition" element={<Competition />} />
             <Route path="/club" element={<Club />} />
-            <Route path="/player" element={<Player />} />
-            <Route path="/liveMatchStats" element={<LiveMatchStats />} />
-            <Route
+            {/* IN PROGRESS */}
+            {/* <Route path="/player" element={<Player />} /> */}
+            {/* <Route path="/liveMatchStats" element={<LiveMatchStats />} /> */}
+            {/* <Route
               path="/fullTimeMatchStats"
               element={<FullTimeMatchStats />}
-            />
+            /> */}
             {/* <Route path="/test" element={<TestComponent />}/> */}
           </Routes>
         )}

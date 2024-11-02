@@ -1,9 +1,8 @@
-import { Container, Stack } from "react-bootstrap";
 import { FixtureType } from "../../../../queries/types/queryTypes";
-import { getLogosAndImages } from "../../../../functions/logoFunction";
 import { FaRegCircleDot } from "react-icons/fa6";
 import { useContext } from "react";
 import { ThemeContext } from "../../../../context/ThemeProvider";
+import LogoOrPlayerImage from "../../../reusable/LogoOrPlayerImage";
 
 type Props = {
   fixture: FixtureType;
@@ -25,7 +24,7 @@ const LiveFixture = ({ fixture }: Props) => {
     <div
       className={`rounded border flex-grow-1 ratio ratio-16x9 p-2 w-100 ${
         theme === "light"
-          ? "bg-gray-200 bg-hover-gray-300"
+          ? "bg-gray-200 bg-hover-gray-300 shadow"
           : "bg-dark-lighter-1 bg-hover-dark-lighter-2"
       }   shadow`}
       style={{
@@ -68,7 +67,7 @@ const FixtureNameAndLogo = ({ teamId, teamName }: FixtureNameAndLogoProps) => {
   return (
     <div className="away d-flex justify-content-center align-items-center flex-column">
       {/* logo */}
-      <img className="w-75" src={getLogosAndImages("teams", teamId ?? 40)} />
+      <LogoOrPlayerImage category="teams" dimension="75%" id={teamId ?? 40}/>
       {/* Team name */}
       <p className="">{teamName}</p>
     </div>

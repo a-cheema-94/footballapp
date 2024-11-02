@@ -1,9 +1,9 @@
 import { Stack } from "react-bootstrap";
-import { getLogosAndImages } from "../../../../functions/logoFunction";
 import {
   SquadMemberType,
   TeamStandingType,
 } from "../../../../queries/types/queryTypes";
+import LogoOrPlayerImage from "../../../reusable/LogoOrPlayerImage";
 
 type Props = {
   player: SquadMemberType;
@@ -22,20 +22,9 @@ const PlayerSearchResult = ({ player, team }: Props) => {
         minWidth: "10rem",
       }}
     >
-      <img
-        src={getLogosAndImages("players", player.id)}
-        alt=""
-        className=""
-        style={{ width: "100%" }}
-      />
+      <LogoOrPlayerImage category="players" dimension="100%" id={player.id}/>
 
-      <img
-        src={getLogosAndImages("teams", teamId ?? 44)}
-        alt=""
-        className="bg-transparent position-absolute top-0 mt-1 ms-1 start-0 object-fit-contain"
-        width={40}
-        height={40}
-      />
+      <LogoOrPlayerImage category="teams" dimension="40px" id={teamId ?? 44} optionalClasses="bg-transparent position-absolute top-0 mt-1 ms-1 start-0"/>
 
       <div className="d-flex justify-content-center align-items-center w-100 gap-4 pt-1 px-2">
         {/* Number */}

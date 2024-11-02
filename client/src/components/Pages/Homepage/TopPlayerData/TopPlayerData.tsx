@@ -6,15 +6,18 @@ import {
   SquadMemberType,
 } from "../../../../queries/types/queryTypes";
 import LeagueSelector from "../../../reusable/leagueSelector";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { LeagueNames } from "../../../../functions/fixedData";
 import { Button, Container, Table } from "react-bootstrap";
+import { ThemeContext } from "../../../../context/ThemeProvider";
 
 type Props = {};
 
 const TopPlayerData = (props: Props) => {
   const [league, setLeague] = useState<LeagueNames>("Premier League");
   const [goalsOrAssists, setGoalsOrAssists] = useState<string>("goals");
+
+  const {theme} = useContext(ThemeContext);
 
   const { data, error, loading } = useQuery(TOP_PLAYER_QUERY, {
     variables: {
@@ -28,23 +31,23 @@ const TopPlayerData = (props: Props) => {
 
   const handlePlayerLeague = (league: LeagueNames) => setLeague(league);
 
-  // style={{ backgroundColor: '#212529' }}
   return (
     <div
-      className="pt-2 rounded d-block mx-4 mt-2"
-      // style={{ border: "solid white 1px", backgroundColor: "#212529" }}
+      className="pt-2 rounded d-block mx-4 mt-2 "
     >
       <div className="d-flex gap-2 justify-content-center m-2">
-        {/* todo: darkmode styling */}
+        
         <LeagueSelector setPlayerLeague={handlePlayerLeague} league={league} />
+
+        {/* top goals and assist buttons */}
         {["goals", "assists"].map((dataType, index) => (
           <Button
             key={index}
             onClick={() => setGoalsOrAssists(`${dataType}`)}
-            className={`bg-dark  ${
+            className={`${
               goalsOrAssists === dataType
                 ? "bg-teal-600 border-0"
-                : "border-white"
+                : theme === 'light' ? 'bg-gray-200 text-dark border-dark' : 'bg-dark-lighter-1 text-light border-light'
             }`}
           >
             Top {dataType}
@@ -52,7 +55,6 @@ const TopPlayerData = (props: Props) => {
         ))}
       </div>
 
-      {/* <Container className="rounded border border-black"> */}
       <Table striped hover responsive="md">
         <thead className="fw-bold">
           <tr className="text-center">

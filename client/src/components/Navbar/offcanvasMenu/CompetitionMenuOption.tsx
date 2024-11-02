@@ -3,16 +3,13 @@ import { LEAGUE_TABLE_QUERY } from "../../../queries/leagueTableQuery";
 import {
   NavDropdown,
   Stack,
-  Nav,
-  Tooltip,
-  OverlayTrigger,
 } from "react-bootstrap";
-import { getLogosAndImages } from "../../../functions/logoFunction";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import TooltipWrapper from "../../reusable/TooltipWrapper";
 import { TeamStandingType } from "../../../queries/types/queryTypes";
 import { ThemeContext } from "../../../context/ThemeProvider";
+import LogoOrPlayerImage from "../../reusable/LogoOrPlayerImage";
 
 type Props = {
   league: string;
@@ -43,7 +40,6 @@ const CompetitionMenuOption = ({ league }: Props) => {
   };
 
 
-  // todo: darkmode styling DONE
   return (
     <Stack>
       <Link to="/competition" className="nav-link">
@@ -68,14 +64,8 @@ const CompetitionMenuOption = ({ league }: Props) => {
                 className="align-items-start"
               >
                 <p>{team.team.name}</p>
-                <img
-                  src={getLogosAndImages("teams", team.team.id)}
-                  width={30}
-                  style={{
-                    aspectRatio: "1 / 1",
-                    objectFit: "contain",
-                  }}
-                />
+
+                <LogoOrPlayerImage category="teams" dimension="30px" id={team.team.id} key={index}/>
               </Stack>
             </TooltipWrapper>
           </NavDropdown.Item>

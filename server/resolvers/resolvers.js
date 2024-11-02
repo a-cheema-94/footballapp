@@ -20,7 +20,6 @@ import {
   squadMemberAggregateSearch,
 } from "./additionalFunctions.js";
 
-// todo: make flow chart of resolver query logic
 // todo: double check for naming conventions. Make more readable.
 // NOTE: On some resolvers we will need id's from the players or teams since if api call is need, this is required in the request url. E.g. playerSquads resolver needs team id, since the query to the endpoint: players/squads on the api needs team id in the request.
 
@@ -418,8 +417,6 @@ export const resolvers = {
       return topFootballHeadlines;
     },
 
-    // todo: Make flow chart of both search and autocomplete.
-    // todo: put in a suggested tooltip to include a team whilst searching if your desired player doesn't show up.
     playerSearch: async (
       _,
       { query, league, team = null, position = null, range = null }

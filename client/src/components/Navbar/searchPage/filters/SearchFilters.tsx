@@ -1,11 +1,12 @@
 import { Button, Dropdown, Form, Stack } from "react-bootstrap";
 import { POSITIONS } from "../../../../functions/fixedData";
-import { Dispatch, useState } from "react";
+import { Dispatch, useContext, useState } from "react";
 import { SearchActionType } from "../reducer/searchReducer";
 import {
   TeamStandingType,
   TeamType,
 } from "../../../../queries/types/queryTypes";
+import { ThemeContext } from "../../../../context/ThemeProvider";
 
 // according to react bootstrap docs the onSelect callback defines the eventKey: any
 
@@ -54,6 +55,8 @@ const SearchFilters = ({
   dispatch,
   leagueTeams,
 }: Props) => {
+  const { theme } = useContext(ThemeContext);
+
   const PLAYER_AGE_RANGES = ["16-20", "21-25", "26-30", "31-40"];
 
   const filterTeams = leagueTeams.map((team: TeamStandingType) => {
@@ -61,6 +64,10 @@ const SearchFilters = ({
     return newTeam;
   });
   const matchTeam = filterTeams.some((team) => team.name === selectedTeam);
+
+  const filterBtnDarkModeStyles = `${
+    theme === "light" ? "bg-teal-300 text-dark" : "bg-teal-700 text-light"
+  } border-0`;
 
   return (
     <Stack
@@ -70,7 +77,7 @@ const SearchFilters = ({
     >
       {/* Team Filter */}
       <Dropdown onSelect={(eventKey: any) => teamsFilter(eventKey, dispatch)}>
-        <Dropdown.Toggle className="d-flex gap-2 align-items-center bg-teal-300 text-black border-0">
+        <Dropdown.Toggle className={`d-flex gap-2 align-items-center ${filterBtnDarkModeStyles}`}>
           {matchTeam ? <p className="mb-0">{selectedTeam}</p> : "Team"}
         </Dropdown.Toggle>
         <Dropdown.Menu className="w-25">
@@ -94,7 +101,7 @@ const SearchFilters = ({
       <Dropdown
         onSelect={(eventKey: any) => positionFilter(eventKey, dispatch)}
       >
-        <Dropdown.Toggle className="bg-teal-300 text-black border-0">
+        <Dropdown.Toggle className={filterBtnDarkModeStyles}>
           {selectedPosition ? selectedPosition : "Position"}
         </Dropdown.Toggle>
         <Dropdown.Menu>
@@ -107,7 +114,7 @@ const SearchFilters = ({
       </Dropdown>
 
       <Dropdown onSelect={(eventKey: any) => rangeFilter(eventKey, dispatch)}>
-        <Dropdown.Toggle className="bg-teal-300 text-black border-0">
+        <Dropdown.Toggle className={filterBtnDarkModeStyles}>
           {selectedRange ? selectedRange : "Age"}
         </Dropdown.Toggle>
         <Dropdown.Menu>

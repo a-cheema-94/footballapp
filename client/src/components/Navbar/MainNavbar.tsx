@@ -42,6 +42,8 @@ const MainNavbar = ({ toggle }: Props) => {
     };
   }, []);
 
+  // todo => when scrolling down set display to none.
+
   return (
     <div>
       <Navbar

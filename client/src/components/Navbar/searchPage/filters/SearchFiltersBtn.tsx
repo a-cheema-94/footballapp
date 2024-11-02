@@ -1,7 +1,8 @@
 import { MdFilterList, MdOutlineFilterListOff } from "react-icons/md";
 import TooltipWrapper from "../../../reusable/TooltipWrapper";
 import { SearchActionType } from "../reducer/searchReducer";
-import { Dispatch } from "react";
+import { Dispatch, useContext } from "react";
+import { ThemeContext } from "../../../../context/ThemeProvider";
 
 type Props = {
   openFilters: (
@@ -29,14 +30,13 @@ type Props = {
 };
 
 // Tooltip Props
-const styleProps =
-  {
-    placement: "right-end",
-    delay: {
-      show: 1500,
-      hide: 300,
-    },
-  };
+const styleProps = {
+  placement: "right-end",
+  delay: {
+    show: 1500,
+    hide: 300,
+  },
+};
 
 const SearchFiltersBtn = ({
   openFilters,
@@ -44,22 +44,24 @@ const SearchFiltersBtn = ({
   closeFilters,
   dispatch,
 }: Props) => {
+  const { theme } = useContext(ThemeContext);
+
   return (
-      <div>
-        {!showFilters ? (
-          <MdFilterList
-            onClick={() => openFilters(dispatch)}
-            className=""
-            style={{ width: "30px", height: "30px", cursor: "pointer" }}
-          />
-        ) : (
-          <MdOutlineFilterListOff
-            onClick={() => closeFilters(dispatch)}
-            className=""
-            style={{ width: "30px", height: "30px", cursor: "pointer" }}
-          />
-        )}
-      </div>
+    <div>
+      {!showFilters ? (
+        <MdFilterList
+          onClick={() => openFilters(dispatch)}
+          className={`${theme === 'light' ? 'text-dark' : 'text-gray-200'}`}
+          style={{ width: "30px", height: "30px", cursor: "pointer" }}
+        />
+      ) : (
+        <MdOutlineFilterListOff
+          onClick={() => closeFilters(dispatch)}
+          className={`${theme === 'light' ? 'text-dark' : 'text-gray-200'}`}
+          style={{ width: "30px", height: "30px", cursor: "pointer" }}
+        />
+      )}
+    </div>
   );
 };
 

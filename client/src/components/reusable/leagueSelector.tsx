@@ -1,11 +1,10 @@
-import { Dropdown, Spinner, Stack } from "react-bootstrap";
-import { getLogosAndImages } from "../../functions/logoFunction";
+import { Dropdown, Stack } from "react-bootstrap";
 import { LEAGUES } from "../../../../shared/fixedData.ts";
-import { Dispatch, useState } from "react";
+import { Dispatch } from "react";
 import TooltipWrapper from "./TooltipWrapper.tsx";
 import { SearchActionType } from "../Navbar/searchPage/reducer/searchReducer.ts";
 import { LeagueNames } from "../../functions/fixedData.ts";
-import { StringIterator } from "lodash";
+import LogoOrPlayerImage from "./LogoOrPlayerImage.tsx";
 
 type Props = {
   setPlayerLeague?: (league: LeagueNames) => void;
@@ -66,12 +65,8 @@ const LeagueSelector = ({
     <Dropdown>
       <TooltipWrapper message="Select League" styleProps={styleProps}>
         <Dropdown.Toggle className="bg-teal-300 text-black border-0">
-          <img
-            src={getLogosAndImages("leagues", LEAGUES[league])}
-            alt=""
-            width={40}
-            height={40}
-          />
+          
+          <LogoOrPlayerImage category="leagues" dimension="40px" id={LEAGUES[league]} />
         </Dropdown.Toggle>
       </TooltipWrapper>
 
@@ -81,12 +76,10 @@ const LeagueSelector = ({
             key={index}
             onClick={() => handleDropdownSelect(league)}
           >
-            <Stack direction="horizontal" className="gap-2">
-              <p>{league}</p>
-              <img
-                src={getLogosAndImages("leagues", leagueIds[index])}
-                width={20}
-              />
+            <Stack direction="horizontal" className="align-items-center gap-2 p-1">
+              <p className="mb-0">{league}</p>
+              
+              <LogoOrPlayerImage category="leagues" dimension="20px" id={leagueIds[index]}/>
             </Stack>
           </Dropdown.Item>
         ))}

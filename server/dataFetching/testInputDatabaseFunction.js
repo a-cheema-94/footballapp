@@ -46,35 +46,3 @@ async function inputDataInDatabase(data, Model, queryParam = null) {
     }
   }
 }
-
-// async function processSingleMongooseQuery(data, Model, queryParam = null) {
-//   let query = {};
-//   if (!queryParam) {
-//     query.id = data.id;
-//   } else {
-//     query[queryParam + ".id"] = data[queryParam].id;
-//   }
-
-//   try {
-//     await Model.findOneAndUpdate(query, data, { upsert: true });
-//   } catch (error) {
-//     console.error("Error in processSingleMongooseQuery function: ", error);
-//   }
-// }
-
-// // todo => looping through array and inputting in DB is slowing down performance. Use bulkWrite to run the DB inserts in parallel. Understand then implement.
-// async function inputDataInDatabase(data, Model, queryParam) {
-//   try {
-//     if (Array.isArray(data)) {
-//       for (let item of data) {
-//         // console.time(`testing sorting and filtering of data of ${item}`);
-//         await processSingleMongooseQuery(item, Model, queryParam);
-//         // console.timeEnd(`testing sorting and filtering of data of ${item}`);
-//       }
-//     } else {
-//       await processSingleMongooseQuery(data, Model, queryParam);
-//     }
-//   } catch (error) {
-//     console.error("Error in inputDataInDatabase function: ", error);
-//   }
-// }
