@@ -22,7 +22,7 @@ function App() {
   const close = () => setSearch(false);
 
   // theme context
-  const {theme} = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   // up nav button state
   const [showNavUpBtn, setShowNavUpBtn] = useState<boolean>(false);
@@ -43,7 +43,7 @@ function App() {
   }, []);
 
   return (
-    <div className={`${theme === 'light' ? 'bg-gray-100' : 'bg-dark'}`}>
+    <div className={`${theme === "light" ? "bg-gray-100" : "bg-dark"}`}>
       <MainNavbar toggle={toggle} />
       {/* todo: change this */}
       <div style={{ paddingTop: `85px` }}>

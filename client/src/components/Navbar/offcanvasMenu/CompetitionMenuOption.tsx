@@ -1,9 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { LEAGUE_TABLE_QUERY } from "../../../queries/leagueTableQuery";
-import {
-  NavDropdown,
-  Stack,
-} from "react-bootstrap";
+import { NavDropdown, Stack } from "react-bootstrap";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import TooltipWrapper from "../../reusable/TooltipWrapper";
@@ -17,7 +14,7 @@ type Props = {
 
 const CompetitionMenuOption = ({ league }: Props) => {
   const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
-  const {theme} = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   const { data, loading, error } = useQuery(LEAGUE_TABLE_QUERY, {
     variables: {
@@ -39,7 +36,6 @@ const CompetitionMenuOption = ({ league }: Props) => {
     },
   };
 
-
   return (
     <Stack>
       <Link to="/competition" className="nav-link">
@@ -55,7 +51,11 @@ const CompetitionMenuOption = ({ league }: Props) => {
         {data.leagueStandings.map((team: TeamStandingType, index: number) => (
           <NavDropdown.Item
             key={index}
-            className={`select-none p-2 ${theme === 'light' ? 'bg-light text-dark bg-hover-gray-300' : 'bg-dark text-light bg-hover-dark-lighter-1'} `}
+            className={`select-none p-2 ${
+              theme === "light"
+                ? "bg-light text-dark bg-hover-gray-300"
+                : "bg-dark text-light bg-hover-dark-lighter-1"
+            } `}
           >
             <TooltipWrapper message="Go to team page" styleProps={styleProps}>
               <Stack
@@ -65,7 +65,12 @@ const CompetitionMenuOption = ({ league }: Props) => {
               >
                 <p>{team.team.name}</p>
 
-                <LogoOrPlayerImage category="teams" dimension="30px" id={team.team.id} key={index}/>
+                <LogoOrPlayerImage
+                  category="teams"
+                  dimension="30px"
+                  id={team.team.id}
+                  key={index}
+                />
               </Stack>
             </TooltipWrapper>
           </NavDropdown.Item>

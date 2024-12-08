@@ -12,6 +12,7 @@ import {
 import SideMenu from "./offcanvasMenu/SideMenu";
 import { ThemeContext } from "../../context/ThemeProvider";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   toggle: () => void;
@@ -23,6 +24,8 @@ const MainNavbar = ({ toggle }: Props) => {
   const [isCompetitionMenu, setIsCompetitionMenu] = useState<boolean>(false);
   const scrollPositionRef: MutableRefObject<number> = useRef<number>(0);
   const [isNavVisible, setIsNavVisible] = useState<boolean>(true);
+
+  const navigate = useNavigate();
 
   const handleScroll = () => {
     let currentScrollPos = window.scrollY;
@@ -59,7 +62,7 @@ const MainNavbar = ({ toggle }: Props) => {
             onClick={() => setIsCompetitionMenu(true)}
           />
 
-          <Navbar.Brand href="/">
+          <Navbar.Brand onClick={() => navigate('/')}>
             <img src={`./fstat_logo.svg`} alt="" width="150px" />
           </Navbar.Brand>
 

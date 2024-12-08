@@ -1,23 +1,24 @@
-import { useQuery } from "@apollo/client"
-import { LIVE_SCORES_QUERY } from "../../../../queries/liveScoresQuery"
+import { useQuery } from "@apollo/client";
+import { LIVE_SCORES_QUERY } from "../../../../queries/liveScoresQuery";
 
-type Props = {}
+type Props = {};
 
 const LiveMatchStats = (props: Props) => {
-  const { data, loading, error } = useQuery(LIVE_SCORES_QUERY, { variables: { leagues: 'Premier League' } });
+  // const { data, loading, error } = useQuery(LIVE_SCORES_QUERY, { variables: { leagues: 'Premier League' } });
 
-  if(error) return <div>An Error occurred: {error.message}</div>
-  if(loading) return <p>Loading ...</p>
+  // if(error) return <div>An Error occurred: {error.message}</div>
+  // if(loading) return <p>Loading ...</p>
 
-  console.log(data)
+  // console.log(data)
 
   return (
     <div>
-      {data.liveFixtures.length === 0 ? (
+      {/* {data.liveFixtures.length === 0 ? (
         <p>No live fixtures currently</p>
-      ) : 'need to update, since live fixtures in progress'}
+      ) : 'need to update, since live fixtures in progress'} */}
+      data unavailable for now
     </div>
-  )
-}
+  );
+};
 
-export default LiveMatchStats
+export default LiveMatchStats;

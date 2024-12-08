@@ -2,6 +2,7 @@ import {
   ChangeEvent,
   KeyboardEvent,
   useContext,
+  useDeferredValue,
   useEffect,
   useReducer,
 } from "react";
@@ -69,10 +70,12 @@ const SearchPage = ({ search, close }: Props) => {
     currentLeagueTeams,
   } = searchPageState;
 
+  const deferredSearchQuery = useDeferredValue(searchQuery);
+
   // QUERIES
   // todo: go over query logic and see if can optimize.
 
-  // autocomplete
+  // autocomplete query
   const [
     autoComplete,
     {

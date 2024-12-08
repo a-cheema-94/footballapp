@@ -1,26 +1,28 @@
-import { useQuery } from "@apollo/client"
-import { LAST_FIXTURE_INFO_QUERY } from "../../../../queries/fixtures/lastFixtureInfoQuery"
-import { FixtureLineupType, FixtureType, PlayerFixtureType } from "../../../../queries/types/queryTypes"
+import { useQuery } from "@apollo/client";
+import { LAST_FIXTURE_INFO_QUERY } from "../../../../queries/fixtures/lastFixtureInfoQuery";
+import {
+  FixtureLineupType,
+  FixtureType,
+  PlayerFixtureType,
+} from "../../../../queries/types/queryTypes";
 
-type Props = {}
+type Props = {};
 
 const FullTimeMatchStats = (props: Props) => {
-  const {data, loading, error} = useQuery(LAST_FIXTURE_INFO_QUERY, { variables: {
-    team: 'Liverpool',
-    league: 'Premier League'
-  } })
+  // const {data, loading, error} = useQuery(LAST_FIXTURE_INFO_QUERY, { variables: {
+  //   team: 'Liverpool',
+  //   league: 'Premier League'
+  // } })
 
-  if(error) return <div>An Error occurred: {error.message}</div>
-  if(loading) return <p>Loading ...</p>
+  // if(error) return <div>An Error occurred: {error.message}</div>
+  // if(loading) return <p>Loading ...</p>
 
-
-  const { events, fixture, goals, league, lineups } = data.getLastFixtureInfo;
-  const [ homeTeamLineup, awayTeamLineup ] = lineups;
+  // const { events, fixture, goals, league, lineups } = data.getLastFixtureInfo;
+  // const [ homeTeamLineup, awayTeamLineup ] = lineups;
 
   return (
     <div>
-
-      <div className="">
+      {/* <div className="">
 
         <p>{fixture.referee}</p>
         <p>{fixture.status.short}</p>
@@ -40,9 +42,10 @@ const FullTimeMatchStats = (props: Props) => {
             <p key={index}>{player.player.name}</p>
           ))}
         </div>
-      </div>
+      </div> */}
+      data unavailable for now
     </div>
-  )
-}
+  );
+};
 
-export default FullTimeMatchStats
+export default FullTimeMatchStats;

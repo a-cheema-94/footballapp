@@ -6,25 +6,24 @@ import { TeamStandingType } from "../../queries/types/queryTypes"
 type Props = {}
 
 const Competition = (props: Props) => {
-  const {data, loading, error} = useQuery(LEAGUE_TABLE_QUERY, { variables: {
-    league: "Premier League"
-  } })
+  // const {data, loading, error} = useQuery(LEAGUE_TABLE_QUERY, { variables: {
+  //   league: "Premier League"
+  // } })
 
-  if(error) return <div>An Error occurred: {error.message}</div>
-  if(loading) return <p>Loading ...</p>
+  // if(error) return <div>An Error occurred: {error.message}</div>
+  // if(loading) return <p>Loading ...</p>
 
 
   return (
     <div>
-      {data.leagueStandings.map((team: TeamStandingType, index: number) => (
+      {/* {data.leagueStandings.map((team: TeamStandingType, index: number) => (
         <div className="d-flex gap-2" key={index}>
           <div>{team.team.name}</div>
           <div>{team.points}</div>
           <div>{team.rank}</div>
         </div>
-      ))}
-
-      <TopPlayerData />
+      ))} */}
+      data unavailable for now
     </div>
   )
 }
