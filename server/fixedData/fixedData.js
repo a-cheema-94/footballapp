@@ -24,4 +24,5 @@ export const LEAGUES = {
   "La Liga": 140
 }
 
+// todo => change to current season when paid for higher tier of football api.
 export const SEASON = 2024

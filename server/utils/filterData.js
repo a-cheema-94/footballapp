@@ -10,8 +10,10 @@ export const filterObj = (objToFilter, propsToFilter) => {
   const filteredObj = {};
 
   for (const key of Object.keys(objToFilter)) {
-    // base case
+    // BASE CASE
+
     // Put key in filteredObj if it doesn't match with any nested paths and skip.
+    // object keys will be strings inside loop so can use String.startsWith method.
     if (!propsToFilter.some((prop) => prop.startsWith(key))) {
       filteredObj[key] = objToFilter[key];
       continue;
@@ -24,7 +26,9 @@ export const filterObj = (objToFilter, propsToFilter) => {
       .filter((prop) => prop.split(".")[0] === key)
       .map((filteredProp) => filteredProp.split(".").slice(1).join("."));
 
-    // recursive call, while also ensuring only objects get passed to function. NOTE: typeof null === 'object' so we add not null check condition.
+    // RECURSIVE CALL
+    
+    // Ensure only objects get passed to function. NOTE: typeof null === 'object' so we add not null check condition.
     filteredObj[key] =
       objToFilter[key] !== null && typeof objToFilter[key] === "object"
         ? filterObj(objToFilter[key], newPropsToFilter)

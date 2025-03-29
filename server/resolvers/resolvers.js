@@ -20,16 +20,19 @@ import {
   squadMemberAggregateSearch,
 } from "./additionalFunctions.js";
 
-// todo: double check for naming conventions. Make more readable.
-// NOTE: On some resolvers we will need id's from the players or teams since if api call is need, this is required in the request url. E.g. playerSquads resolver needs team id, since the query to the endpoint: players/squads on the api needs team id in the request.
+// NOTE: On some resolvers we will need id's from the players or teams since if api call is needed, this is required in the request url. E.g. playerSquads resolver needs team id, since the query to the endpoint: players/squads on the api needs team id in the request.
 
 export const resolvers = {
   Query: {
     topPlayers: async (_, { league, limit = 20, sortBy }) => {
       // clearMongoCollection(Player);
       // clearMongoCollection(Fixture);
-      // clearMongoCollection(LastApiCallTimes, { endpoint: 'players/topscorers' });
-      // clearMongoCollection(LastApiCallTimes, { endpoint: 'players/topassists' });
+      // clearMongoCollection(LastApiCallTimes);
+      // clearMongoCollection(SquadMember);
+      // clearMongoCollection(TeamStanding);
+      // clearMongoCollection(TeamStats);
+      // clearMongoCollection(News);
+      
 
       // setup endpoint and handle parameter values
       let endpoint = "players/topscorers";

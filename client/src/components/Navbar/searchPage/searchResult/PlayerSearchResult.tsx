@@ -17,6 +17,7 @@ const PlayerSearchResult = ({ player, team }: Props) => {
   
   const teamId = team.find((team) => team.team.name === player.team)?.team.id;
 
+  console.log(player)
   return (
     <Stack
       className={`align-items-center border rounded ${theme === 'light' ? 'bg-hover-gray-200' : 'bg-hover-dark-lighter-1'} shadow position-relative`}

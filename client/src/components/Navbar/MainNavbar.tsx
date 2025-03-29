@@ -62,7 +62,7 @@ const MainNavbar = ({ toggle }: Props) => {
             onClick={() => setIsCompetitionMenu(true)}
           />
 
-          <Navbar.Brand onClick={() => navigate('/')}>
+          <Navbar.Brand className="cursor-pointer" onClick={() => navigate('/')}>
             <img src={`./fstat_logo.svg`} alt="" width="150px" />
           </Navbar.Brand>
 

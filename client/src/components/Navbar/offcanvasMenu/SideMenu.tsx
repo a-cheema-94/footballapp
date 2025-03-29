@@ -12,6 +12,8 @@ type Props = {
 const SideMenu = ({ isCompetitionMenu, setIsCompetitionMenu }: Props) => {
   const { theme } = useContext(ThemeContext);
 
+  const closeMenu = () => setIsCompetitionMenu(false);
+
   return (
     <Navbar.Offcanvas
       id={`offcanvasNavbar-expand-${false}`}
@@ -20,6 +22,7 @@ const SideMenu = ({ isCompetitionMenu, setIsCompetitionMenu }: Props) => {
       show={isCompetitionMenu}
       onHide={() => setIsCompetitionMenu(false)}
       className={`${theme === "light" ? "bg-gray-100" : "bg-dark text-light"}`}
+
     >
       {/* Useful: since closeVariant doesn't have a default value we have to conditionally render the prop. A pattern to remember: {...(condition ? { prop: 'something' }: {})} => will spread an empty object if condition is not met.*/}
 
@@ -34,7 +37,7 @@ const SideMenu = ({ isCompetitionMenu, setIsCompetitionMenu }: Props) => {
       <Offcanvas.Body>
         <Nav className="justify-content-end flex-grow-1">
           {Object.keys(LEAGUES).map((league, index) => (
-            <CompetitionMenuOption key={index} league={league} />
+            <CompetitionMenuOption key={index} league={league} closeMenu={closeMenu}/>
           ))}
         </Nav>
       </Offcanvas.Body>

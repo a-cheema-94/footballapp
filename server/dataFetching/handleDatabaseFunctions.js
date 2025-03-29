@@ -251,6 +251,8 @@ const sortQueryParam = (queryParam, data) => {
   return query;
 };
 
+// bulk write => can execute db operations in parallel from an array of queries.
+
 async function inputDataInDatabase(data, Model, queryParam = null) {
   // sort out query param into right query => have to do this for every data entry.
 

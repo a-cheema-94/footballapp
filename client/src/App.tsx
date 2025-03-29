@@ -1,5 +1,5 @@
 import Club from "./components/Pages/Club/Club";
-import Competition from "./components/Pages/Competition";
+import Competition from "./components/Pages/Competition/Competition";
 import Homepage from "./components/Pages/Homepage/Homepage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "slick-carousel/slick/slick.css";

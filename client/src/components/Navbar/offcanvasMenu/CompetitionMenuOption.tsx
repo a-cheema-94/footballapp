@@ -10,9 +10,10 @@ import LogoOrPlayerImage from "../../reusable/LogoOrPlayerImage";
 
 type Props = {
   league: string;
+  closeMenu: () => void
 };
 
-const CompetitionMenuOption = ({ league }: Props) => {
+const CompetitionMenuOption = ({ league, closeMenu }: Props) => {
   const [isDropDownOpen, setIsDropDownOpen] = useState<boolean>(false);
   const { theme } = useContext(ThemeContext);
 
@@ -38,9 +39,9 @@ const CompetitionMenuOption = ({ league }: Props) => {
 
   return (
     <Stack>
-      <Link to="/competition" className="nav-link">
+      <Link to="/competition" state={{ league, teams: data.leagueStandings }} className="nav-link" onClick={closeMenu}>
         {league}
-      </Link>
+      </Link> 
       <NavDropdown
         title=""
         id={`offcanvasNavbarDropdown-expand-${false}`}

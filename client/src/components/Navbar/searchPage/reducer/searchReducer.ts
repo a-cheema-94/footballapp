@@ -1,20 +1,5 @@
 import { SquadMemberType, TeamStandingType } from "../../../../queries/types/queryTypes";
 
-// types
-
-type SearchStateType = {
-  showFilters: boolean;
-  showAutoCompleteSuggestions: boolean;
-  searchQuery: string;
-  playerSuggestions: SquadMemberType[];
-  autoCompleteSuggestions: SquadMemberType[];
-  autoCompleteSuggestionIndex: number;
-  playerLeague: string;
-  playerTeam: string | null;
-  playerPosition: string | null;
-  playerRange: string | null;
-  currentLeagueTeams: TeamStandingType[] | []
-};
 
 // state and action setup
 
@@ -32,6 +17,22 @@ const initialSearchState: SearchStateType = {
   currentLeagueTeams: []
 };
 
+// types
+
+type SearchStateType = {
+  showFilters: boolean;
+  showAutoCompleteSuggestions: boolean;
+  searchQuery: string;
+  playerSuggestions: SquadMemberType[];
+  autoCompleteSuggestions: SquadMemberType[];
+  autoCompleteSuggestionIndex: number;
+  playerLeague: string;
+  playerTeam: string | null;
+  playerPosition: string | null;
+  playerRange: string | null;
+  currentLeagueTeams: TeamStandingType[] | []
+};
+
 type SearchActionMap = {
   TOGGLE_SEARCH_FILTERS: { showFilters: boolean };
   TOGGLE_AUTOCOMPLETE_MENU: { showAutoCompleteSuggestions: boolean };
@@ -47,9 +48,9 @@ type SearchActionMap = {
 };
 
 type SearchActionType<T extends keyof SearchActionMap> = {
-  type: T;
+  type: T; // each type will be a string value.
   payload: SearchActionMap[T];
-};
+};  
 
 type SearchActionHandlersType = {
   [T in keyof SearchActionMap]: (

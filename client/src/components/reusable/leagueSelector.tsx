@@ -6,8 +6,12 @@ import { SearchActionType } from "../Navbar/searchPage/reducer/searchReducer.ts"
 import { LeagueNames } from "../../functions/fixedData.ts";
 import LogoOrPlayerImage from "./LogoOrPlayerImage.tsx";
 
+// NOTE: This can be re-used in the search component and elsewhere, only have to include or omit the optional search page functions.
+
 type Props = {
+  league: string;
   setPlayerLeague?: (league: LeagueNames) => void;
+  
   resetFilters?: (
     dispatch: React.Dispatch<
       SearchActionType<
@@ -15,6 +19,7 @@ type Props = {
       >
     >
   ) => void;
+
   selectLeague?: (
     eventKey: string,
     dispatch: Dispatch<SearchActionType<"FILTER_PLAYER_LEAGUE">>
@@ -27,7 +32,6 @@ type Props = {
       | "FILTER_PLAYER_RANGE"
     >
   >;
-  league: string;
 };
 
 const LeagueSelector = ({

@@ -8,7 +8,7 @@ export const apiCallFrequencies = {
   YEARLY: 365 * 24 * 60 * 60 * 1000,
 };
 
-// api call frequency => how often should the endpoint update.
+// api call frequency => how often should the endpoint update. Above function in milliseconds.
 // parameter => additional identifier when needing to access the document.
 // e.g. freq = daily, endpoint = players/topscorers, parameter = Premier League => here we are querying whether we need to update the top scorers in the premier league endpoint. This data will be updated daily.
 

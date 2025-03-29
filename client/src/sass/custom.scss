@@ -95,6 +95,10 @@ $all-colors: map.merge(
   box-sizing: border-box;
 }
 
+.cursor-pointer {
+  cursor: pointer
+}
+
 /* Navbar */
 
 .custom-navbar {
