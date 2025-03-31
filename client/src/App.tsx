@@ -42,11 +42,14 @@ function App() {
     return () => document.removeEventListener("scroll", scrollFunction);
   }, []);
 
+  // 
   return (
     <div className={`${theme === "light" ? "bg-gray-100" : "bg-dark"}`}>
-      <MainNavbar toggle={toggle} />
+      <div className="mw-100 mx-auto">
+        <MainNavbar toggle={toggle} />
+      </div>
       {/* todo: change this */}
-      <div style={{ paddingTop: `85px` }}>
+      <div style={{ paddingTop: `75px`, overflowY: 'hidden' }}>
         {search && <SearchPage search={search} close={close} />}
         {!search && (
           <Routes>

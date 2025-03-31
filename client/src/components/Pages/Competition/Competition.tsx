@@ -29,23 +29,23 @@ const Competition = (props: Props) => {
       },
     }
   );
-  
+
   const { theme } = useContext(ThemeContext);
-  
-  const { state  } = useLocation();
+
+  const { state } = useLocation();
   const { league: leagueGivenInLink, teams: teamsGivenInLink } = state;
 
   const fetchTeams = (teamsGivenInLink: any) => {
     if (teamsGivenInLink) {
       console.log("called: teamsGivenInLink");
       setTeams(teamsGivenInLink);
-      setCurrentLeague(leagueGivenInLink)
+      setCurrentLeague(leagueGivenInLink);
       // click on screen to get rid of side menu
     } else {
       console.log("called: teamsFromDb");
       teamsFromDB({ variables: { league: currentLeague } });
     }
-  }
+  };
 
   useEffect(() => {
     fetchTeams(teamsGivenInLink);
@@ -55,7 +55,7 @@ const Competition = (props: Props) => {
     setCurrentLeague(league);
     console.log("called: teamsFromDb");
     teamsFromDB({ variables: { league } });
-  }
+  };
 
   if (error) return <div>An Error occurred: {error.message}</div>;
   if (loading) return <p>Loading ...</p>;
@@ -64,12 +64,18 @@ const Competition = (props: Props) => {
     <div className="d-flex flex-column gap-4 align-items-center">
       {/* league name and league selector */}
       <div className="d-flex gap-3 align-items-center mt-3">
-        <LeagueSelector league={currentLeague} setPlayerLeague={handlePlayerLeague}/>
-        <h5 className={`${theme === 'light' ? 'text-black' : 'text-white'}`}>{currentLeague}</h5>
+        <LeagueSelector
+          league={currentLeague}
+          setPlayerLeague={handlePlayerLeague}
+        />
+        <h5 className={`${theme === "light" ? "text-black" : "text-white"}`}>
+          {currentLeague}
+        </h5>
       </div>
       {/* table */}
       {teams ? (
-        <Table striped hover className="border rounded">
+        <Container fluid>
+        <Table responsive="md" striped hover className="border rounded mw-100 mx-auto">
           <thead>
             <tr>
               <th colSpan={2}>Club</th>
@@ -106,12 +112,13 @@ const Competition = (props: Props) => {
                 <td>{team.goalsDiff}</td>
                 <td>{team.points}</td>
                 <td>
-                  <FormGraphic form={team.form}/>
+                  <FormGraphic form={team.form} />
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
+        </Container>
       ) : (
         <div>data unavailable for now</div>
       )}
@@ -120,22 +127,3 @@ const Competition = (props: Props) => {
 };
 
 export default Competition;
-
-{
-  /* <Table striped hover responsive="md">
-              <thead className="fw-bold">
-                <tr className="text-center">
-                  {/* <th></th>
-
-            <th>Goals</th>
-
-            <th>Assists</th>
-            <th>Successful Dribbles</th>
-            <th>Appearances</th>
-            <th>Total Attempted Passes/ Successful passes per 90 mins</th>
-            <th>Shots (Total / On Target)</th> */
-}
-//     </tr>
-//   </thead>
-//   <tbody></tbody>
-// </Table> */}

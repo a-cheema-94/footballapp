@@ -199,7 +199,7 @@ const SearchPage = ({ search, close }: Props) => {
             league={playerLeague}
           />
 
-          <div className="w-100 position-relative">
+          <div style={{ maxWidth: '100%', }} className="position-relative">
             <Form.Control
               value={searchQuery}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>

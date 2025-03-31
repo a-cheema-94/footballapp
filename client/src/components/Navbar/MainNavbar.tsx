@@ -13,6 +13,7 @@ import SideMenu from "./offcanvasMenu/SideMenu";
 import { ThemeContext } from "../../context/ThemeProvider";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import useMediaQuery from "../reusable/customHooks/useMediaQuery";
 
 type Props = {
   toggle: () => void;
@@ -20,6 +21,7 @@ type Props = {
 
 const MainNavbar = ({ toggle }: Props) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const navbarBreakpoint = useMediaQuery("(max-width: 650px)");
 
   const [isCompetitionMenu, setIsCompetitionMenu] = useState<boolean>(false);
   const scrollPositionRef: MutableRefObject<number> = useRef<number>(0);
@@ -62,28 +64,42 @@ const MainNavbar = ({ toggle }: Props) => {
             onClick={() => setIsCompetitionMenu(true)}
           />
 
-          <Navbar.Brand className="cursor-pointer" onClick={() => navigate('/')}>
-            <img src={`./fstat_logo.svg`} alt="" width="150px" />
-          </Navbar.Brand>
-
-          <Button
-            className="bg-transparent text-black border-0"
-            onClick={toggleTheme}
+          <Navbar.Brand
+            style={{ width:'100px' }}
+            className="cursor-pointer border-0"
+            onClick={() => navigate("/")}
           >
-            {theme === "light" ? (
-              <MdDarkMode size={20} />
+            {navbarBreakpoint ? (
+              <img
+                src={`./fstat_logo_no_title.svg`}
+                alt=""
+                width={"100%"}
+              />
+
             ) : (
-              <MdLightMode size={20} />
+              <img
+                src={`./fstat_logo.svg`}
+                alt=""
+                width={"100%"}
+              />
             )}
-          </Button>
 
-          <Button
-            onClick={() => toggle()}
-            className="bg-transparent text-black border-0"
-          >
-            <IoSearchOutline style={{ width: "30px", height: "30px" }} />
-          </Button>
-
+          </Navbar.Brand>
+            
+            <Button
+              className="bg-transparent text-black border-0"
+              onClick={toggleTheme}
+            >
+              {theme === "light" ? <MdDarkMode /> : <MdLightMode />}
+            </Button>
+            <Button
+              onClick={() => toggle()}
+              className="bg-transparent text-black border-0"
+            >
+              {/*  */}
+              <IoSearchOutline />
+            </Button>
+            
           <SideMenu
             isCompetitionMenu={isCompetitionMenu}
             setIsCompetitionMenu={setIsCompetitionMenu}
