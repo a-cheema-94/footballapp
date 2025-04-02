@@ -424,9 +424,9 @@ export const resolvers = {
       _,
       { query, league, team = null, position = null, range = null }
     ) => {
-      // clearMongoCollection(LastApiCallTimes)
-
       // sort out endpoint and define sorting variables and parameters.
+
+      // clearMongoCollection(LastApiCallTimes, { endpoint: 'players/squads' });
       let searchResults = [];
       let teamId;
       let endpoint = "players/squads";
@@ -464,7 +464,6 @@ export const resolvers = {
       try {
         searchResults = await squadMemberAggregateSearch(query, matchFields);
         // search database first if no results, decide if should make query to api.
-
         if (searchResults.length === 0 && team !== null) {
           console.log(
             chalk.bold.bgYellowBright.black(
@@ -486,7 +485,7 @@ export const resolvers = {
 
           // query database again
           searchResults = await squadMemberAggregateSearch(query, matchFields);
-        } else {
+          } else {
           console.log(
             chalk.bold.bgMagenta("player/players in database already")
           );
