@@ -7,6 +7,7 @@ import TooltipWrapper from "../../reusable/TooltipWrapper";
 import { TeamStandingType } from "../../../queries/types/queryTypes";
 import { ThemeContext } from "../../../context/ThemeProvider";
 import LogoOrPlayerImage from "../../reusable/LogoOrPlayerImage";
+import { closeAutoCompleteMenu } from "../searchPage/searchFunctions/searchPageFunctions";
 
 type Props = {
   league: string;
@@ -36,6 +37,10 @@ const CompetitionMenuOption = ({ league, closeMenu }: Props) => {
       hide: 400,
     },
   };
+
+  const handleCompetitionMenuClick = () => {
+    closeMenu();
+  }
 
   return (
     <Stack>

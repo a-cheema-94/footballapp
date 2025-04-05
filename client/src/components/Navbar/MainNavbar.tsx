@@ -17,9 +17,10 @@ import useMediaQuery from "../reusable/customHooks/useMediaQuery";
 
 type Props = {
   toggle: () => void;
+  closeSearch: () => void;
 };
 
-const MainNavbar = ({ toggle }: Props) => {
+const MainNavbar = ({ toggle, closeSearch }: Props) => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const navbarBreakpoint = useMediaQuery("(max-width: 650px)");
 
@@ -49,6 +50,16 @@ const MainNavbar = ({ toggle }: Props) => {
 
   // At low opacity set pointer events of Navbar to none so content under the faded navbar is clickable.
 
+  const closeMenu = () => {
+    closeSearch();
+    setIsCompetitionMenu(false);
+  }
+
+  const handleClickLogo = () => {
+    closeMenu();
+    navigate("/")
+  }
+
   return (
     <div>
       <Navbar
@@ -64,10 +75,11 @@ const MainNavbar = ({ toggle }: Props) => {
             onClick={() => setIsCompetitionMenu(true)}
           />
 
-          <Navbar.Brand
-            style={{ width:'100px' }}
-            className="cursor-pointer border-0"
-            onClick={() => navigate("/")}
+          <Button
+            style={{ width:'120px' }}
+            className="cursor-pointer border-0 bg-transparent"
+            onClick={handleClickLogo}
+            
           >
             {navbarBreakpoint ? (
               <img
@@ -84,7 +96,7 @@ const MainNavbar = ({ toggle }: Props) => {
               />
             )}
 
-          </Navbar.Brand>
+          </Button>
             
             <Button
               className="bg-transparent text-black border-0"
@@ -102,7 +114,7 @@ const MainNavbar = ({ toggle }: Props) => {
             
           <SideMenu
             isCompetitionMenu={isCompetitionMenu}
-            setIsCompetitionMenu={setIsCompetitionMenu}
+            closeMenu={closeMenu}
           />
         </Container>
       </Navbar>

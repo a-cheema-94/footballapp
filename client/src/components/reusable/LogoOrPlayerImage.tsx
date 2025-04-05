@@ -39,13 +39,13 @@ const LogoOrPlayerImage = ({
 
   return (
     <>
-      {imageError && <span className="text-red-600">Image failed to load</span>}
+      {/* {imageError && <span className="text-red-600">Image failed to load</span>} */}
       {!imageLoaded && <Spinner className="ratio-1x1" animation="grow" {...(smallLoadingSpinner ? { size: 'sm' } : {})}/>}
       <img
         style={imgStyles}
         src={getLogosAndImages(category, id)}
         onLoad={handleImgLoad}
-        onError={handleImgError}
+        // onError={handleImgError}
         className={optionalClasses}
       />
     </>

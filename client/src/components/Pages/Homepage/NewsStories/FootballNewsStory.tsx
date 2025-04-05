@@ -16,8 +16,6 @@ const FootballNewsStory = ({ story, noImage, largeConfig }: Props) => {
     color: "inherit",
   };
 
-  const publishedAtTime = convertPublishedAtString(story.publishedAt);
-
   return (
     <>
       {
@@ -55,7 +53,7 @@ const FootballNewsStory = ({ story, noImage, largeConfig }: Props) => {
             >
               <h2>{story.title}</h2>
               <div className="d-flex gap-2 ">
-                <p className="fw-lighter">{publishedAtTime}</p>
+                <p className="fw-lighter">{convertPublishedAtString(story.publishedAt) ?? ''}</p>
                 <p>By {story.author}</p>
               </div>
             </div>

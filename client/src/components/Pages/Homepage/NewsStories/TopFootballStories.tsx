@@ -41,7 +41,6 @@ const ConfigOne = ({ newsStories }: { newsStories: NewsType[] }) => {
         ))}
       </Row>
 
-
       <Row className="m-4">
         <Col className="d-flex flex-column justify-content-center gap-3">
           {newsStories.slice(6, 9).map((story, index) => (
@@ -67,18 +66,16 @@ const TopFootballStories = (props: Props) => {
 
   const { data, loading, error } = useQuery(TOP_NEWS_QUERY);
 
-  const newsStories: NewsType[] = data ? data["topFootballStories"] : [];
-
   if (loading) return <p>Loading ...</p>;
   if (error) return <p>An Error occurred: {error.message}</p>;
 
   return (
     <Container className="mt-3">
       {isScreenLarge ? (
-        <ConfigOne newsStories={newsStories} />
+        <ConfigOne newsStories={data["topFootballStories"]} />
       ) : (
         <div className="d-flex flex-wrap justify-content-center mt-4 gap-2">
-          {newsStories.map((story, index) => (
+          {data["topFootballStories"].map((story: NewsType, index: number) => (
             <FootballNewsStory key={index} story={story} />
           ))}
         </div>

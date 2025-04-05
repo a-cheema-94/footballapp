@@ -13,8 +13,6 @@ import { ThemeContext } from "../../../context/ThemeProvider";
 type Props = {};
 
 const Competition = (props: Props) => {
-  // todo: LeagueSelector component integration
-  // todo: style table.
   // todo: see if should put id in URL when navigating to team tables, individual teams and players. => router
 
   const [teams, setTeams] = useState<TeamStandingType[]>();
@@ -24,7 +22,6 @@ const Competition = (props: Props) => {
     LEAGUE_TABLE_QUERY,
     {
       onCompleted: (teamData: any) => {
-        console.log("league query executed");
         setTeams(teamData.leagueStandings);
       },
     }
@@ -37,7 +34,6 @@ const Competition = (props: Props) => {
 
   const fetchTeams = (teamsGivenInLink: any) => {
     if (teamsGivenInLink) {
-      console.log("called: teamsGivenInLink");
       setTeams(teamsGivenInLink);
       setCurrentLeague(leagueGivenInLink);
       // click on screen to get rid of side menu

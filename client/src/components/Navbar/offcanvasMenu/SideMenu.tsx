@@ -3,16 +3,15 @@ import { Nav, Navbar, Offcanvas } from "react-bootstrap";
 import CompetitionMenuOption from "./CompetitionMenuOption";
 import { LEAGUES } from "../../../functions/fixedData";
 import { ThemeContext } from "../../../context/ThemeProvider";
+import { closeAutoCompleteMenu } from "../searchPage/searchFunctions/searchPageFunctions";
 
 type Props = {
   isCompetitionMenu: boolean;
-  setIsCompetitionMenu: Dispatch<SetStateAction<boolean>>;
+  closeMenu: () => void;
 };
 
-const SideMenu = ({ isCompetitionMenu, setIsCompetitionMenu }: Props) => {
+const SideMenu = ({ isCompetitionMenu, closeMenu }: Props) => {
   const { theme } = useContext(ThemeContext);
-
-  const closeMenu = () => setIsCompetitionMenu(false);
 
   return (
     <Navbar.Offcanvas
@@ -20,11 +19,10 @@ const SideMenu = ({ isCompetitionMenu, setIsCompetitionMenu }: Props) => {
       aria-labelledby={`offcanvasNavbarLabel-expand-${false}`}
       placement="start"
       show={isCompetitionMenu}
-      onHide={() => setIsCompetitionMenu(false)}
+      onHide={closeMenu}
       className={`${theme === "light" ? "bg-gray-100" : "bg-dark text-light"}`}
-
     >
-      {/* Useful: since closeVariant doesn't have a default value we have to conditionally render the prop. A pattern to remember: {...(condition ? { prop: 'something' }: {})} => will spread an empty object if condition is not met.*/}
+      {/* ? Useful: since closeVariant doesn't have a default value we have to conditionally render the prop. A pattern to remember: {...(condition ? { prop: 'something' }: {})} => will spread an empty object if condition is not met.*/}
 
       <Offcanvas.Header
         closeButton
@@ -37,7 +35,11 @@ const SideMenu = ({ isCompetitionMenu, setIsCompetitionMenu }: Props) => {
       <Offcanvas.Body>
         <Nav className="justify-content-end flex-grow-1">
           {Object.keys(LEAGUES).map((league, index) => (
-            <CompetitionMenuOption key={index} league={league} closeMenu={closeMenu}/>
+            <CompetitionMenuOption
+              key={index}
+              league={league}
+              closeMenu={closeMenu}
+            />
           ))}
         </Nav>
       </Offcanvas.Body>

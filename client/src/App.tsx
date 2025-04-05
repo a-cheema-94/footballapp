@@ -46,7 +46,7 @@ function App() {
   return (
     <div className={`${theme === "light" ? "bg-gray-100" : "bg-dark"}`}>
       <div className="mw-100 mx-auto">
-        <MainNavbar toggle={toggle} />
+        <MainNavbar toggle={toggle} closeSearch={close}/>
       </div>
       {/* todo: change this */}
       <div style={{ paddingTop: `75px`, overflowY: 'hidden' }}>

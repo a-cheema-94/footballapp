@@ -221,7 +221,10 @@ const handleRangeFilter = (
     },
   });
 
-// const handleLeagueTeams = () => dispatch({ type: "", payload: { currentLeagueTeams:  } })
+const closeAutoCompleteMenu = (dispatch: Dispatch<SearchActionType<"TOGGLE_AUTOCOMPLETE_MENU">>) => dispatch({
+  type: "TOGGLE_AUTOCOMPLETE_MENU",
+  payload: { showAutoCompleteSuggestions: false },
+})
 
 export {
   clearSearch,
@@ -235,4 +238,5 @@ export {
   handleRangeFilter,
   handleTeamsFilter,
   resetFilters,
+  closeAutoCompleteMenu
 };
