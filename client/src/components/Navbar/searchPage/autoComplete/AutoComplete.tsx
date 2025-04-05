@@ -3,6 +3,7 @@ import { ListGroup } from "react-bootstrap";
 import { SearchActionType } from "../reducer/searchReducer";
 import { SquadMemberType } from "../../../../queries/types/queryTypes";
 import LogoOrPlayerImage from "../../../reusable/LogoOrPlayerImage";
+import { removeAposHTMLCharacter } from "../../../../functions/removeApos";
 
 type Props = {
   showAutoCompleteSuggestions: boolean;
@@ -62,7 +63,7 @@ const AutoComplete = ({
               >
 
                 <LogoOrPlayerImage category="players" dimension="3rem" id={suggestion.id} key={index}/>
-                <p>{suggestion.name}</p>
+                <p>{removeAposHTMLCharacter(suggestion.name)}</p>
               </ListGroup.Item>
             )
           )}

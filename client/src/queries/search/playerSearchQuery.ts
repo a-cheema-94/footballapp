@@ -14,6 +14,7 @@ export const PLAYER_SEARCH_QUERY = gql`
       team: $team
       range: $range
       position: $position
+      
     ) {
       age
       league

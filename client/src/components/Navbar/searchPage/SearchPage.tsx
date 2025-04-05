@@ -161,6 +161,7 @@ const SearchPage = ({ search, close }: Props) => {
   }, [searchQuery, playerLeague, playerTeam, playerRange, playerPosition]);
 
   //query Team standings when playerLeague changes use useEffect.
+
   useEffect(() => {
     teams({ variables: { league: playerLeague } });
   }, [playerLeague]);
@@ -175,14 +176,8 @@ const SearchPage = ({ search, close }: Props) => {
 
   // we can click outside of autocomplete suggestions to close suggestions using this ref.
   const autoCompleteRef = useContentVisible<HTMLDivElement>(closeAutoComplete);
-
-  // if search query matches on player suggestion exactly.
-
-  const queryMatchesPlayer = playerSuggestions.some(
-    (player) => player.name === searchQuery
-  );
-
-  // navbar height: 85px,
+  
+  
 
   return (
     <div
@@ -190,6 +185,9 @@ const SearchPage = ({ search, close }: Props) => {
         theme === "light" ? "bg-light text-dark" : "bg-dark text-light"
       } w-100 d-flex flex-column gap-3 pb-1`}
     >
+
+    {/* search bar and filters */}
+
       <div className="d-flex justify-content-between w-100 p-2 flex-wrap">
         <Form className="d-flex w-50 gap-2 align-items-center">
           <LeagueSelector
@@ -220,6 +218,7 @@ const SearchPage = ({ search, close }: Props) => {
               className=""
               style={{ minWidth: "200px" }}
             />
+
             {searchQuery && (
               <CloseButton
                 onClick={() => clearSearch(dispatch)}
@@ -244,8 +243,11 @@ const SearchPage = ({ search, close }: Props) => {
             closeFilters={closeFilters}
             dispatch={dispatch}
           />
+
           <br />
         </Form>
+
+{/* search results */}
 
         {showFilters && (
           <SearchFilters
@@ -271,13 +273,9 @@ const SearchPage = ({ search, close }: Props) => {
       </div>
 
       <div style={{ minHeight: "100dvh" }}>
-        {searchQuery ? (
-          queryMatchesPlayer ? (
-            <PlayerSearchResult
-              player={playerSuggestions[0]}
-              team={currentLeagueTeams}
-            />
-          ) : (
+
+        {searchQuery && playerSuggestions.length > 0 ?
+         (
             <div className="overflow-y-auto d-flex justify-content-center gap-2 flex-wrap m-2">
               {playerSuggestions.map(
                 (player: SquadMemberType, index: number) => (
@@ -290,7 +288,7 @@ const SearchPage = ({ search, close }: Props) => {
               )}
             </div>
           )
-        ) : (
+         : (
           <p
             className={` ${
               theme === "light" ? "text-teal-700" : "text-teal-400"
@@ -299,6 +297,7 @@ const SearchPage = ({ search, close }: Props) => {
             No current search results, try specifying a team.
           </p>
         )}
+
       </div>
     </div>
   );

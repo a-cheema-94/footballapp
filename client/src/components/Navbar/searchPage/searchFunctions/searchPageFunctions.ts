@@ -3,6 +3,7 @@
 import { ChangeEvent, KeyboardEvent, Dispatch } from "react";
 import { SearchActionType } from "../reducer/searchReducer";
 import { SquadMemberType } from "../../../../queries/types/queryTypes";
+import { removeAposHTMLCharacter } from "../../../../functions/removeApos";
 
 const clearSearch = (
   dispatch: Dispatch<
@@ -76,7 +77,7 @@ const handleKeyDown = (
         type: "SET_SEARCH_QUERY",
         payload: {
           searchQuery:
-            autoCompleteSuggestions[autoCompleteSuggestionIndex].name,
+          removeAposHTMLCharacter(autoCompleteSuggestions[autoCompleteSuggestionIndex].name),
         },
       });
     }
@@ -106,6 +107,7 @@ const handleClickListItems = (
   >,
   autoCompleteSuggestions: SquadMemberType[]
 ) => {
+
   dispatch({
     type: "FILTER_PLAYER_LEAGUE",
     payload: {
@@ -114,7 +116,7 @@ const handleClickListItems = (
   });
   dispatch({
     type: "SET_SEARCH_QUERY",
-    payload: { searchQuery: autoCompleteSuggestions[index].name },
+    payload: { searchQuery: removeAposHTMLCharacter(autoCompleteSuggestions[index].name) },
   });
   setTimeout(() => {
     dispatch({

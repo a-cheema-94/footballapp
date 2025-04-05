@@ -6,6 +6,7 @@ import {
 import LogoOrPlayerImage from "../../../reusable/LogoOrPlayerImage";
 import { ThemeContext } from "../../../../context/ThemeProvider";
 import { useContext } from "react";
+import { removeAposHTMLCharacter } from "../../../../functions/removeApos";
 
 type Props = {
   player: SquadMemberType;
@@ -17,7 +18,6 @@ const PlayerSearchResult = ({ player, team }: Props) => {
   
   const teamId = team.find((team) => team.team.name === player.team)?.team.id;
 
-  console.log(player)
   return (
     <Stack
       className={`align-items-center border rounded ${theme === 'light' ? 'bg-hover-gray-200' : 'bg-hover-dark-lighter-1'} shadow position-relative`}
@@ -38,7 +38,7 @@ const PlayerSearchResult = ({ player, team }: Props) => {
         </p>
         {/* info */}
         <div className="">
-          <p className="fw-bolder mb-2">{player.name}</p>
+          <p className="fw-bolder mb-2">{removeAposHTMLCharacter(player.name ?? '')}</p>
           <p className="">{player.position}</p>
         </div>
       </div>
