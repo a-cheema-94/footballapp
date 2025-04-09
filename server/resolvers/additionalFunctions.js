@@ -6,6 +6,9 @@ import Player from "../models/TopPlayerModel.js";
 import SquadMember from "../models/SquadMemberModel.js";
 import { LEAGUES } from "../fixedData/fixedData.js";
 
+// ? getLastOrNextFixture args:
+//?  fixtures, { team: teamId, league: leagueId, season: 2024 }, league
+
 // NOTE: collection parameter is purely for console purposes NOT any functionality.
 export const makeInitialQuery = async (
   apiCallFrequency,
@@ -84,7 +87,8 @@ export const squadMemberAggregateSearch = async (searchQuery, matchFields) => {
 
 export const getLiveLeagueIds = (leagues) => {
   // need to have ids in this form when calling api: '1-2-3-4'
-  let liveLeagueIds = "";
+  // ! temp for testing:
+  let liveLeagueIds = "2-";
   leagues.forEach((league) => (liveLeagueIds += `${LEAGUES[league]}-`));
   liveLeagueIds = liveLeagueIds.split("-");
   liveLeagueIds.pop(); // get rid of last '-'

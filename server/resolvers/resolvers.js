@@ -214,6 +214,7 @@ export const resolvers = {
       return playerStats;
     },
 
+    // ? REMINDER => have to call last or next fixture before last fixture info
     getLastOrNextFixture: async (_, { team, league, type }) => {
       // clearMongoCollection(LastApiCallTimes, { endpoint: "fixtures" })
       // await clearMongoCollection(Fixture, { $or: [

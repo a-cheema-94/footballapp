@@ -5,6 +5,8 @@ import LiveMatchesByLeague from "./LiveMatchesByLeague";
 import { LeagueNames, LEAGUES } from "../../../../functions/fixedData";
 import { Breadcrumb } from "react-bootstrap";
 import { ThemeContext } from "../../../../context/ThemeProvider";
+import { useQuery } from "@apollo/client";
+import { LIVE_SCORES_QUERY } from "../../../../queries/liveScoresQuery";
 
 type Props = {};
 
@@ -23,18 +25,27 @@ const LiveScores = (props: Props) => {
 
   const {theme} = useContext(ThemeContext);
 
-  // TODO: integrate api with live fixture component
-  // const { data, loading, error } = useQuery(LIVE_SCORES_QUERY, {
-  //   variables: {
-  //     leagues: ["Premier League", "Bundesliga", "Serie A", "La Liga"],
-  //   },
-  // });
-  // if (error) return <div>An Error occurred: {error.message}</div>;
-  // if (loading) return <p>Loading ...</p>;
+  const { data, loading, error } = useQuery(LIVE_SCORES_QUERY, {
+    variables: {
+      leagues: ["Premier League", "Bundesliga", "Serie A", "La Liga"],
+    },
+    onCompleted: (liveFixturesData: any) => {
+      setLiveMatches(sortLiveFixturesByLeague(liveFixturesData["liveFixtures"]));
+    }
+  });
+  if (error) return <div>An Error occurred: {error.message}</div>;
+  if (loading) return <p>Loading ...</p>;
 
-  useEffect(() => {
-    setLiveMatches(sortLiveFixturesByLeague(sampleFixtures));
-  }, []);
+
+  // useEffect(() => {
+  //   setLiveMatches(sortLiveFixturesByLeague(data["liveFixtures"]));
+  //   return () => setLiveMatches({
+  //     premierLeague: [],
+  //     bundesliga: [],
+  //     laLiga: [],
+  //     serieA: [],
+  //   })
+  // }, []);
 
   const noLiveMatches = Object.values(liveMatches).every(league => league.length === 0);
 

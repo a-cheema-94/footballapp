@@ -44,6 +44,7 @@ const LogoOrPlayerImage = ({
       <img
         style={imgStyles}
         src={getLogosAndImages(category, id)}
+        loading="lazy"
         onLoad={handleImgLoad}
         // onError={handleImgError}
         className={optionalClasses}

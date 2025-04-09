@@ -20,16 +20,16 @@ const PlayerSearchResult = ({ player, team }: Props) => {
 
   return (
     <Stack
-      className={`align-items-center border rounded ${theme === 'light' ? 'bg-hover-gray-200' : 'bg-hover-dark-lighter-1'} shadow position-relative`}
+      className={`align-items-center border pt-3 rounded ${theme === 'light' ? 'bg-hover-gray-200' : 'bg-hover-dark-lighter-1'} shadow position-relative`}
       role="button"
       style={{
         maxWidth: "12rem",
         minWidth: "10rem",
       }}
     >
-      <LogoOrPlayerImage category="players" dimension="100%" id={player.id}/>
+      <LogoOrPlayerImage category="players" dimension="70%" id={player.id} optionalClasses=""/>
 
-      <LogoOrPlayerImage category="teams" dimension="40px" id={teamId ?? 44} optionalClasses="bg-transparent position-absolute top-0 mt-1 ms-1 start-0"/>
+      <LogoOrPlayerImage category="teams" dimension="40px" id={teamId ?? 44} optionalClasses="bg-transparent position-absolute top-0 start-0 mt-1"/>
 
       <div className="d-flex justify-content-center align-items-center w-100 gap-4 pt-1 px-2">
         {/* Number */}

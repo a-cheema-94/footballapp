@@ -111,7 +111,6 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
           PROPS_TO_FILTER.topPlayers.statistics
         ),
       };
-      console.log(final);
       try {
         await inputDataInDatabase(final, Player, "general");
       } catch (error) {
@@ -123,7 +122,12 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
         );
       }
       break;
+
+    // NO live field. Need a better way to tell if fixture is live or not since there could be only one current live match and the below approach doesn't account for this.
+    // todo => design a system that handles all cases of live fixtures => when there is only one live fixture and there are no fixtures to display.
+    // ? use 
     case "fixtures":
+      // console.log("Heeeere:", data)
       if (data.length > 1) {
         final = data.map((liveFixture) => {
           const {
@@ -162,6 +166,7 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
         );
       }
       break;
+
 
     case "fixtures/events":
       final = data.map((event) =>
@@ -235,7 +240,7 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
   console.log(
     chalk.bgGreen.bold.black("data for ", endpoint, " now in database")
   );
-
+  // console.log("FINAL!!!: ", final)
   return final;
 }
 

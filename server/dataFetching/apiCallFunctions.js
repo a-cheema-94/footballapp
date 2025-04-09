@@ -11,6 +11,8 @@ dotenv.config({ path: "../.env" });
 const footballApiKey = process.env.FOOTBALL_API_KEY;
 const newsApiKey = process.env.NEWS_API_KEY;
 
+// fixtures, { team: teamId, league: leagueId, season: 2024 }, league
+
 export async function makeFootballApiCall(endpoint, params, league = null) {
   const footballApiClient = axios.create();
 
@@ -29,18 +31,6 @@ export async function makeFootballApiCall(endpoint, params, league = null) {
     console.log(chalk.bgBlueBright("finished api call from api sports"));
   } catch (error) {
     console.error(`Error fetching data from football api: ${error}`);
-  }
-
-  //  todo: determine whether this is needed, when integrating live fixtures in UI.
-  // delete live fixtures once all live fixtures are finished (apiRes.data.response.length === 0) for that gameweek across all leagues.
-  if (
-    endpoint === "fixtures" &&
-    league === null &&
-    apiRes.data.response.length === 0
-  ) {
-    // clear live fixtures from database
-    clearMongoCollection(Fixture, { live: true });
-    return;
   }
 
   try {

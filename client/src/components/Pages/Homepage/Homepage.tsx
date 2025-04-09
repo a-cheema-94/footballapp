@@ -3,13 +3,12 @@ import LiveScores from "./LiveScores/LiveScores";
 import TopFootballStories from "./NewsStories/TopFootballStories";
 import TopPlayerData from "./TopPlayerData/TopPlayerData";
 import { useContext, useState } from "react";
-import CustomSvgs from "../../../svg/customSvgs";
 import { ThemeContext } from "../../../context/ThemeProvider";
 
 type Props = {};
 
 const Homepage = ({}: Props) => {
-  const [tabKey, setTabKey] = useState<string | number>("live-scores");
+  const [tabKey, setTabKey] = useState<string | number>("top-scorers-and-assists");
   const { theme } = useContext(ThemeContext);
 
   const handleTab = (key: string | number | null): void => {
