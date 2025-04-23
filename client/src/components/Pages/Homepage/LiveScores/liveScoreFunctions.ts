@@ -9,7 +9,7 @@ export type LiveFixtures = {
   serieA: FixtureType[];
 };
 
-const toCamelCase = (str: string) => {
+export const toCamelCase = (str: string) => {
   return str
     .split(" ")
     .map((word, index) => {

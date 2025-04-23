@@ -11,34 +11,39 @@ type Props = {
 const LiveFixtureSlider: React.FC<Props> = ({ liveFixtures }: Props) => {
   const {theme} = useContext(ThemeContext)
 
+  const defaultSlidesToShow = liveFixtures.length < 3 ? liveFixtures.length : 3;
+
+  const getSlidesToShow = (slidesToShow: number): number => {
+    return slidesToShow > defaultSlidesToShow ? defaultSlidesToShow : slidesToShow
+  }
+
   const sliderSettings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: defaultSlidesToShow,
     slidesToScroll: 1,
     responsive: [
       {
         breakpoint: 1035,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: getSlidesToShow(3),
         },
       },
       {
         breakpoint: 1000,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: getSlidesToShow(2),
         },
       },
       {
         breakpoint: 700,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: getSlidesToShow(1),
         },
       },
     ],
   };
-
   return (
     <div className="d-block rounded " style={{ width: "90%" }}>
       <Slider className={`text-center p-3 ${theme === 'dark' ? 'dark-dots' : ''} `} {...sliderSettings}>
@@ -53,6 +58,3 @@ const LiveFixtureSlider: React.FC<Props> = ({ liveFixtures }: Props) => {
 };
 
 export default LiveFixtureSlider;
-
-// note: Carousel react-bootstrap component and react-multi-carousel both not right for the functionality I want. Now using react slick (the documentation seems more clear) for my carousel. Want to have a responsive multi item carousel for my live fixtures. Make sure to import css from library for any arrow and dots styling.
-// react slick: possible config options: adaptiveHeight, autoPlaySpeed,

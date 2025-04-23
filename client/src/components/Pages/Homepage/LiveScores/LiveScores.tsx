@@ -1,6 +1,6 @@
 import { sampleFixtures } from "./sampleLiveScoreData";
 import { useContext, useEffect, useState } from "react";
-import { LiveFixtures, sortLiveFixturesByLeague } from "./liveScoreFunctions";
+import { LiveFixtures, sortLiveFixturesByLeague, toCamelCase } from "./liveScoreFunctions";
 import LiveMatchesByLeague from "./LiveMatchesByLeague";
 import { LeagueNames, LEAGUES } from "../../../../functions/fixedData";
 import { Breadcrumb } from "react-bootstrap";
@@ -56,11 +56,18 @@ const LiveScores = (props: Props) => {
       ) : (
         <div className="d-flex flex-column gap-3 my-2 ">
           <Breadcrumb className="align-self-end me-3 mt-3">
-            {Object.keys(LEAGUES).map((leagueName, index) => (
-              <Breadcrumb.Item  key={index} href={`#${leagueName}`}>
-                <span className={`${theme === 'light' ? 'text-dark bg-hover-teal-300' : 'text-light bg-hover-teal-700'}  rounded px-2 py-1`}>{leagueName}</span>
-              </Breadcrumb.Item>
-            ))}
+            {Object.keys(LEAGUES).map((leagueName, index) => {
+              if(liveMatches[toCamelCase(leagueName)].length > 0){
+                return (
+                  <Breadcrumb.Item  key={index} href={`#${leagueName}`}>
+                    <span className={`${theme === 'light' ? 'text-dark bg-hover-teal-300' : 'text-light bg-hover-teal-700'}  rounded px-2 py-1`}>{leagueName}</span>
+                  </Breadcrumb.Item>
+                )
+              }
+              
+              }
+            
+            )}
           </Breadcrumb>
 
           {Object.values(liveMatches).map((liveFixturesByLeague, index) => (

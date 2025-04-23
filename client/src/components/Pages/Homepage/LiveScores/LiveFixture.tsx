@@ -53,7 +53,7 @@ const LiveFixture = ({ fixture }: Props) => {
           teamName={fixture?.teams.away.name}
         />
 
-        {fixture?.live.type && (
+        {fixture?.live && (
           <div className="text-red-500 scale-up position-absolute top-0 end-0">
             <FaRegCircleDot />
           </div>

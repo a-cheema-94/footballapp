@@ -12,31 +12,36 @@ type Props = {
 
 const LiveMatchesByLeague = ({ liveFixtures, leagueName }: Props) => {
   const { theme } = useContext(ThemeContext);
-
   return (
-    <div id={leagueName} className="d-flex flex-column align-items-center py-3">
-      {/* slider here */}
+    <>
+      {
+        liveFixtures.length > 0 && 
 
-      {/* todo: make link to competition home page */}
-      {liveFixtures.length > 0 && <>
-      <div className="d-flex align-items-center justify-content-center gap-3 rounded py-3">
-        
-        <LogoOrPlayerImage
-          category="leagues"
-          dimension="25%"
-          id={LEAGUES[leagueName]}
-          optionalClasses={`w-25 ${
-            theme === "light" ? "bg-teal-200" : "bg-teal-400"
-          }  rounded p-2 border`}
-          smallLoadingSpinner={false}          
-        />
+        <div id={leagueName} className="d-flex flex-column align-items-center mb-4">
+        {/* slider here */}
 
-        <p className="fw-semibold fs-5 my-2">{leagueName}</p>
+        {/* todo: make link to competition home page */}
+
+        <div className="d-flex align-items-center justify-content-center gap-2 rounded py-3">
+          
+          <LogoOrPlayerImage
+            category="leagues"
+            dimension="25%"
+            id={LEAGUES[leagueName]}
+            optionalClasses={`w-25 ${
+              theme === "light" ? "bg-teal-200" : "bg-teal-400"
+            }  rounded p-2 border`}
+            smallLoadingSpinner={false}          
+          />
+
+          <p className="fw-semibold fs-5 my-2">{leagueName}</p>
+        </div>
+
+        <LiveFixtureSlider liveFixtures={liveFixtures} />
+
       </div>
-
-      <LiveFixtureSlider liveFixtures={liveFixtures} />
-      </>}
-    </div>
+      }
+    </>
   );
 };
 

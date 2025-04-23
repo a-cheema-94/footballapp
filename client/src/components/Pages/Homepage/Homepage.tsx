@@ -4,6 +4,7 @@ import TopFootballStories from "./NewsStories/TopFootballStories";
 import TopPlayerData from "./TopPlayerData/TopPlayerData";
 import { useContext, useState } from "react";
 import { ThemeContext } from "../../../context/ThemeProvider";
+import { FaRegCircleDot } from "react-icons/fa6";
 
 type Props = {};
 
@@ -21,6 +22,10 @@ const Homepage = ({}: Props) => {
         theme === "light" ? "bg-light text-dark" : "bg-dark text-light"
       }`}
     >
+      <div className="ms-2 mt-2 z-3 text-red-500 scale-up  position-absolute">
+        <FaRegCircleDot />
+      </div>
+
       <Tabs
         activeKey={tabKey}
         onSelect={handleTab}
