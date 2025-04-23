@@ -13,7 +13,8 @@ export const LIVE_SCORES_QUERY = gql`
         id
       }
     }
-
+    league
+    live
     events {
       assist {
         name

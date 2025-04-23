@@ -8,8 +8,8 @@ export const POSITIONS: string[] = [
 export const LEAGUES = {
   "Premier League": 39,
   "Bundesliga": 78,
+  "La Liga": 140,
   "Serie A": 135,
-  "La Liga": 140
 }
 
-export type LeagueNames = "Premier League" | "Serie A" | "Bundesliga" | "La Liga";
+export type LeagueNames = "Premier League" | "Bundesliga" | "La Liga" | "Serie A";

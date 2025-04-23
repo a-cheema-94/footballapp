@@ -127,7 +127,6 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
     // todo => design a system that handles all cases of live fixtures => when there is only one live fixture and there are no fixtures to display.
     // ? use 
     case "fixtures":
-      // console.log("Heeeere:", data)
       if (data.length > 1) {
         final = data.map((liveFixture) => {
           const {
@@ -155,6 +154,7 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
           lineups: [],
         };
       }
+      // console.log(final)
       try {
         await inputDataInDatabase(final, Fixture, "fixture");
       } catch (error) {

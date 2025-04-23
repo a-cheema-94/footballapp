@@ -18,6 +18,7 @@ const LiveMatchesByLeague = ({ liveFixtures, leagueName }: Props) => {
       {/* slider here */}
 
       {/* todo: make link to competition home page */}
+      {liveFixtures.length > 0 && <>
       <div className="d-flex align-items-center justify-content-center gap-3 rounded py-3">
         
         <LogoOrPlayerImage
@@ -34,6 +35,7 @@ const LiveMatchesByLeague = ({ liveFixtures, leagueName }: Props) => {
       </div>
 
       <LiveFixtureSlider liveFixtures={liveFixtures} />
+      </>}
     </div>
   );
 };

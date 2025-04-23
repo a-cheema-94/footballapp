@@ -27,7 +27,7 @@ const LiveScores = (props: Props) => {
 
   const { data, loading, error } = useQuery(LIVE_SCORES_QUERY, {
     variables: {
-      leagues: ["Premier League", "Bundesliga", "Serie A", "La Liga"],
+      leagues: ["Premier League", "Bundesliga", "La Liga", "Serie A"],
     },
     onCompleted: (liveFixturesData: any) => {
       setLiveMatches(sortLiveFixturesByLeague(liveFixturesData["liveFixtures"]));
@@ -64,6 +64,7 @@ const LiveScores = (props: Props) => {
           </Breadcrumb>
 
           {Object.values(liveMatches).map((liveFixturesByLeague, index) => (
+            
             <LiveMatchesByLeague
               key={index}
               liveFixtures={liveFixturesByLeague}
