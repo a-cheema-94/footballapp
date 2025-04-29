@@ -37,18 +37,20 @@ export async function makeFootballApiCall(endpoint, params, league = null) {
 
   console.log(chalk.bgGreenBright(dataRes))
   
-  if(endpoint === 'fixtures' && Array.isArray(dataRes) && dataRes.length === 0) {
+  if(endpoint === 'fixtures' && Array.isArray(dataRes) ) {
     console.log('triggered')
-    await clearMongoCollection(Fixture, { live: true })
-  } else {
-    try {
-      await manipulateAndInputData(dataRes, endpoint, league);
-    } catch (error) {
-      console.error(`Error sorting and putting data in database: ${error}`);
+    if(dataRes.length === 0) {
+      await clearMongoCollection(Fixture, { live: true })
+    } else {
+      try {
+        await manipulateAndInputData(dataRes, endpoint, league);
+      } catch (error) {
+        console.error(`Error sorting and putting data in database: ${error}`);
+      }
     }
+
   }
-
-
+    
 }
 
 export async function makeNewsApiCall() {

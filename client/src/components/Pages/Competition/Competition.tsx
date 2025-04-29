@@ -9,6 +9,8 @@ import CompetitionTable from "./CompetitionTable";
 
 type Props = {};
 
+// todo => implement champion / relegation states.
+
 const Competition = (props: Props) => {
 
   const { state } = useLocation();

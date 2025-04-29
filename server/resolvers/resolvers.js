@@ -22,6 +22,9 @@ import {
 
 // NOTE: On some resolvers we will need id's from the players or teams since if api call is needed, this is required in the request url. E.g. playerSquads resolver needs team id, since the query to the endpoint: players/squads on the api needs team id in the request.
 
+const IN_PLAY_STATUS_CODES = ["1H", "HT", "2H", "ET", "BT", "P", "SUSP", "INT", "LIVE"];
+
+
 export const resolvers = {
   Query: {
     topPlayers: async (_, { league, limit = 20, sortBy }) => {
@@ -351,8 +354,12 @@ export const resolvers = {
       try {
         liveFixtures = await Fixture.aggregate([
           {
-            $match: { live: true },
+            // $match: { live: true },
+            // get fixtures with live: true and fixture.status.short being one of the in_play status codes.
             // get all live fixtures in an array
+            $match: { $and: [
+              {live: true}, {"fixture.status.short": {$in: IN_PLAY_STATUS_CODES}}
+            ] },
           },
           {
             // add a sortOrder field to specify that premier league live fixtures will be sorted first

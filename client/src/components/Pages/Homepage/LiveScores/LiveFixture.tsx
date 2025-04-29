@@ -39,12 +39,15 @@ const LiveFixture = ({ fixture }: Props) => {
         />
 
         {/* score and time*/}
-        <div className="d-flex gap-2 fs-5">
+        <div className="d-flex flex-column">
           {/* home score */}
+          <div className="d-flex  gap-2 fs-5">
           <div className="fw-semibold">{fixture?.goals.home}</div>
           <p className="">-</p>
           {/* away score */}
           <div className="fw-semibold">{fixture?.goals.away}</div>
+
+          </div>
 
           <div className="fw-semibold">{fixture?.fixture?.status?.elapsed}</div>
         </div>
