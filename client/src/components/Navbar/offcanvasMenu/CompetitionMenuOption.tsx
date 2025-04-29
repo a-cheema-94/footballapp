@@ -44,7 +44,7 @@ const CompetitionMenuOption = ({ league, closeMenu }: Props) => {
 
   return (
     <Stack>
-      <Link to="/competition" state={{ league, teams: data.leagueStandings }} className="nav-link" onClick={closeMenu}>
+      <Link to="/competition" state={{ league }} className="nav-link" onClick={closeMenu}>
         {league}
       </Link> 
       <NavDropdown

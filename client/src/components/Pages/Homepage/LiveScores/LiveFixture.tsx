@@ -19,7 +19,7 @@ type FixtureNameAndLogoProps = {
 
 const LiveFixture = ({ fixture }: Props) => {
   const { theme } = useContext(ThemeContext);
-
+  // console.log(fixture)
   return (
     <div
       className={`position-relative rounded border flex-grow-1 ratio ratio-16x9 p-2 w-100 ${
@@ -38,13 +38,15 @@ const LiveFixture = ({ fixture }: Props) => {
           teamName={fixture?.teams.home.name}
         />
 
-        {/* score */}
+        {/* score and time*/}
         <div className="d-flex gap-2 fs-5">
           {/* home score */}
           <div className="fw-semibold">{fixture?.goals.home}</div>
           <p className="">-</p>
           {/* away score */}
           <div className="fw-semibold">{fixture?.goals.away}</div>
+
+          <div className="fw-semibold">{fixture?.fixture?.status?.elapsed}</div>
         </div>
 
         {/* away */}

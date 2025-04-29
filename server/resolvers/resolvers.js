@@ -380,6 +380,8 @@ export const resolvers = {
         );
       }
 
+      if(liveFixtures.length === 0) clearMongoCollection(Fixture, { live: true })
+
       return liveFixtures;
     },
 

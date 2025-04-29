@@ -33,6 +33,9 @@ export async function makeFootballApiCall(endpoint, params, league = null) {
     console.error(`Error fetching data from football api: ${error}`);
   }
 
+  console.log(chalk.bgGreenBright(endpoint, apiRes.data.response))
+  
+
   try {
     await manipulateAndInputData(apiRes.data.response, endpoint, league);
   } catch (error) {

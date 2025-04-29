@@ -8,9 +8,12 @@ import Fixture from "../models/fixtures/FixtureModel.js";
 import { filterObj } from "../utils/filterData.js";
 import chalk from "chalk";
 
+const IN_PLAY_STATUS_CODES = ["1H", "HT", "2H", "ET", "BT", "P", "SUSP", "INT", "LIVE"];
+
 export async function manipulateAndInputData(data, endpoint, league = null) {
   let final;
-
+  // todo => handle no data case.
+  if(Array.isArray(data) && data.length === 0) return final
   switch (endpoint) {
     case "players/topscorers":
     case "players/topassists":
@@ -126,35 +129,32 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
     // NO live field. Need a better way to tell if fixture is live or not since there could be only one current live match and the below approach doesn't account for this.
     // todo => design a system that handles all cases of live fixtures => when there is only one live fixture and there are no fixtures to display.
     // ? use 
+
+
     case "fixtures":
-      if (data.length > 1) {
-        final = data.map((liveFixture) => {
+
+        let live = false;
+        let events = [];
+        final = data.map((fixture) => {
+          if(IN_PLAY_STATUS_CODES.includes(fixture.fixture.status.short)) live = true
+
           const {
             league: { name },
-            events,
-          } = liveFixture;
-          delete liveFixture.events; // needed for the filterObj, moving events since that is how model is created.
-          const updatedLiveFixture = {
-            live: true,
+          } = fixture;
+
+          if(fixture.events) events = fixture.events
+          const updatedFixture = {
+            live,
             league: name,
-            ...filterObj(liveFixture, PROPS_TO_FILTER.fixtures.fixture),
+            ...filterObj(fixture, PROPS_TO_FILTER.fixtures.fixture),
             events,
             statistics: [],
             lineups: [],
           };
-          return updatedLiveFixture;
+          console.log(updatedFixture)
+          return updatedFixture;
         });
-      } else {
-        let fixture = data[0];
-        final = {
-          league,
-          ...filterObj(fixture, PROPS_TO_FILTER.fixtures.fixture),
-          statistics: [],
-          events: [],
-          lineups: [],
-        };
-      }
-      // console.log(final)
+
       try {
         await inputDataInDatabase(final, Fixture, "fixture");
       } catch (error) {

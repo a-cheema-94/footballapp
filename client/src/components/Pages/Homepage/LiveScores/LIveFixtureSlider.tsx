@@ -19,7 +19,7 @@ const LiveFixtureSlider: React.FC<Props> = ({ liveFixtures }: Props) => {
 
   const sliderSettings = {
     dots: true,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: defaultSlidesToShow,
     slidesToScroll: 1,

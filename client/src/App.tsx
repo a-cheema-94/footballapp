@@ -42,7 +42,7 @@ function App() {
     return () => document.removeEventListener("scroll", scrollFunction);
   }, []);
 
-  // 
+  // todo => fix scroll up button
   return (
     <div className={`${theme === "light" ? "bg-gray-100" : "bg-dark"}`}>
       <div className="mw-100 mx-auto">
@@ -67,7 +67,8 @@ function App() {
           </Routes>
         )}
 
-        {showNavUpBtn && <NavigateUpBtn />}
+        
+        {/* {showNavUpBtn && <NavigateUpBtn />} */}
       </div>
     </div>
   );

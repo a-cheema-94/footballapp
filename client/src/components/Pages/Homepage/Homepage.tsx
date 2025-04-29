@@ -10,11 +10,15 @@ type Props = {};
 
 const Homepage = ({}: Props) => {
   const [tabKey, setTabKey] = useState<string | number>("top-scorers-and-assists");
+  const [live, setLive] = useState<boolean>(false);
   const { theme } = useContext(ThemeContext);
 
   const handleTab = (key: string | number | null): void => {
     if (key !== null) setTabKey(key);
   };
+
+  const handleFixturesLive = (): void => setLive(true);
+  const handleFixturesNotLive = (): void => setLive(false);
 
   return (
     <div
@@ -22,9 +26,9 @@ const Homepage = ({}: Props) => {
         theme === "light" ? "bg-light text-dark" : "bg-dark text-light"
       }`}
     >
-      <div className="ms-2 mt-2 z-3 text-red-500 scale-up  position-absolute">
+      {live && <div className="ms-2 mt-2 z-2 text-red-500 scale-up  position-absolute">
         <FaRegCircleDot />
-      </div>
+      </div>}
 
       <Tabs
         activeKey={tabKey}
@@ -36,7 +40,7 @@ const Homepage = ({}: Props) => {
         }`}
       >
         <Tab eventKey="live-scores" title="Live Scores">
-          <LiveScores />
+          <LiveScores isLive={handleFixturesLive} isNotLive={handleFixturesNotLive}/>
         </Tab>
         <Tab
           eventKey="top-scorers-and-assists"

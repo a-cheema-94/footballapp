@@ -45,6 +45,8 @@ type Props = {
 };
 
 // todo: solve problem of no searchable items (players), on first load, have to select team then query will execute. Maybe when first load, will call every squad of teams in selected league => now we have players to search through on first load.
+// todo => fix arrow up and down actions on autocomplete menu => handleKeyDown.
+// todo => simplify search reducer state.
 
 const SearchPage = ({ search, close }: Props) => {
   const { theme } = useContext(ThemeContext);
@@ -83,16 +85,7 @@ const SearchPage = ({ search, close }: Props) => {
       loading: autoCompleteLoading,
       error: autoCompleteError,
     },
-  ] = useLazyQuery(AUTOCOMPLETE_QUERY, {
-    onCompleted: (autoCompleteData: any) => {
-      dispatch({
-        type: "SET_AUTO_COMPLETE_RESULTS",
-        payload: {
-          autoCompleteSuggestions: autoCompleteData?.autoCompletePlayer,
-        },
-      });
-    },
-  });
+  ] = useLazyQuery(AUTOCOMPLETE_QUERY);
 
   // search query
   const [
@@ -102,25 +95,11 @@ const SearchPage = ({ search, close }: Props) => {
       loading: playerSearchLoading,
       error: playerSearchError,
     },
-  ] = useLazyQuery(PLAYER_SEARCH_QUERY, {
-    onCompleted: (playerSearchData: any) => {
-      dispatch({
-        type: "SET_PLAYER_SEARCH_RESULTS",
-        payload: { playerSuggestions: playerSearchData?.playerSearch },
-      });
-    },
-  });
+  ] = useLazyQuery(PLAYER_SEARCH_QUERY);
 
   // team standings
   const [teams, { data: teamData, loading: teamLoading, error: teamError }] =
-    useLazyQuery(LEAGUE_TABLE_QUERY, {
-      onCompleted: (teamData: any) => {
-        dispatch({
-          type: "SET_CURRENT_LEAGUE_TEAMS",
-          payload: { currentLeagueTeams: teamData?.leagueStandings },
-        });
-      },
-    });
+    useLazyQuery(LEAGUE_TABLE_QUERY);
 
   // Error states
 
@@ -208,7 +187,7 @@ const SearchPage = ({ search, close }: Props) => {
                   e,
                   dispatch,
                   autoCompleteSuggestionIndex,
-                  autoCompleteSuggestions
+                  autoCompleteData?.autoCompletePlayer ?? []
                 )
               }
               type="text"
@@ -230,7 +209,7 @@ const SearchPage = ({ search, close }: Props) => {
               autoCompleteRef={autoCompleteRef}
               autoCompleteSuggestionIndex={autoCompleteSuggestionIndex}
               handleClickListItems={handleClickListItems}
-              autoCompleteSuggestions={autoCompleteSuggestions}
+              autoCompleteSuggestions={autoCompleteData?.autoCompletePlayer ?? []}
               showAutoCompleteSuggestions={showAutoCompleteSuggestions}
               showFilters={showFilters}
               dispatch={dispatch}
@@ -259,7 +238,7 @@ const SearchPage = ({ search, close }: Props) => {
             positionFilter={handlePositionFilter}
             rangeFilter={handleRangeFilter}
             dispatch={dispatch}
-            leagueTeams={currentLeagueTeams}
+            leagueTeams={teamData?.leagueStandings ?? []}
           />
         )}
         <Button
@@ -274,14 +253,14 @@ const SearchPage = ({ search, close }: Props) => {
 
       <div style={{ minHeight: "100dvh" }}>
 
-        {searchQuery && playerSuggestions.length > 0 ?
+        {searchQuery && (playerSearchData?.playerSearch ?? []).length > 0 ?
          (
             <div className="overflow-y-auto d-flex justify-content-center gap-2 flex-wrap m-2">
-              {playerSuggestions.map(
+              {(playerSearchData?.playerSearch ?? []).map(
                 (player: SquadMemberType, index: number) => (
                   <PlayerSearchResult
                     player={player}
-                    team={currentLeagueTeams}
+                    team={teamData?.leagueStandings ?? []}
                     key={index}
                   />
                 )
