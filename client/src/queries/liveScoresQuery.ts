@@ -45,6 +45,9 @@ export const LIVE_SCORES_QUERY = gql`
       venue {
         name
       }
+      status {
+        elapsed
+      }
     }
   }
 }

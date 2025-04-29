@@ -19,7 +19,7 @@ type FixtureNameAndLogoProps = {
 
 const LiveFixture = ({ fixture }: Props) => {
   const { theme } = useContext(ThemeContext);
-  // console.log(fixture)
+
   return (
     <div
       className={`position-relative rounded border flex-grow-1 ratio ratio-16x9 p-2 w-100 ${

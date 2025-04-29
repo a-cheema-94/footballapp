@@ -13,7 +13,6 @@ const IN_PLAY_STATUS_CODES = ["1H", "HT", "2H", "ET", "BT", "P", "SUSP", "INT", 
 export async function manipulateAndInputData(data, endpoint, league = null) {
   let final;
   // todo => handle no data case.
-  if(Array.isArray(data) && data.length === 0) return final
   switch (endpoint) {
     case "players/topscorers":
     case "players/topassists":
@@ -136,7 +135,10 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
         let live = false;
         let events = [];
         final = data.map((fixture) => {
-          if(IN_PLAY_STATUS_CODES.includes(fixture.fixture.status.short)) live = true
+          if(IN_PLAY_STATUS_CODES.includes(fixture.fixture.status.short)) {
+            console.log(fixture.fixture.status.short)
+            live = true
+          }
 
           const {
             league: { name },
@@ -240,7 +242,7 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
   console.log(
     chalk.bgGreen.bold.black("data for ", endpoint, " now in database")
   );
-  // console.log("FINAL!!!: ", final)
+  console.log("FINAL!!!: ", final)
   return final;
 }
 

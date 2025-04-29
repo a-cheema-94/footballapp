@@ -379,9 +379,6 @@ export const resolvers = {
           `some error occurred when fetching live fixtures from database: ${error}`
         );
       }
-
-      if(liveFixtures.length === 0) clearMongoCollection(Fixture, { live: true })
-
       return liveFixtures;
     },
 

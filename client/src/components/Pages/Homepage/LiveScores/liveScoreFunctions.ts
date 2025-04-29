@@ -26,9 +26,16 @@ export const toCamelCase = (str: string) => {
 };
 
 export const sortLiveFixturesByLeague = (
-  fixtures: FixtureType[]
+  fixtures: FixtureType[] 
 ): LiveFixtures => {
-  const final = fixtures.reduce(
+  const initialLiveFixtures = {
+    premierLeague: [],
+    bundesliga: [],
+    laLiga: [],
+    serieA: [],
+  }
+  if(!fixtures) return initialLiveFixtures
+  const final = fixtures?.reduce(
     (acc: LiveFixtures, fixture: FixtureType) => {
       // use keyof to ensure the league matches to the correct camel case key of the returned live fixture object.
       const league = toCamelCase(fixture.league) as keyof LiveFixtures;
@@ -37,12 +44,7 @@ export const sortLiveFixturesByLeague = (
       return acc;
     },
     // initial live fixtures
-    {
-      premierLeague: [],
-      bundesliga: [],
-      laLiga: [],
-      serieA: [],
-    }
+    initialLiveFixtures
   );
 
   return final;

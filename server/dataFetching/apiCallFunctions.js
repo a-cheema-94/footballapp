@@ -33,14 +33,22 @@ export async function makeFootballApiCall(endpoint, params, league = null) {
     console.error(`Error fetching data from football api: ${error}`);
   }
 
-  console.log(chalk.bgGreenBright(endpoint, apiRes.data.response))
-  
+  const dataRes = apiRes.data.response;
 
-  try {
-    await manipulateAndInputData(apiRes.data.response, endpoint, league);
-  } catch (error) {
-    console.error(`Error sorting and putting data in database: ${error}`);
+  console.log(chalk.bgGreenBright(dataRes))
+  
+  if(endpoint === 'fixtures' && Array.isArray(dataRes) && dataRes.length === 0) {
+    console.log('triggered')
+    await clearMongoCollection(Fixture, { live: true })
+  } else {
+    try {
+      await manipulateAndInputData(dataRes, endpoint, league);
+    } catch (error) {
+      console.error(`Error sorting and putting data in database: ${error}`);
+    }
   }
+
+
 }
 
 export async function makeNewsApiCall() {

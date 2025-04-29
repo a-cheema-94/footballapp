@@ -1,5 +1,4 @@
-import { sampleFixtures } from "./sampleLiveScoreData";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { LiveFixtures, sortLiveFixturesByLeague, toCamelCase } from "./liveScoreFunctions";
 import LiveMatchesByLeague from "./LiveMatchesByLeague";
 import { LeagueNames, LEAGUES } from "../../../../functions/fixedData";
@@ -14,32 +13,24 @@ type Props = {
 };
 
 // Extra notes: polling => querying graph ql server after a specified interval, refetching => refetching data after user action i.e. button click => can have a loading state for refetching: networkStatus === NetworkStatus.refetch
-// can use useLazyQuery instead of useQuery if you want to query server based off events and not on render:
-// const [queryFunction, { loading, error, data }] = useLazyQuery(GRAPHQL_QUERY)
-// when calling: queryFunction({ variables: { inputs } })
 
 const LiveScores = ({ isLive, isNotLive }: Props) => {
-  const [liveMatches, setLiveMatches] = useState<LiveFixtures>({
-    premierLeague: [],
-    bundesliga: [],
-    laLiga: [],
-    serieA: [],
-  });
   
-  const { data, loading, error } = useQuery(LIVE_SCORES_QUERY, {
+  const { data: liveFixturesData, loading, error } = useQuery(LIVE_SCORES_QUERY, {
     variables: {
       leagues: ["Premier League", "Bundesliga", "La Liga", "Serie A"],
     },
-    onCompleted: (liveFixturesData: any) => {
-      console.log('called')
-      setLiveMatches(sortLiveFixturesByLeague(liveFixturesData["liveFixtures"]));
-    }
+    // pollInterval: 5000
   });
-  const noLiveMatches = Object.values(liveMatches).every(league => league.length === 0);
+  
+  const liveMatches = sortLiveFixturesByLeague(liveFixturesData?.liveFixtures);
+  
+  const noLiveMatches = !liveMatches || Object.values(liveMatches).every(league => league.length === 0);
   
   useEffect(() => {
+    console.log('rendered')
     if(noLiveMatches) {
-      isNotLive()
+      isNotLive() 
     } else {
       isLive()
     }
@@ -52,8 +43,6 @@ const LiveScores = ({ isLive, isNotLive }: Props) => {
   if (error) return <div>An Error occurred: {error.message}</div>;
   if (loading) return <p>Loading ...</p>;
 
-
-  // console.log(liveMatches)
 
   return (
     <div style={{ minHeight: '100dvh' }}>
