@@ -7,14 +7,11 @@ import { removeAposHTMLCharacter } from "../../../../functions/removeApos";
 
 const clearSearch = (
   dispatch: Dispatch<
-    SearchActionType<
-      | "SET_SEARCH_QUERY"
-      | "SET_AUTO_COMPLETE_INDEX"
-    >
+    SearchActionType<"SET_SEARCH_QUERY" | "SET_AUTO_COMPLETE_INDEX">
   >
 ) => {
   dispatch({ type: "SET_SEARCH_QUERY", payload: { searchQuery: "" } });
- 
+
   dispatch({
     type: "SET_AUTO_COMPLETE_INDEX",
     payload: { autoCompleteSuggestionIndex: -1 },
@@ -56,7 +53,9 @@ const handleKeyDown = (
   } else if (event.key === "ArrowDown") {
     dispatch({
       type: "SET_AUTO_COMPLETE_INDEX",
-      payload: { autoCompleteSuggestionIndex: autoCompleteSuggestions.length - 1 },
+      payload: {
+        autoCompleteSuggestionIndex: autoCompleteSuggestions.length - 1,
+      },
     });
   } else if (event.key === "Enter") {
     event.preventDefault();
@@ -71,8 +70,9 @@ const handleKeyDown = (
       dispatch({
         type: "SET_SEARCH_QUERY",
         payload: {
-          searchQuery:
-          removeAposHTMLCharacter(autoCompleteSuggestions[autoCompleteSuggestionIndex].name),
+          searchQuery: removeAposHTMLCharacter(
+            autoCompleteSuggestions[autoCompleteSuggestionIndex].name
+          ),
         },
       });
     }
@@ -102,7 +102,6 @@ const handleClickListItems = (
   >,
   autoCompleteSuggestions: SquadMemberType[]
 ) => {
-
   dispatch({
     type: "FILTER_PLAYER_LEAGUE",
     payload: {
@@ -111,7 +110,9 @@ const handleClickListItems = (
   });
   dispatch({
     type: "SET_SEARCH_QUERY",
-    payload: { searchQuery: removeAposHTMLCharacter(autoCompleteSuggestions[index].name) },
+    payload: {
+      searchQuery: removeAposHTMLCharacter(autoCompleteSuggestions[index].name),
+    },
   });
   setTimeout(() => {
     dispatch({
@@ -197,7 +198,7 @@ const handlePositionFilter = (
 const handleTeamsFilter = (
   eventKey: any,
   dispatch: Dispatch<SearchActionType<"FILTER_PLAYER_TEAM">>
-) => 
+) =>
   dispatch({
     type: "FILTER_PLAYER_TEAM",
     payload: {
@@ -216,10 +217,28 @@ const handleRangeFilter = (
     },
   });
 
-const closeAutoCompleteMenu = (dispatch: Dispatch<SearchActionType<"TOGGLE_AUTOCOMPLETE_MENU">>) => dispatch({
-  type: "TOGGLE_AUTOCOMPLETE_MENU",
-  payload: { showAutoCompleteSuggestions: false },
-})
+const closeAutoCompleteMenu = (
+  dispatch: Dispatch<SearchActionType<"TOGGLE_AUTOCOMPLETE_MENU">>
+) =>
+  dispatch({
+    type: "TOGGLE_AUTOCOMPLETE_MENU",
+    payload: { showAutoCompleteSuggestions: false },
+  });
+
+const handleClickResetFiltersBtn = (
+  dispatch: Dispatch<
+    SearchActionType<
+      | "FILTER_PLAYER_RANGE"
+      | "FILTER_PLAYER_TEAM"
+      | "FILTER_PLAYER_POSITION"
+      | "SET_SEARCH_QUERY"
+      | "SET_AUTO_COMPLETE_INDEX"
+    >
+  >
+) => {
+  resetFilters(dispatch);
+  clearSearch(dispatch);
+};
 
 export {
   clearSearch,
@@ -233,5 +252,6 @@ export {
   handleRangeFilter,
   handleTeamsFilter,
   resetFilters,
-  closeAutoCompleteMenu
+  closeAutoCompleteMenu,
+  handleClickResetFiltersBtn,
 };

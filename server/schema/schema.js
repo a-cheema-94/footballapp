@@ -30,7 +30,7 @@ export const typeDefs = `#graphql
     topFootballStories: [newsStory!]!
 
     playerSearch(query: String!, league: String!, team: String, position: String, range: String ): [SquadMember!]!
-    autoCompletePlayer(query: String!): [SquadMember!]!
+    autoCompletePlayer(query: String!, league: String!, team: String, position: String, range: String): [SquadMember!]!
   }
 `
 

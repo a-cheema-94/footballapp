@@ -1,6 +1,6 @@
-import { Button, Dropdown, Form, Stack } from "react-bootstrap";
+import { Button, Dropdown, Stack } from "react-bootstrap";
 import { POSITIONS } from "../../../../functions/fixedData";
-import { Dispatch, useContext, useState } from "react";
+import { Dispatch, useContext } from "react";
 import { SearchActionType } from "../reducer/searchReducer";
 import {
   TeamStandingType,
@@ -16,7 +16,7 @@ type Props = {
   resetFilters: (
     dispatch: Dispatch<
       SearchActionType<
-        "FILTER_PLAYER_TEAM" | "FILTER_PLAYER_POSITION" | "FILTER_PLAYER_RANGE"
+        "FILTER_PLAYER_TEAM" | "FILTER_PLAYER_POSITION" | "FILTER_PLAYER_RANGE" | "SET_SEARCH_QUERY" | "SET_AUTO_COMPLETE_INDEX"
       >
     >
   ) => void;
@@ -35,10 +35,12 @@ type Props = {
   ) => void;
   dispatch: Dispatch<
     SearchActionType<
+      | "FILTER_PLAYER_LEAGUE"
+      | "FILTER_PLAYER_RANGE"
       | "FILTER_PLAYER_TEAM"
       | "FILTER_PLAYER_POSITION"
-      | "FILTER_PLAYER_RANGE"
-      | "FILTER_PLAYER_LEAGUE"
+      | "SET_SEARCH_QUERY"
+      | "SET_AUTO_COMPLETE_INDEX"
     >
   >;
   leagueTeams: TeamStandingType[] | [];

@@ -31,6 +31,7 @@ import {
   handleRangeFilter,
   handleTeamsFilter,
   resetFilters,
+  handleClickResetFiltersBtn
 } from "./searchFunctions/searchPageFunctions";
 import {
   SquadMemberType,
@@ -45,7 +46,6 @@ type Props = {
 };
 
 // todo: solve problem of no searchable items (players), on first load, have to select team then query will execute. Maybe when first load, will call every squad of teams in selected league => now we have players to search through on first load.
-// todo => simplify search reducer state.
 
 const SearchPage = ({ search, close }: Props) => {
   const { theme } = useContext(ThemeContext);
@@ -71,7 +71,7 @@ const SearchPage = ({ search, close }: Props) => {
   const deferredSearchQuery = useDeferredValue(searchQuery);
 
   // QUERIES
-  // todo: go over query logic and see if can optimize.
+  // todo: test speed of searches / auto-complete and go over query logic and see if can optimize.
 
   // autocomplete query
   const [
@@ -114,7 +114,15 @@ const SearchPage = ({ search, close }: Props) => {
         type: "TOGGLE_AUTOCOMPLETE_MENU",
         payload: { showAutoCompleteSuggestions: true },
       });
-      autoComplete({ variables: { query: searchQuery } });
+      autoComplete({
+        variables: {
+          query: searchQuery,
+          league: playerLeague,
+          team: playerTeam,
+          range: playerRange,
+          position: playerPosition,
+        },
+      });
       if (playerLeague) {
         playerSearch({
           variables: {
@@ -151,7 +159,7 @@ const SearchPage = ({ search, close }: Props) => {
 
   // we can click outside of autocomplete suggestions to close suggestions using this ref.
   const autoCompleteRef = useContentVisible<HTMLDivElement>(closeAutoComplete);
-  
+
 
   return (
     <div
@@ -225,7 +233,7 @@ const SearchPage = ({ search, close }: Props) => {
 
         {showFilters && (
           <SearchFilters
-            resetFilters={resetFilters}
+            resetFilters={handleClickResetFiltersBtn}
             selectedTeam={playerTeam}
             selectedPosition={playerPosition}
             selectedRange={playerRange}

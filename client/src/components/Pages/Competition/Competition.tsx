@@ -10,6 +10,8 @@ import CompetitionTable from "./CompetitionTable";
 type Props = {};
 
 // todo => implement champion / relegation states.
+  // todo => add isChampion and isRelegated fields to Team Standing type
+  // todo => add logic to take in whole final array of teams and change 1st, 18th, 19th or 20th if necessary
 
 const Competition = (props: Props) => {
 

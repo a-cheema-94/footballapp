@@ -434,9 +434,9 @@ export const resolvers = {
       // sort out endpoint and define sorting variables and parameters.
 
       // clearMongoCollection(LastApiCallTimes, { endpoint: 'players/squads' });
+      let endpoint = "players/squads";
       let searchResults = [];
       let teamId;
-      let endpoint = "players/squads";
 
       const playerSearchQueryParams = {};
 
@@ -508,10 +508,34 @@ export const resolvers = {
       return searchResults;
     },
 
-    autoCompletePlayer: async (_, { query }) => {
+    autoCompletePlayer: async (_, { query, league, team = null, position = null, range = null }) => {
       let autoCompleteResults = [];
+      let teamId;
 
-      // todo => add filtering to autocomplete results => in pipeline or another method
+      const playerSearchQueryParams = {};
+
+      // FILTERS
+      const matchFields = [
+        {league}
+      ];
+    
+
+      if (team !== null) {
+        console.log(team)
+        teamId = await getTeamOrPlayerId(TeamStanding, { "team.name": team });
+        playerSearchQueryParams.team = teamId;
+        matchFields.push({ team });
+      }
+
+      if (range !== null) {
+        const [lower, higher] = range.split("-");
+        matchFields.push({ age: { $gte: lower * 1, $lte: higher * 1 } });
+      }
+
+      if (position !== null) {
+        matchFields.push({ position });
+      }
+      
       try {
         autoCompleteResults = await SquadMember.aggregate([
           {
@@ -529,6 +553,15 @@ export const resolvers = {
               },
             },
           },
+
+          {
+            $match: {
+              $and: [
+                ...matchFields
+              ]
+            }
+          },
+
           {
             $limit: 10,
           },
@@ -547,3 +580,7 @@ export const resolvers = {
 };
 
 export default resolvers;
+
+
+
+
