@@ -13,8 +13,8 @@ const NavigateUpBtn = (props: Props) => {
   return (
     <Button
       onClick={scrollToTop}
-      className="position-sticky bottom-0 bg-transparent opacity-75 border-0"
-      style={{ left: "calc(50% - 12.5px)" }}
+      className="z-3 position-fixed bg-transparent opacity-75 border-0"
+      style={{ left: "calc(50% - 12.5px)", top: "calc(100vh - 45px)" }}
     >
       <FaCircleArrowUp size={25} className={`${theme === 'light' ? 'text-dark' : 'text-gray-100'}`}/>
     </Button>

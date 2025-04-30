@@ -35,20 +35,15 @@ export async function makeFootballApiCall(endpoint, params, league = null) {
 
   const dataRes = apiRes.data.response;
 
-  console.log(chalk.bgGreenBright(dataRes))
   
-  if(endpoint === 'fixtures' && Array.isArray(dataRes) ) {
+  if(endpoint === 'fixtures' && Array.isArray(dataRes) && dataRes.length === 0) {
     console.log('triggered')
-    if(dataRes.length === 0) {
       await clearMongoCollection(Fixture, { live: true })
-    } else {
-      try {
-        await manipulateAndInputData(dataRes, endpoint, league);
-      } catch (error) {
-        console.error(`Error sorting and putting data in database: ${error}`);
-      }
-    }
-
+  }
+  try {
+    await manipulateAndInputData(dataRes, endpoint, league);
+  } catch (error) {
+    console.error(`Error sorting and putting data in database: ${error}`);
   }
     
 }

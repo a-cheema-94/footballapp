@@ -451,6 +451,7 @@ export const resolvers = {
       ];
 
       if (team !== null) {
+        console.log(team)
         teamId = await getTeamOrPlayerId(TeamStanding, { "team.name": team });
         playerSearchQueryParams.team = teamId;
         matchFields.push({ text: { query: team, path: "team" } });
@@ -510,7 +511,7 @@ export const resolvers = {
     autoCompletePlayer: async (_, { query }) => {
       let autoCompleteResults = [];
 
-      // query squad member database collection with autocomplete logic in the aggregate pipeline.
+      // todo => add filtering to autocomplete results => in pipeline or another method
       try {
         autoCompleteResults = await SquadMember.aggregate([
           {

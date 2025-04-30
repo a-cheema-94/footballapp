@@ -242,7 +242,7 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
   console.log(
     chalk.bgGreen.bold.black("data for ", endpoint, " now in database")
   );
-  console.log("FINAL!!!: ", final)
+  // console.log("FINAL!!!: ", final)
   return final;
 }
 

@@ -1,20 +1,16 @@
 import { SquadMemberType, TeamStandingType } from "../../../../queries/types/queryTypes";
 
-
 // state and action setup
 
 const initialSearchState: SearchStateType = {
   showFilters: false,
   showAutoCompleteSuggestions: false,
   searchQuery: "",
-  playerSuggestions: [],
-  autoCompleteSuggestions: [],
   autoCompleteSuggestionIndex: 0,
   playerLeague: "Premier League",
   playerTeam: null,
   playerPosition: null,
   playerRange: null,
-  currentLeagueTeams: []
 };
 
 // types
@@ -23,28 +19,24 @@ type SearchStateType = {
   showFilters: boolean;
   showAutoCompleteSuggestions: boolean;
   searchQuery: string;
-  playerSuggestions: SquadMemberType[];
-  autoCompleteSuggestions: SquadMemberType[];
   autoCompleteSuggestionIndex: number;
   playerLeague: string;
   playerTeam: string | null;
   playerPosition: string | null;
   playerRange: string | null;
-  currentLeagueTeams: TeamStandingType[] | []
 };
+
+
 
 type SearchActionMap = {
   TOGGLE_SEARCH_FILTERS: { showFilters: boolean };
   TOGGLE_AUTOCOMPLETE_MENU: { showAutoCompleteSuggestions: boolean };
   SET_SEARCH_QUERY: { searchQuery: string };
-  SET_PLAYER_SEARCH_RESULTS: { playerSuggestions: SquadMemberType[] };
-  SET_AUTO_COMPLETE_RESULTS: { autoCompleteSuggestions: SquadMemberType[] };
   SET_AUTO_COMPLETE_INDEX: { autoCompleteSuggestionIndex: number };
   FILTER_PLAYER_LEAGUE: { playerLeague: string };
   FILTER_PLAYER_TEAM: { playerTeam: string | null };
   FILTER_PLAYER_POSITION: { playerPosition: string | null };
   FILTER_PLAYER_RANGE: { playerRange: string | null };
-  SET_CURRENT_LEAGUE_TEAMS: { currentLeagueTeams: TeamStandingType[] | [] }
 };
 
 type SearchActionType<T extends keyof SearchActionMap> = {
@@ -83,46 +75,38 @@ const actionHandlers: SearchActionHandlersType = {
   ) => {
     return { ...state, searchQuery: action.payload.searchQuery };
   },
-  ["SET_PLAYER_SEARCH_RESULTS"]: (
-    state: SearchStateType,
-    action: SearchActionType<"SET_PLAYER_SEARCH_RESULTS">
-  ) => {
-    return { ...state, playerSuggestions: action.payload.playerSuggestions };
-  },
-  ["SET_AUTO_COMPLETE_RESULTS"]: (
-    state: SearchStateType,
-    action: SearchActionType<"SET_AUTO_COMPLETE_RESULTS">
-  ) => {
-    return {
-      ...state,
-      autoCompleteSuggestions: action.payload.autoCompleteSuggestions,
-    };
-  },
+  
   ["SET_AUTO_COMPLETE_INDEX"]: (
     state: SearchStateType,
     action: SearchActionType<"SET_AUTO_COMPLETE_INDEX">
   ) => {
-    if (action.payload.autoCompleteSuggestionIndex === 1) {
-      return {
-        ...state,
-        autoCompleteSuggestionIndex: Math.max(
-          0,
-          state.autoCompleteSuggestionIndex - 1
-        ),
-      };
-    } else if (action.payload.autoCompleteSuggestionIndex === 0) {
-      return {
-        ...state,
-        autoCompleteSuggestionIndex: Math.min(
-          state.autoCompleteSuggestionIndex + 1,
-          state.autoCompleteSuggestions.length - 1
-        ),
-      };
+    const initialIndexState = {
+      ...state,
+      autoCompleteSuggestionIndex: 0,
+    };
+
+    if (action.payload.autoCompleteSuggestionIndex === 0) {
+      let newIndex = state.autoCompleteSuggestionIndex - 1
+      while(newIndex > 0) {
+        return {
+          ...state,
+          autoCompleteSuggestionIndex: newIndex
+        }
+      }
+      return initialIndexState
+
+    } else if (action.payload.autoCompleteSuggestionIndex > 0) {
+      let newIndex = state.autoCompleteSuggestionIndex + 1
+      let length = action.payload.autoCompleteSuggestionIndex;
+      while(newIndex <= length) {
+        return {
+          ...state,
+          autoCompleteSuggestionIndex: newIndex
+        }
+      }
+      return initialIndexState
     } else {
-      return {
-        ...state,
-        autoCompleteSuggestionIndex: action.payload.autoCompleteSuggestionIndex,
-      };
+      return initialIndexState
     }
   },
   ["FILTER_PLAYER_LEAGUE"]: (
@@ -148,12 +132,6 @@ const actionHandlers: SearchActionHandlersType = {
     action: SearchActionType<"FILTER_PLAYER_RANGE">
   ) => {
     return { ...state, playerRange: action.payload.playerRange };
-  },
-  ["SET_CURRENT_LEAGUE_TEAMS"]: (
-    state: SearchStateType,
-    action: SearchActionType<"SET_CURRENT_LEAGUE_TEAMS">
-  ) => {
-    return { ...state, currentLeagueTeams: action.payload.currentLeagueTeams }
   }
 };
 

@@ -11,7 +11,6 @@ import { Route, Routes } from "react-router-dom";
 import MainNavbar from "./components/Navbar/MainNavbar";
 import { useContext, useEffect, useState } from "react";
 import SearchPage from "./components/Navbar/searchPage/SearchPage";
-import TestComponent from "./components/TestComponent";
 import NavigateUpBtn from "./components/NavigateUpBtn";
 import { ThemeContext } from "./context/ThemeProvider";
 
@@ -42,13 +41,12 @@ function App() {
     return () => document.removeEventListener("scroll", scrollFunction);
   }, []);
 
-  // todo => fix scroll up button
+
   return (
     <div className={`${theme === "light" ? "bg-gray-100" : "bg-dark"}`}>
       <div className="mw-100 mx-auto">
         <MainNavbar toggle={toggle} closeSearch={close}/>
       </div>
-      {/* todo: change this */}
       <div style={{ paddingTop: `75px`, overflowY: 'hidden' }}>
         {search && <SearchPage search={search} close={close} />}
         {!search && (
@@ -63,12 +61,11 @@ function App() {
               path="/fullTimeMatchStats"
               element={<FullTimeMatchStats />}
             /> */}
-            {/* <Route path="/test" element={<TestComponent />}/> */}
           </Routes>
         )}
 
         
-        {/* {showNavUpBtn && <NavigateUpBtn />} */}
+        {showNavUpBtn && <NavigateUpBtn />}
       </div>
     </div>
   );

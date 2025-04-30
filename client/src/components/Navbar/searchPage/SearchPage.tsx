@@ -45,7 +45,6 @@ type Props = {
 };
 
 // todo: solve problem of no searchable items (players), on first load, have to select team then query will execute. Maybe when first load, will call every squad of teams in selected league => now we have players to search through on first load.
-// todo => fix arrow up and down actions on autocomplete menu => handleKeyDown.
 // todo => simplify search reducer state.
 
 const SearchPage = ({ search, close }: Props) => {
@@ -63,13 +62,10 @@ const SearchPage = ({ search, close }: Props) => {
     showAutoCompleteSuggestions,
     searchQuery,
     playerTeam,
-    playerSuggestions,
     playerRange,
     playerPosition,
     playerLeague,
-    autoCompleteSuggestions,
     autoCompleteSuggestionIndex,
-    currentLeagueTeams,
   } = searchPageState;
 
   const deferredSearchQuery = useDeferredValue(searchQuery);
@@ -156,7 +152,6 @@ const SearchPage = ({ search, close }: Props) => {
   // we can click outside of autocomplete suggestions to close suggestions using this ref.
   const autoCompleteRef = useContentVisible<HTMLDivElement>(closeAutoComplete);
   
-  
 
   return (
     <div
@@ -187,7 +182,7 @@ const SearchPage = ({ search, close }: Props) => {
                   e,
                   dispatch,
                   autoCompleteSuggestionIndex,
-                  autoCompleteData?.autoCompletePlayer ?? []
+                  autoCompleteData?.autoCompletePlayer
                 )
               }
               type="text"

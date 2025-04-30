@@ -9,16 +9,12 @@ const clearSearch = (
   dispatch: Dispatch<
     SearchActionType<
       | "SET_SEARCH_QUERY"
-      | "SET_AUTO_COMPLETE_RESULTS"
       | "SET_AUTO_COMPLETE_INDEX"
     >
   >
 ) => {
   dispatch({ type: "SET_SEARCH_QUERY", payload: { searchQuery: "" } });
-  dispatch({
-    type: "SET_AUTO_COMPLETE_RESULTS",
-    payload: { autoCompleteSuggestions: [] },
-  });
+ 
   dispatch({
     type: "SET_AUTO_COMPLETE_INDEX",
     payload: { autoCompleteSuggestionIndex: -1 },
@@ -44,7 +40,6 @@ const handleKeyDown = (
       | "SET_AUTO_COMPLETE_INDEX"
       | "FILTER_PLAYER_LEAGUE"
       | "SET_SEARCH_QUERY"
-      | "SET_AUTO_COMPLETE_RESULTS"
       | "TOGGLE_AUTOCOMPLETE_MENU"
     >
   >,
@@ -56,16 +51,16 @@ const handleKeyDown = (
   if (event.key === "ArrowUp") {
     dispatch({
       type: "SET_AUTO_COMPLETE_INDEX",
-      payload: { autoCompleteSuggestionIndex: 1 },
+      payload: { autoCompleteSuggestionIndex: 0 },
     });
   } else if (event.key === "ArrowDown") {
     dispatch({
       type: "SET_AUTO_COMPLETE_INDEX",
-      payload: { autoCompleteSuggestionIndex: 0 },
+      payload: { autoCompleteSuggestionIndex: autoCompleteSuggestions.length - 1 },
     });
   } else if (event.key === "Enter") {
     event.preventDefault();
-    if (autoCompleteSuggestionIndex >= 0) {
+    if (autoCompleteSuggestions && autoCompleteSuggestionIndex >= 0) {
       dispatch({
         type: "FILTER_PLAYER_LEAGUE",
         payload: {
@@ -202,7 +197,7 @@ const handlePositionFilter = (
 const handleTeamsFilter = (
   eventKey: any,
   dispatch: Dispatch<SearchActionType<"FILTER_PLAYER_TEAM">>
-) =>
+) => 
   dispatch({
     type: "FILTER_PLAYER_TEAM",
     payload: {
