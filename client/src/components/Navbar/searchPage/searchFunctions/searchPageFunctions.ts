@@ -77,7 +77,7 @@ const handleKeyDown = (
       });
     }
 
-    setTimeout(() => {
+    
       dispatch({
         type: "TOGGLE_AUTOCOMPLETE_MENU",
         payload: { showAutoCompleteSuggestions: false },
@@ -86,7 +86,7 @@ const handleKeyDown = (
         type: "SET_AUTO_COMPLETE_INDEX",
         payload: { autoCompleteSuggestionIndex: -1 },
       });
-    }, 100);
+    
   }
 };
 
@@ -114,7 +114,7 @@ const handleClickListItems = (
       searchQuery: removeAposHTMLCharacter(autoCompleteSuggestions[index].name),
     },
   });
-  setTimeout(() => {
+  
     dispatch({
       type: "TOGGLE_AUTOCOMPLETE_MENU",
       payload: { showAutoCompleteSuggestions: false },
@@ -123,7 +123,6 @@ const handleClickListItems = (
       type: "SET_AUTO_COMPLETE_INDEX",
       payload: { autoCompleteSuggestionIndex: -1 },
     });
-  }, 100);
 };
 
 const handleSelectLeague = (

@@ -196,6 +196,8 @@ type TeamStandingType = {
   goalsDiff: number;
   form: string;
   all: TableStatsType;
+  isRelegated: boolean,
+  isChampion: boolean,
 };
 
 // TYPE: NEWS

@@ -244,3 +244,19 @@ tr td:hover {
 .dropdown-item:focus {
   background-color: map-get($map: $teals, $key: "teal-700");
 }
+
+// table
+
+.league-table tbody .champion{
+  --bs-table-bg: #ceb31c;
+  --bs-table-striped-bg: #f3d219;
+  --bs-table-color: black;
+  --bs-table-striped-color: black;
+}
+
+.league-table tbody .relegated{
+  --bs-table-bg: rgb(221, 28, 28);
+  --bs-table-striped-bg: rgb(221, 28, 28);
+  --bs-table-color: black;
+  --bs-table-striped-color: black;
+}

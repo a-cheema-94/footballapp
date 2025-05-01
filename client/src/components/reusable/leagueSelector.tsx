@@ -45,7 +45,7 @@ const LeagueSelector = ({
   const leagueIds = Object.values(LEAGUES);
 
   const handleDropdownSelect = (league: LeagueNames) => {
-    setTimeout(() => {
+    
       if (selectLeague && dispatch && resetFilters) {
         resetFilters(dispatch);
         selectLeague(league, dispatch);
@@ -53,7 +53,7 @@ const LeagueSelector = ({
       if (setPlayerLeague) {
         setPlayerLeague(league);
       }
-    }, 500);
+    
   };
 
   // Tooltip Props

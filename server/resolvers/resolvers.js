@@ -78,13 +78,12 @@ export const resolvers = {
       return topPlayers;
     },
 
-    leagueStandings: async (_, { league, limit = 20 }) => {
+    leagueStandings: async (_, { league = "Premier League", limit = 20 }) => {
       // clearMongoCollection(TeamStanding)
       // clearMongoCollection(LastApiCallTimes);
 
       // setup endpoint and handle parameter values
       let endpoint = "standings";
-      if (!Object.keys(LEAGUES).includes(league)) league = "Premier League";
 
       // decide if should query api.
       await makeInitialQuery(
@@ -487,9 +486,6 @@ export const resolvers = {
             "Squad Members",
             league
           );
-
-          // add a delay, to ensure database has processed data.
-          await new Promise((resolve) => setTimeout(resolve, 1000));
 
           // query database again
           searchResults = await squadMemberAggregateSearch(query, matchFields);

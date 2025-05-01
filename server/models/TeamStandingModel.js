@@ -24,6 +24,8 @@ const TeamStandingSchema = new mongoose.Schema({
   goalsDiff: Number,
   form: String,
   all: TableStats,
+  isRelegated: Boolean,
+  isChampion: Boolean,
 });
 
 const TeamStanding = mongoose.model("Team Standing", TeamStandingSchema);

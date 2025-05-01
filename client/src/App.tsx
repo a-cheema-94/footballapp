@@ -14,6 +14,8 @@ import SearchPage from "./components/Navbar/searchPage/SearchPage";
 import NavigateUpBtn from "./components/NavigateUpBtn";
 import { ThemeContext } from "./context/ThemeProvider";
 
+// todo => Live Match Stats => use events data from live fixtures.
+
 function App() {
   // search state and functions
   const [search, setSearch] = useState<boolean>(false);

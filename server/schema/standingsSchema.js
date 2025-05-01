@@ -22,5 +22,7 @@ export const standingsTypeDefs = `
     goalsDiff: Int
     form: String
     all: TableStats
+    isRelegated: Boolean,
+    isChampion: Boolean,
   }
 `;

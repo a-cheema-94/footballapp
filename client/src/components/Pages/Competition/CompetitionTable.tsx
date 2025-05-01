@@ -12,7 +12,7 @@ const CompetitionTable = ({ leagueTable }: Props) => {
     <div>
       {(leagueTable) ? (
         <Container fluid>
-        <Table responsive="md" striped hover className="border rounded mw-100 mx-auto">
+        <Table responsive="md" striped hover className="border rounded mw-100 mx-auto league-table">
           <thead>
             <tr>
               <th colSpan={2}>Club</th>
@@ -29,8 +29,8 @@ const CompetitionTable = ({ leagueTable }: Props) => {
           </thead>
           <tbody>
             {(leagueTable).map((team: TeamStandingType, index: number) => (
-              <tr className="" key={index}>
-                <td>{team.rank}</td>
+              <tr className={`${team.isChampion ? 'champion' : team.isRelegated ? 'relegated' : ''}`} key={index}>
+                <td>{team.isChampion ? 'C' : team.isRelegated ? 'R' : team.rank}</td>
                 <td className="d-flex gap-3">
                   <LogoOrPlayerImage
                     category="teams"

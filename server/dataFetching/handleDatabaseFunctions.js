@@ -7,12 +7,12 @@ import Player from "../models/TopPlayerModel.js";
 import Fixture from "../models/fixtures/FixtureModel.js";
 import { filterObj } from "../utils/filterData.js";
 import chalk from "chalk";
+import { isAnyTeamRelegated, isChampion } from "../utils/getChampionAndRelegationStatus.js";
 
 const IN_PLAY_STATUS_CODES = ["1H", "HT", "2H", "ET", "BT", "P", "SUSP", "INT", "LIVE"];
 
 export async function manipulateAndInputData(data, endpoint, league = null) {
   let final;
-  // todo => handle no data case.
   switch (endpoint) {
     case "players/topscorers":
     case "players/topassists":
@@ -45,10 +45,23 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
       final = newData.map((teamInfo) => {
         const updatedStanding = {
           league,
+          isChampion: false,
+          isRelegated: false,
           ...filterObj(teamInfo, PROPS_TO_FILTER.standings),
         };
         return updatedStanding;
       });
+      // console.log("CHAMPION: ", isChampion(final))
+      
+      if(isChampion(final)) final[0].isChampion = true
+      // console.log("RELEGATED TEAMS: ", isAnyTeamRelegated(final))
+
+      const possRelegatedTeams = isAnyTeamRelegated(final);
+      if(possRelegatedTeams.length > 0) {
+        for(let i=0; i<possRelegatedTeams.length; i++) {
+          final[possRelegatedTeams[i]].isRelegated = true
+        }
+      }
       try {
         await inputDataInDatabase(final, TeamStanding, "team");
       } catch (error) {
@@ -124,10 +137,6 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
         );
       }
       break;
-
-    // NO live field. Need a better way to tell if fixture is live or not since there could be only one current live match and the below approach doesn't account for this.
-    // todo => design a system that handles all cases of live fixtures => when there is only one live fixture and there are no fixtures to display.
-    // ? use 
 
 
     case "fixtures":

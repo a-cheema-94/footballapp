@@ -8,6 +8,8 @@ export const LEAGUE_TABLE_QUERY = gql`
       id
     }
     points
+    isChampion
+    isRelegated
     form
     goalsDiff
     rank

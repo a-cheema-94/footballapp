@@ -68,10 +68,7 @@ const SearchPage = ({ search, close }: Props) => {
     autoCompleteSuggestionIndex,
   } = searchPageState;
 
-  const deferredSearchQuery = useDeferredValue(searchQuery);
-
   // QUERIES
-  // todo: test speed of searches / auto-complete and go over query logic and see if can optimize.
 
   // autocomplete query
   const [
