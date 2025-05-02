@@ -9,8 +9,8 @@ import { FaRegCircleDot } from "react-icons/fa6";
 type Props = {};
 
 const Homepage = ({}: Props) => {
-  const [tabKey, setTabKey] = useState<string | number>("top-scorers-and-assists");
   const [live, setLive] = useState<boolean>(false);
+  const [tabKey, setTabKey] = useState<string | number>("top-scorers-and-assists");
   const { theme } = useContext(ThemeContext);
 
   const handleTab = (key: string | number | null): void => {

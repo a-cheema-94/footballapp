@@ -28,7 +28,6 @@ const LiveScores = ({ isLive, isNotLive }: Props) => {
   const noLiveMatches = !liveMatches || Object.values(liveMatches).every(league => league.length === 0);
   
   useEffect(() => {
-    console.log('rendered')
     if(noLiveMatches) {
       isNotLive() 
     } else {

@@ -15,6 +15,11 @@ import NavigateUpBtn from "./components/NavigateUpBtn";
 import { ThemeContext } from "./context/ThemeProvider";
 
 // todo => Live Match Stats => use events data from live fixtures.
+// todo => read main concepts in react router docs
+// todo => when routes have dependencies what to do?
+  // ? error boundaries??
+  // ? redirects?? 
+// todo => put dark mode state in local storage
 
 function App() {
   // search state and functions
@@ -58,7 +63,7 @@ function App() {
             <Route path="/club" element={<Club />} />
             {/* IN PROGRESS */}
             {/* <Route path="/player" element={<Player />} /> */}
-            <Route path="/liveMatchStats" element={<LiveMatchStats />} />
+            <Route path="/liveMatchStats/:fixtureId" element={<LiveMatchStats />} />
             {/* <Route
               path="/fullTimeMatchStats"
               element={<FullTimeMatchStats />}

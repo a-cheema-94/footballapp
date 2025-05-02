@@ -20,6 +20,9 @@ type FixtureNameAndLogoProps = {
 // .team[home/away].name
 // .goals[home/away]
 
+// todo => responsive
+// todo => styling => dark mode
+
 const LiveFixture = ({ fixture }: Props) => {
   const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
@@ -33,11 +36,11 @@ const LiveFixture = ({ fixture }: Props) => {
     },
   };
 
-  const handleClickFixture = () => navigate('/liveMatchStats', { state: { fixture } })
+  const handleClickFixture = () =>
+    navigate(`/liveMatchStats/${fixture.fixture.id}`, { state: { fixture } });
 
   return (
     <TooltipWrapper message="Go to Match Stats" styleProps={styleProps}>
-
       <div
         onClick={handleClickFixture}
         className={`position-relative rounded border flex-grow-1 ratio ratio-16x9 p-2 w-100 ${
@@ -50,32 +53,7 @@ const LiveFixture = ({ fixture }: Props) => {
         }}
       >
         <div className="position-absolute d-flex justify-content-center align-items-center">
-          {/* home */}
-          <FixtureNameAndLogo
-            teamId={fixture?.teams.home.id}
-            teamName={fixture?.teams.home.name}
-          />
-
-          {/* score and time*/}
-          <div className="d-flex flex-column">
-            {/* home score */}
-            <div className="d-flex  gap-2 fs-5">
-              <div className="fw-semibold">{fixture?.goals.home}</div>
-              <p className="">-</p>
-              {/* away score */}
-              <div className="fw-semibold">{fixture?.goals.away}</div>
-            </div>
-
-            <div className="fw-semibold">
-              {fixture?.fixture?.status?.elapsed}
-            </div>
-          </div>
-
-          {/* away */}
-          <FixtureNameAndLogo
-            teamId={fixture?.teams.away.id}
-            teamName={fixture?.teams.away.name}
-          />
+          <FixtureInfo fixture={fixture} />
 
           {fixture?.live && (
             <div className="text-red-500 scale-up position-absolute top-0 end-0">
@@ -88,7 +66,41 @@ const LiveFixture = ({ fixture }: Props) => {
   );
 };
 
-const FixtureNameAndLogo = ({ teamId, teamName }: FixtureNameAndLogoProps) => {
+export const FixtureInfo = ({ fixture }: Props) => {
+  return (
+    <>
+      {/* home */}
+      <FixtureNameAndLogo
+        teamId={fixture?.teams.home.id}
+        teamName={fixture?.teams.home.name}
+      />
+
+      {/* score and time*/}
+      <div className="d-flex flex-column">
+        {/* home score */}
+        <div className="d-flex  gap-2 fs-5">
+          <div className="fw-semibold">{fixture?.goals.home}</div>
+          <p className="">-</p>
+          {/* away score */}
+          <div className="fw-semibold">{fixture?.goals.away}</div>
+        </div>
+
+        <div className="fw-semibold align-self-center">{fixture?.fixture?.status?.elapsed}</div>
+      </div>
+
+      {/* away */}
+      <FixtureNameAndLogo
+        teamId={fixture?.teams.away.id}
+        teamName={fixture?.teams.away.name}
+      />
+    </>
+  );
+};
+
+export const FixtureNameAndLogo = ({
+  teamId,
+  teamName,
+}: FixtureNameAndLogoProps) => {
   return (
     <div className="away d-flex justify-content-center align-items-center flex-column gap-1 w-50">
       {/* logo */}

@@ -333,6 +333,7 @@ export type {
   TeamStandingType,
   NewsType,
   FixtureType,
+  FixtureEventType,
   FixtureLineupType,
   PlayerFixtureType,
 };

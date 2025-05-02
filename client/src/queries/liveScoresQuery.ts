@@ -27,6 +27,7 @@ export const LIVE_SCORES_QUERY = gql`
 
       team {
         name
+        id
       }
 
       time {
@@ -42,6 +43,7 @@ export const LIVE_SCORES_QUERY = gql`
     }
 
     fixture {
+      id
       venue {
         name
       }
