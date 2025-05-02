@@ -335,6 +335,11 @@ export const resolvers = {
       // clearMongoCollection(Fixture, { live: true })
       // clearMongoCollection(LastApiCallTimes, { parameter: 'live' })
 
+      // todo => solve problem of live fixtures still having status of 2H when fixture is over. So, when we call api for fixture no result comes back BUT, there is still a live fixture at 90 minutes with 2H as its status code. The database fixture will never be updated since the api is not returning this fixture after it is finished.
+        // ? need to compare live fixtures in db with live fixtures returned from api?
+        // ? set a expiration time on the fixture document => need to account for extra time, delays etc ...
+        // ? call fixtures directly from the api and don't put them in the database.
+
       // sort out endpoint and get league ids for live fixtures
       const liveLeagueIds = getLiveLeagueIds(leagues);
       let endpoint = "fixtures";
@@ -385,6 +390,7 @@ export const resolvers = {
           `some error occurred when fetching live fixtures from database: ${error}`
         );
       }
+      liveFixtures.forEach(fix => console.log(fix.fixture.status.short))
       return liveFixtures;
     },
 

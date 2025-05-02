@@ -54,11 +54,11 @@ function App() {
         {!search && (
           <Routes>
             <Route path="/" element={<Homepage />} />
-            <Route path="/competition" element={<Competition />} />
+            <Route path="/competition/" element={<Competition />} />
             <Route path="/club" element={<Club />} />
             {/* IN PROGRESS */}
             {/* <Route path="/player" element={<Player />} /> */}
-            {/* <Route path="/liveMatchStats" element={<LiveMatchStats />} /> */}
+            <Route path="/liveMatchStats" element={<LiveMatchStats />} />
             {/* <Route
               path="/fullTimeMatchStats"
               element={<FullTimeMatchStats />}

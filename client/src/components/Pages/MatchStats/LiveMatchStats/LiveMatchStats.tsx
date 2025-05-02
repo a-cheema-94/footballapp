@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { LIVE_SCORES_QUERY } from "../../../../queries/liveScoresQuery";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type Props = {};
 
@@ -10,13 +11,15 @@ const LiveMatchStats = (props: Props) => {
   // if(loading) return <p>Loading ...</p>
 
   // console.log(data)
+  const { state } = useLocation();
+  const navigate = useNavigate();
 
+  console.log(state)
   return (
     <div>
-      {/* {data.liveFixtures.length === 0 ? (
-        <p>No live fixtures currently</p>
-      ) : 'need to update, since live fixtures in progress'} */}
-      data unavailable for now
+      <button onClick={() => navigate(-1)}>Go Back</button>
+      <p>{state.fixture.teams.home.name}</p>
+      <p>{state.fixture.teams.away.name}</p>
     </div>
   );
 };

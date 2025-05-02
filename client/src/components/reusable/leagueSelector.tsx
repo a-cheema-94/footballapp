@@ -60,7 +60,7 @@ const LeagueSelector = ({
   const styleProps = {
     placement: "top-start",
     delay: {
-      show: 1000,
+      show: 400,
       hide: 400,
     },
   };

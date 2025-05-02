@@ -1,17 +1,13 @@
 import { useLazyQuery } from "@apollo/client";
 import { LEAGUE_TABLE_QUERY } from "../../../queries/leagueTableQuery";
 import { useContext, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import LeagueSelector from "../../reusable/leagueSelector";
 import { LeagueNames } from "../../../functions/fixedData";
 import { ThemeContext } from "../../../context/ThemeProvider";
 import CompetitionTable from "./CompetitionTable";
 
 type Props = {};
-
-// todo => implement champion / relegation states.
-  // todo => add isChampion and isRelegated fields to Team Standing type
-  // todo => add logic to take in whole final array of teams and change 1st, 18th, 19th or 20th if necessary
 
 const Competition = (props: Props) => {
 
@@ -22,7 +18,7 @@ const Competition = (props: Props) => {
     LEAGUE_TABLE_QUERY);
   
   useEffect(() => {
-    teamsFromDB({variables: { league: state.league }})
+    if(state) teamsFromDB({variables: { league: state.league }})
   }, [state]);
   
   const handlePlayerLeague = (league: LeagueNames): void => {
@@ -31,6 +27,8 @@ const Competition = (props: Props) => {
 
   };
 
+  if(!state) return <Link to="/">Redirect</Link> 
+  // todo => sort out links with dependencies and users clicking unspecified links.
   if (error) return <div>An Error occurred: {error.message}</div>;
   if (loading) return <p>Loading ...</p>;
 
