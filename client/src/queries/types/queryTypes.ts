@@ -283,8 +283,8 @@ type FixtureLineupType = {
     name: string;
   };
   formation: string;
-  startXI: [PlayerFixtureType];
-  substitutions: [PlayerFixtureType];
+  startXI: PlayerFixtureType[];
+  substitutions: PlayerFixtureType[];
 };
 
 type FixtureType = {
@@ -318,9 +318,9 @@ type FixtureType = {
     home: number;
     away: number;
   };
-  statistics: [FixtureTeamStatsType?];
-  events: [FixtureEventType?];
-  lineups: [FixtureLineupType?];
+  statistics: FixtureTeamStatsType[] | [];
+  events: FixtureEventType[] | [];
+  lineups: FixtureLineupType[] | [];
 };
 
 // EXPORTS

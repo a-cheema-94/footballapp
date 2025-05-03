@@ -20,7 +20,7 @@ const LiveScores = ({ isLive, isNotLive }: Props) => {
     variables: {
       leagues: ["Premier League", "Bundesliga", "La Liga", "Serie A"],
     },
-    // pollInterval: 5000
+    // pollInterval: 30000
   });
   
   const liveMatches = sortLiveFixturesByLeague(liveFixturesData?.liveFixtures);

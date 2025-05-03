@@ -1,10 +1,11 @@
 import {
+  callFootballApi,
   makeFootballApiCall,
   makeNewsApiCall,
 } from "../dataFetching/apiCallFunctions.js";
 import { shouldMakeApiCall } from "../dataFetching/shouldMakeApiCall.js";
 import { clearMongoCollection } from "../dataFetching/handleDatabaseFunctions.js";
-import { FIXTURES_ENDPOINTS, LEAGUES, SEASON } from "../fixedData/fixedData.js";
+import { FIXTURES_ENDPOINTS, LEAGUES, PROPS_TO_FILTER, SEASON } from "../fixedData/fixedData.js";
 import LastApiCallTimes from "../models/LastApiCallTimesModel.js";
 import SquadMember from "../models/SquadMemberModel.js";
 import TeamStanding from "../models/TeamStandingModel.js";
@@ -19,6 +20,7 @@ import {
   makeInitialQuery,
   squadMemberAggregateSearch,
 } from "./additionalFunctions.js";
+import { filterObj } from "../utils/filterData.js";
 
 // NOTE: On some resolvers we will need id's from the players or teams since if api call is needed, this is required in the request url. E.g. playerSquads resolver needs team id, since the query to the endpoint: players/squads on the api needs team id in the request.
 
@@ -343,54 +345,76 @@ export const resolvers = {
       // sort out endpoint and get league ids for live fixtures
       const liveLeagueIds = getLiveLeagueIds(leagues);
       let endpoint = "fixtures";
-
-      // decide if should query api
-      await makeInitialQuery(
-        "minute",
-        endpoint,
-        "live",
-        { live: liveLeagueIds },
-        "Live Fixture"
-      );
-
-      // more complex since I want Premier league live fixtures first followed by the rest, so use an aggregation pipeline in database query.
       let liveFixtures;
+
       try {
-        liveFixtures = await Fixture.aggregate([
-          {
-            // $match: { live: true },
-            // get fixtures with live: true and fixture.status.short being one of the in_play status codes.
-            // get all live fixtures in an array
-            $match: { $and: [
-              {live: true}, {"fixture.status.short": {$in: IN_PLAY_STATUS_CODES}}
-            ] },
-          },
-          {
-            // add a sortOrder field to specify that premier league live fixtures will be sorted first
-            $addFields: {
-              sortOrder: {
-                $cond: {
-                  if: { $eq: ["$league", "Premier League"] },
-                  then: 0,
-                  else: 1,
-                },
-              },
-            },
-          },
-          {
-            // now, sort first by live premier league fixtures in alphabetical order, then the other fixtures by league in alphabetical order.
-            $sort: {
-              sortOrder: 1,
-              league: 1,
-            },
-          },
-        ]);
+        const liveFixturesApiRes = await callFootballApi(endpoint, { live: liveLeagueIds });
+        liveFixtures = liveFixturesApiRes.map((fixture) => {
+          let events = [];
+          const {
+            league: { name },
+          } = fixture;
+
+          if(fixture.events) events = fixture.events
+          const updatedFixture = {
+            live: true,
+            league: name,
+            ...filterObj(fixture, PROPS_TO_FILTER.fixtures.fixture),
+            events,
+            statistics: [],
+            lineups: [],
+          };
+          // console.log(updatedFixture)
+          return updatedFixture;
+        })
       } catch (error) {
-        console.error(
-          `some error occurred when fetching live fixtures from database: ${error}`
-        );
+        console.error(`Some error occurred when calling api directly: ${error}`)
       }
-      liveFixtures.forEach(fix => console.log(fix.fixture.status.short))
+      // // decide if should query api
+      // await makeInitialQuery(
+      //   "minute",
+      //   endpoint,
+      //   "live",
+      //   { live: liveLeagueIds },
+      //   "Live Fixture"
+      // );
+
+      // // more complex since I want Premier league live fixtures first followed by the rest, so use an aggregation pipeline in database query.
+      // try {
+      //   liveFixtures = await Fixture.aggregate([
+      //     {
+      //       // $match: { live: true },
+      //       // get fixtures with live: true and fixture.status.short being one of the in_play status codes.
+      //       // get all live fixtures in an array
+      //       $match: { $and: [
+      //         {live: true}, {"fixture.status.short": {$in: IN_PLAY_STATUS_CODES}}
+      //       ] },
+      //     },
+      //     {
+      //       // add a sortOrder field to specify that premier league live fixtures will be sorted first
+      //       $addFields: {
+      //         sortOrder: {
+      //           $cond: {
+      //             if: { $eq: ["$league", "Premier League"] },
+      //             then: 0,
+      //             else: 1,
+      //           },
+      //         },
+      //       },
+      //     },
+      //     {
+      //       // now, sort first by live premier league fixtures in alphabetical order, then the other fixtures by league in alphabetical order.
+      //       $sort: {
+      //         sortOrder: 1,
+      //         league: 1,
+      //       },
+      //     },
+      //   ]);
+      // } catch (error) {
+      //   console.error(
+      //     `some error occurred when fetching live fixtures from database: ${error}`
+      //   );
+      // }
       return liveFixtures;
     },
 

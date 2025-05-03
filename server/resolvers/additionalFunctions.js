@@ -87,7 +87,7 @@ export const squadMemberAggregateSearch = async (searchQuery, matchFields) => {
 
 export const getLiveLeagueIds = (leagues) => {
   // need to have ids in this form when calling api: '1-2-3-4'
-  let liveLeagueIds = "233-";
+  let liveLeagueIds = "";
   leagues.forEach((league) => (liveLeagueIds += `${LEAGUES[league]}-`));
   liveLeagueIds = liveLeagueIds.split("-");
   liveLeagueIds.pop(); // get rid of last '-'

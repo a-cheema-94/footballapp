@@ -13,6 +13,32 @@ const newsApiKey = process.env.NEWS_API_KEY;
 
 // fixtures, { team: teamId, league: leagueId, season: 2024 }, league
 
+
+export async function callFootballApi(endpoint , params) {
+  const footballApiClient = axios.create();
+
+  let apiRes;
+
+  try {
+    apiRes = await footballApiClient.get(
+      `https://v3.football.api-sports.io/${endpoint}`,
+      {
+        params,
+        headers: {
+          "x-apisports-key": footballApiKey,
+        },
+      }
+    );
+    console.log(chalk.bgBlueBright("finished api call from api sports"));
+  } catch (error) {
+    console.error(`Error fetching data from football api: ${error}`);
+  }
+
+  const dataRes = apiRes.data.response;
+  return dataRes
+}
+
+
 export async function makeFootballApiCall(endpoint, params, league = null) {
   const footballApiClient = axios.create();
 

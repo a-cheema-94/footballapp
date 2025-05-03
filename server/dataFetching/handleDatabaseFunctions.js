@@ -142,13 +142,13 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
     case "fixtures":
 
         let live = false;
-        let events = [];
         final = data.map((fixture) => {
           if(IN_PLAY_STATUS_CODES.includes(fixture.fixture.status.short)) {
             console.log(fixture.fixture.status.short)
             live = true
           }
-
+          
+          let events = [];
           const {
             league: { name },
           } = fixture;
