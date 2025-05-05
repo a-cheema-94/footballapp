@@ -8,7 +8,6 @@ type Props = {
 
 const MatchEvent = ({ event }: Props) => {
   const ifScreenTooSmall = useMediaQuery("(max-width: 600px)");
-  console.log(ifScreenTooSmall)
 
   const matchEventWidth = ifScreenTooSmall ? "100%" : "75%";
   return (
@@ -39,7 +38,7 @@ const MatchEvent = ({ event }: Props) => {
         
         <LogoOrPlayerImage
           category="teams"
-          dimension="2rem"
+          dimension="7.5%"
           id={event?.team.id ?? 40}
         />
 

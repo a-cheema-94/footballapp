@@ -298,7 +298,7 @@ type FixtureType = {
   fixture: {
     id: number;
     referee: string;
-    timestamp: string;
+    timestamp: number;
     venue: {
       id: number;
       name: string;

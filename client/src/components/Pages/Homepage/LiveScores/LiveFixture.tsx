@@ -76,8 +76,9 @@ export const FixtureInfo = ({ fixture }: Props) => {
       />
 
       {/* score and time*/}
-      <div className="d-flex flex-column">
+      <div className="d-flex flex-column gap-2">
         {/* home score */}
+        <div className="fw-semibold align-self-center">{fixture?.fixture?.status?.short}</div>
         <div className="d-flex  gap-2 fs-5">
           <div className="fw-semibold">{fixture?.goals.home}</div>
           <p className="">-</p>

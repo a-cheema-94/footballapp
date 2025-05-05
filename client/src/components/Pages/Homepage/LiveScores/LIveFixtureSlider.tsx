@@ -8,6 +8,8 @@ type Props = {
   liveFixtures: FixtureType[];
 };
 
+// todo => carousels with css
+
 const LiveFixtureSlider: React.FC<Props> = ({ liveFixtures }: Props) => {
   const {theme} = useContext(ThemeContext)
 

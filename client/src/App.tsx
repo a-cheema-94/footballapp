@@ -63,8 +63,8 @@ function App() {
             <Route path="/club" element={<Club />} />
             {/* IN PROGRESS */}
             {/* <Route path="/player" element={<Player />} /> */}
-            <Route path="/liveMatchStats/:fixtureId" element={<LiveMatchStats />} />
-            {/* <Route path="/liveMatchStats" element={<LiveMatchStats />} /> */}
+            {/* <Route path="/liveMatchStats/:fixtureId" element={<LiveMatchStats />} /> */}
+            <Route path="/liveMatchStats" element={<LiveMatchStats />} />
             {/* <Route
               path="/fullTimeMatchStats"
               element={<FullTimeMatchStats />}

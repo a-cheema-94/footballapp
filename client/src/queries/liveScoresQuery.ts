@@ -44,6 +44,7 @@ export const LIVE_SCORES_QUERY = gql`
 
     fixture {
       id
+      timestamp
       venue {
         name
       }
