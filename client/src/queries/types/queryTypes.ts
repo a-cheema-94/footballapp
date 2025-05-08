@@ -236,8 +236,8 @@ type FixtureTeamStatsType = {
 };
 
 type EventInfoType = {
-  id: number;
-  name: string;
+  id: number | null;
+  name: string | null;
 };
 
 type FixtureEventType = {

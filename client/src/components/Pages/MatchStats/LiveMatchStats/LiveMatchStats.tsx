@@ -112,8 +112,8 @@ const sampleFixture: FixtureType = {
         name: "Casemiro",
       },
       assist: {
-        id: 0,
-        name: "",
+        id: null,
+        name: null,
       },
       type: "Card",
       detail: "Yellow Card",
@@ -137,7 +137,7 @@ const sampleFixture: FixtureType = {
         name: "Luke Shaw",
       },
       type: "Goal",
-      detail: "Header",
+      detail: "Normal Goal",
       comments: "Header from a corner kick",
     },
     {
@@ -154,8 +154,8 @@ const sampleFixture: FixtureType = {
         name: "Thiago Silva",
       },
       assist: {
-        id: 0,
-        name: "",
+        id: null,
+        name: null,
       },
       type: "Card",
       detail: "Red Card",
@@ -176,10 +176,10 @@ const sampleFixture: FixtureType = {
       },
       assist: {
         id: 0,
-        name: "",
+        name: "Mason Mount",
       },
-      type: "Substitution",
-      detail: "Substitution  In",
+      type: "subst",
+      detail: "Substitution 1",
       comments: "Tactical substitution",
     },
   ],
@@ -192,7 +192,7 @@ const LiveMatchStats = (props: Props) => {
 
   // const { state } = useLocation();
   const navigate = useNavigate();
-
+  
   // if (!state)
   //   return (
   //     <div>
