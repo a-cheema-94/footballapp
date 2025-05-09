@@ -3,8 +3,7 @@ import { FaRegCircleDot } from "react-icons/fa6";
 import { useContext } from "react";
 import { ThemeContext } from "../../../../context/ThemeProvider";
 import LogoOrPlayerImage from "../../../reusable/LogoOrPlayerImage";
-import { Link, useNavigate } from "react-router-dom";
-import { Stack } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import TooltipWrapper from "../../../reusable/TooltipWrapper";
 
 type Props = {
@@ -15,13 +14,6 @@ type FixtureNameAndLogoProps = {
   teamId: number;
   teamName: string;
 };
-
-// .team[home/away].id
-// .team[home/away].name
-// .goals[home/away]
-
-// todo => responsive
-// todo => styling => dark mode
 
 const LiveFixture = ({ fixture }: Props) => {
   const { theme } = useContext(ThemeContext);

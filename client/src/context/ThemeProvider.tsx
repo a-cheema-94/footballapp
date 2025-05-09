@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useMemo, useState } from "react";
+import { useLocalStorage } from "../components/reusable/customHooks/useLocalStorage";
 
 type Props = {
   children: ReactNode;
@@ -8,7 +9,7 @@ type Props = {
 export const ThemeContext = createContext({} as any);
 
 const ThemeProvider = ({ children }: Props) => {
-  const [theme, setTheme] = useState<string>("light");
+  const [theme, setTheme] = useLocalStorage("dark", 'theme');
 
   const toggleTheme = () =>
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));

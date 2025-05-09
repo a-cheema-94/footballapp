@@ -5,8 +5,6 @@ import useMediaQuery from "../../../reusable/customHooks/useMediaQuery";
 import { IoFootball } from "react-icons/io5";
 import { FaTv } from "react-icons/fa6";
 
-// todo => see if can refactor long switch statement
-
 type Props = {
   event: FixtureEventType | undefined;
 };

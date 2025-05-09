@@ -14,11 +14,10 @@ import SearchPage from "./components/Navbar/searchPage/SearchPage";
 import NavigateUpBtn from "./components/NavigateUpBtn";
 import { ThemeContext } from "./context/ThemeProvider";
 
-// todo => Live Match Stats => use events data from live fixtures.
 // todo => when routes have dependencies what to do?
+// todo => read react router docs for a possible migration to data mode
   // ? error boundaries??
   // ? redirects?? 
-// todo => put dark mode state in local storage
 
 function App() {
   // search state and functions
@@ -60,10 +59,10 @@ function App() {
             <Route path="/" element={<Homepage />} />
             <Route path="/competition/" element={<Competition />} />
             <Route path="/club" element={<Club />} />
+            <Route path="/liveMatchStats/:fixtureId" element={<LiveMatchStats />} />
+            {/* <Route path="/liveMatchStats" element={<LiveMatchStats />} /> */}
             {/* IN PROGRESS */}
             {/* <Route path="/player" element={<Player />} /> */}
-            {/* <Route path="/liveMatchStats/:fixtureId" element={<LiveMatchStats />} /> */}
-            <Route path="/liveMatchStats" element={<LiveMatchStats />} />
             {/* <Route
               path="/fullTimeMatchStats"
               element={<FullTimeMatchStats />}

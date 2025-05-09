@@ -1,5 +1,5 @@
 import LastFixtureComponent from "./LastFixtureComponent"
-import PlayerCards from "./PlayerCards/PlayerCards"
+import PlayerCards from "./PlayerTiles/PlayerTiles"
 import TeamStats from "./TeamStats"
 
 type Props = {}

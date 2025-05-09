@@ -1,12 +1,10 @@
 import { useQuery } from "@apollo/client";
 import { SQUAD_MEMBER_QUERY } from "../../../../queries/squadMemberQuery";
-import PlayerCard from "./PlayerCard";
 import { SquadMemberType } from "../../../../queries/types/queryTypes";
 
 type Props = {};
 
-// todo:  rename player card component 
-const PlayerCards = (props: Props) => {
+const PlayerTiles = (props: Props) => {
   // const { data, loading, error } = useQuery(SQUAD_MEMBER_QUERY, {
   //   variables: {
   //     team: "Liverpool",
@@ -27,4 +25,4 @@ const PlayerCards = (props: Props) => {
   );
 };
 
-export default PlayerCards;
+export default PlayerTiles;

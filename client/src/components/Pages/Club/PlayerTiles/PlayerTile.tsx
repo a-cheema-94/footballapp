@@ -5,7 +5,7 @@ type Props = {
   player: SquadMemberType
 };
 
-const PlayerCard = ({ player }: Props) => {
+const PlayerTile = ({ player }: Props) => {
   return (
     <div
       className="d-flex flex-column align-items-center border border-black"
@@ -22,4 +22,4 @@ const PlayerCard = ({ player }: Props) => {
   );
 };
 
-export default PlayerCard;
+export default PlayerTile;
