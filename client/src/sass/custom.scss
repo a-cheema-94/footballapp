@@ -260,3 +260,17 @@ tr td:hover {
   --bs-table-color: black;
   --bs-table-striped-color: black;
 }
+
+// referee card symbols
+.football-card {
+  height: 60px;
+  width: 40px;
+}
+
+.football-card.yellow {
+  background-color: yellow;
+}
+
+.football-card.red {
+  background-color: red;
+}

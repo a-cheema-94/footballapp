@@ -24,6 +24,8 @@ import { filterObj } from "../utils/filterData.js";
 
 // NOTE: On some resolvers we will need id's from the players or teams since if api call is needed, this is required in the request url. E.g. playerSquads resolver needs team id, since the query to the endpoint: players/squads on the api needs team id in the request.
 
+// todo => see if we can add upcoming fixtures to the app in LiveScores component place. need to query two endpoints => get current gameweek and then fetch the upcoming fixtures. Can save this in the database to cut down on calls => daily since fixtures may be done at various times => some fixtures from one gameweek could overlap with other weeks. Also, have feature where we can look at the lineups 1 hour ish before fixture takes place => this would be in place of full time match stats and not render when fixture is in progress.
+
 const IN_PLAY_STATUS_CODES = ["1H", "HT", "2H", "ET", "BT", "P", "SUSP", "INT", "LIVE"];
 
 
@@ -337,7 +339,7 @@ export const resolvers = {
       // clearMongoCollection(Fixture, { live: true })
       // clearMongoCollection(LastApiCallTimes, { parameter: 'live' })
 
-      // todo => solve problem of live fixtures still having status of 2H when fixture is over. So, when we call api for fixture no result comes back BUT, there is still a live fixture at 90 minutes with 2H as its status code. The database fixture will never be updated since the api is not returning this fixture after it is finished.
+      // todo => solve problem of live fixtures still having status of 2H when fixture is over. So, when we call api for fixture no result comes back BUT, there is still a live fixture at 90 minutes with 2H as its status code in database. The database fixture will never be updated since the api is not returning this fixture after it is finished.
         // ? need to compare live fixtures in db with live fixtures returned from api?
         // ? set a expiration time on the fixture document => need to account for extra time, delays etc ...
         // ? call fixtures directly from the api and don't put them in the database.

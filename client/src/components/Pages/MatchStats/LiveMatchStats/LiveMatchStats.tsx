@@ -142,6 +142,27 @@ const sampleFixture: FixtureType = {
     },
     {
       time: {
+        elapsed: 70,
+        extra: 0,
+      },
+      team: {
+        id: 33,
+        name: "Manchester United",
+      },
+      player: {
+        id: 104,
+        name: "Anthony Martial",
+      },
+      assist: {
+        id: null,
+        name: null,
+      },
+      type: "Var",
+      detail: "Penalty confirmed",
+      comments: null,
+    },
+    {
+      time: {
         elapsed: 78,
         extra: 0,
       },

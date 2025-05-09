@@ -45,8 +45,6 @@ type Props = {
   close: () => void;
 };
 
-// todo: solve problem of no searchable items (players), on first load, have to select team then query will execute. Maybe when first load, will call every squad of teams in selected league => now we have players to search through on first load.
-
 const SearchPage = ({ search, close }: Props) => {
   const { theme } = useContext(ThemeContext);
 

@@ -237,7 +237,6 @@ export async function manipulateAndInputData(data, endpoint, league = null) {
             upsert: true,
           });
           // { upsert: true } => either updates an existing document that matches the query or inserts a new one if no matching document to the query is found.
-          // todo => may need to implement bulk writes here.
         }
 
         console.log(chalk.bgGreen("news articles now in database"));

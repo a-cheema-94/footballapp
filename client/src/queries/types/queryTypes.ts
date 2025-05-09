@@ -250,7 +250,7 @@ type FixtureEventType = {
   assist: EventInfoType;
   type: string;
   detail: string;
-  comments: string;
+  comments: string | null;
 };
 
 type PlayerColorsType = {

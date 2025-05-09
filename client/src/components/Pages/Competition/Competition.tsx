@@ -29,6 +29,7 @@ const Competition = (props: Props) => {
 
   if(!state) return <Link to="/">Redirect</Link> 
   // todo => sort out links with dependencies and users clicking unspecified links.
+  // todo => inspect useNavigate calls, only use when necessary otherwise use Link.
   if (error) return <div>An Error occurred: {error.message}</div>;
   if (loading) return <p>Loading ...</p>;
 
