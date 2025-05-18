@@ -6,7 +6,6 @@ type Props = {
 };
 
 const TopPlayerInfo = ({ player }: Props) => {
-
   return (
     <tr className="text-center text-nowrap fw-light fs-6" style={{ verticalAlign: 'middle' }}>
       <td className="">
@@ -26,7 +25,7 @@ const TopPlayerInfo = ({ player }: Props) => {
         {player.statistics.games.appearences}
       </td>
       <td>
-        {player.statistics.passes.total} / {player.statistics.passes.accuracy}
+        {player.statistics.passes.total}
       </td>
       <td>
         {player.statistics.shots.total} / {player.statistics.shots.on}

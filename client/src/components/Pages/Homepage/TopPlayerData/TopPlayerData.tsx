@@ -65,7 +65,7 @@ const TopPlayerData = (props: Props) => {
             <th>Assists</th>
             <th>Successful Dribbles</th>
             <th>Appearances</th>
-            <th>Total Attempted Passes/ Successful passes per 90 mins</th>
+            <th>Total Attempted Passes</th>
             <th>Shots (Total / On Target)</th>
           </tr>
         </thead>
