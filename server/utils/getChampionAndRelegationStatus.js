@@ -147,15 +147,3 @@ export const isAnyTeamRelegated = (league) => {
         { team: "St-Étienne", played: 31, points: 27 },
         { team: "Montpellier", played: 31, points: 16 }
       ];
-      
-// console.log(isChampion(premierLeagueTable))
-// console.log(isChampion(bundesligaLeagueTable))
-// console.log(isChampion(serieaLeagueTable))
-// console.log(isChampion(laLigaLeagueTable))
-// console.log(isChampion(ligueOneLeagueTable))
-
-// console.log(isAnyTeamRelegated(premierLeagueTable))
-// console.log(isAnyTeamRelegated(bundesligaLeagueTable))
-// console.log(isAnyTeamRelegated(serieaLeagueTable))
-// console.log(isAnyTeamRelegated(laLigaLeagueTable))
-// console.log(isAnyTeamRelegated(ligueOneLeagueTable))

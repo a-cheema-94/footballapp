@@ -16,9 +16,11 @@ const server = new ApolloServer({
   resolvers
 });
 
+const port = Number.parseInt(process.env.PORT) || 4000
+
 // connect to server
 const { url } = await startStandaloneServer(server, {
-  listen: { port: 4000 }
+  listen: { port }
 });
 
-console.log(chalk.magenta.bold('graphql server ready at port: ', 4000));
+console.log(chalk.magenta.bold(`graphql server ready at: ${url}`));
