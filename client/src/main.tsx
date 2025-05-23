@@ -7,7 +7,7 @@ import "./sass/custom.scss";
 import ThemeProvider from "./context/ThemeProvider.tsx";
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000/",
+  uri: import.meta.env.DEV ? "http://localhost:4000/" : "https://footballapp-production-0d5c.up.railway.app/",
   cache: new InMemoryCache(),
 });
 
