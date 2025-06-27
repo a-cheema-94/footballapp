@@ -18,7 +18,7 @@ const LiveScores = ({ isLive, isNotLive }: Props) => {
   
   const { data: liveFixturesData, loading, error } = useQuery(LIVE_SCORES_QUERY, {
     variables: {
-      leagues: ["Premier League", "Bundesliga", "La Liga", "Serie A"],
+      leagues: Object.keys(LEAGUES),
     },
     pollInterval: 30000
   });
@@ -36,6 +36,7 @@ const LiveScores = ({ isLive, isNotLive }: Props) => {
 
     return () => isNotLive()
   }, [liveMatches])
+  
   const {theme} = useContext(ThemeContext);
 
 

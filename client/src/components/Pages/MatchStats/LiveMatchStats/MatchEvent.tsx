@@ -10,40 +10,46 @@ type Props = {
 };
 
 const Card = ({ color }: { color: string }) => {
-  return <div className={`football-card ${color}`}></div>
-}
+  return <div className={`football-card ${color}`}></div>;
+};
 
 const MatchEvent = ({ event }: Props) => {
   const ifScreenTooSmall = useMediaQuery("(max-width: 600px)");
 
   const matchEventWidth = ifScreenTooSmall ? "100%" : "75%";
 
-  const getEventHeadingAndIcon = (event: FixtureEventType | undefined): string[] => {
+  // todo => see if can simplify getEventHeadingAndIcon function => make more cleaner
+  const getEventHeadingAndIcon = (
+    event: FixtureEventType | undefined
+  ): string[] => {
     let finalEventDetail: string = "";
-    let iconName: any = <IoFootball className="fs-1"/>;
-    let comment: string | null = ""
+    let iconName: any = <IoFootball className="fs-1" />;
+    let comment: string | null = "";
     // types and details
-    if(event?.type === 'Goal' && event?.detail === "Normal Goal") {
+    if (event?.type === "Goal" && event?.detail === "Normal Goal") {
       finalEventDetail = "GOAL!!!";
-    } else if (event?.type === 'Goal' && event?.detail === "Own Goal") {
+    } else if (event?.type === "Goal" && event?.detail === "Own Goal") {
       finalEventDetail = "OWN GOAL!!!";
-    } else if (event?.type === 'Goal' && event?.detail === "penalty") {
+    } else if (event?.type === "Goal" && event?.detail === "penalty") {
       finalEventDetail = "GOAL!!!, PENALTY";
-    } else if (event?.type === 'Card' && event?.detail === "Yellow Card") {
+    } else if (event?.type === "Card" && event?.detail === "Yellow Card") {
       finalEventDetail = "Yellow Card";
-      iconName = <Card color="yellow"/>
-      comment = event.comments
-    } else if (event?.type === 'Card' && event?.detail === "Red Card") {
+      iconName = <Card color="yellow" />;
+      comment = event.comments;
+    } else if (event?.type === "Card" && event?.detail === "Red Card") {
       finalEventDetail = "Red Card";
-      iconName = <Card color="red"/>
-      comment = event.comments
-    } else if (event?.type === 'subst' && event?.detail.split(' ')[0] === "Substitution") {
+      iconName = <Card color="red" />;
+      comment = event.comments;
+    } else if (
+      event?.type === "subst" &&
+      event?.detail.split(" ")[0] === "Substitution"
+    ) {
       finalEventDetail = "Substitution";
-      iconName = <TbArrowsRightLeft className="fs-1"/>
-    } else if (event?.type === 'Var' && event?.detail) {
+      iconName = <TbArrowsRightLeft className="fs-1" />;
+    } else if (event?.type === "Var" && event?.detail) {
       finalEventDetail = `VAR: ${event.detail}`;
-      iconName = <FaTv className="fs-1"/>
-    } 
+      iconName = <FaTv className="fs-1" />;
+    }
 
     return [finalEventDetail, iconName, comment];
   };
@@ -56,7 +62,9 @@ const MatchEvent = ({ event }: Props) => {
     >
       <div className="">
         {/* event logo here */}
-        <span className="position-absolute top-0 start-0 ms-1">{event?.time.elapsed} </span>
+        <span className="position-absolute top-0 start-0 ms-1">
+          {event?.time.elapsed}{" "}
+        </span>
         <div className="m-3">{matchEventInfo[1]}</div>
       </div>
       <div className="d-flex flex-column align-items-center">
@@ -67,8 +75,18 @@ const MatchEvent = ({ event }: Props) => {
         <div className="d-flex flex-column align-items-center">
           <div className="fs-6">{event?.player.name}</div>
           {event?.assist.name != null && (
-            <div className="d-flex  gap-2 fw-light" style={{ fontSize: ".95rem" }}>
-              <p>{event.type === "subst" ? <TbArrowsRightLeft className="fs-6"/> : "assist"}</p> <span>{event?.assist.name}</span>
+            <div
+              className="d-flex  gap-2 fw-light"
+              style={{ fontSize: ".95rem" }}
+            >
+              <p>
+                {event.type === "subst" ? (
+                  <TbArrowsRightLeft className="fs-6" />
+                ) : (
+                  "assist"
+                )}
+              </p>{" "}
+              <span>{event?.assist.name}</span>
             </div>
           )}
         </div>

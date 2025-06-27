@@ -20,6 +20,8 @@ const Homepage = ({}: Props) => {
   const handleFixturesLive = (): void => setLive(true);
   const handleFixturesNotLive = (): void => setLive(false);
 
+  // can only load data when clicking on the tab by conditionally loading component if tabKey matches with that components event key. Better initial load time but slower load times for individual tabs and less smoother UI.
+
   return (
     <div
       className={`${

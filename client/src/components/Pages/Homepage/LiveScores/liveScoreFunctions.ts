@@ -11,18 +11,14 @@ export type LiveFixtures = {
 
 export const toCamelCase = (str: string) => {
   return str
-    .split(" ")
+    .split(' ')
     .map((word, index) => {
-      // use slice to add the rest of word in lowercase.
-      // make first character lowercase of first word.
-      if (word.charAt(0) && index === 0) {
-        return word.charAt(0).toLowerCase() + word.slice(1).toLowerCase();
-      } else {
-        // rest of words are all upper case.
-        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-      }
+        const restOfChars = word.slice(1);
+        const firstChar = index === 0 ? word.charAt(0).toLocaleLowerCase() : word.charAt(0).toLocaleUpperCase()
+        return firstChar + restOfChars
     })
-    .join("");
+    .join('')
+    
 };
 
 export const sortLiveFixturesByLeague = (

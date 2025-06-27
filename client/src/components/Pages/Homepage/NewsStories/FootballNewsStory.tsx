@@ -1,6 +1,5 @@
-import { Card, Stack } from "react-bootstrap";
+import { Stack } from "react-bootstrap";
 import { NewsType } from "../../../../queries/types/queryTypes";
-import { CSSProperties } from "react";
 import { convertPublishedAtString } from "../../../../functions/partArray";
 
 type Props = {

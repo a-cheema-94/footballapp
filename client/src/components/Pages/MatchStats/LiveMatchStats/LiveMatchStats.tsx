@@ -1,5 +1,3 @@
-import { useQuery } from "@apollo/client";
-import { LIVE_SCORES_QUERY } from "../../../../queries/liveScoresQuery";
 import { Link, useLocation } from "react-router-dom";
 import { FixtureType } from "../../../../queries/types/queryTypes";
 import MatchEvent from "./MatchEvent";
@@ -212,7 +210,7 @@ const LiveMatchStats = (props: Props) => {
   const { theme } = useContext(ThemeContext);
 
   const { state } = useLocation();
-  
+
   if (!state)
     return (
       <div>
@@ -222,20 +220,19 @@ const LiveMatchStats = (props: Props) => {
 
   const fixture: FixtureType = state.fixture;
   // const fixture: FixtureType = sampleFixture;
-  const date = new Date((fixture.fixture.timestamp) * 1000).toLocaleDateString("en-GB");
+  const date = new Date(fixture.fixture.timestamp * 1000).toLocaleDateString(
+    "en-GB"
+  );
   const isScreenSmall = useMediaQuery("(min-width: 600px)");
-  console.log(date)
   return (
     <header
       className={`position-relative ${
         theme === "light" ? "text-dark" : "text-light"
       }`}
-      style={{ minHeight: '100dvh' }}
+      style={{ minHeight: "100dvh" }}
     >
       <div className="d-flex mb-5">
-        <Button
-          className="position-absolute start-0 ms-2 bg-teal-400 border-0 "
-        >
+        <Button className="position-absolute start-0 ms-2 bg-teal-400 border-0 ">
           <Link className="text-decoration-none text-light" to="/">
             Go Back
           </Link>
@@ -247,12 +244,19 @@ const LiveMatchStats = (props: Props) => {
       <div className="d-flex flex-wrap">
         <div
           className="d-flex align-items-center rounded p-3 mx-auto"
-          style={{ maxWidth: "400px", fontSize: '.9rem' }}
+          style={{ maxWidth: "400px", fontSize: ".9rem" }}
         >
           <FixtureInfo fixture={fixture} />
         </div>
 
-        <div className={`mt-3 lh-1 d-flex ${isScreenSmall ? 'flex-column' : 'flex-row justify-content-center column-gap-3'} flex-wrap me-5`} style={{ fontSize: '.9rem' }}>
+        <div
+          className={`mt-3 lh-1 d-flex ${
+            isScreenSmall
+              ? "flex-column"
+              : "flex-row justify-content-center column-gap-3"
+          } flex-wrap me-5`}
+          style={{ fontSize: ".9rem" }}
+        >
           <p className="fw-semibold">
             Date: <span className="fw-light">{date}</span>
           </p>
@@ -260,7 +264,8 @@ const LiveMatchStats = (props: Props) => {
             Competition: <span className="fw-light">{fixture.league}</span>
           </p>
           <p className="fw-semibold">
-            Referee: <span className="fw-light">{fixture.fixture.referee ?? 'n/a'}</span>
+            Referee:{" "}
+            <span className="fw-light">{fixture.fixture.referee ?? "n/a"}</span>
           </p>
           <p className="fw-semibold">
             Venue:{" "}
@@ -269,11 +274,15 @@ const LiveMatchStats = (props: Props) => {
         </div>
       </div>
 
-      {fixture.events.length > 0 ? <div className={`d-flex flex-column align-items-center gap-2`}>
+      {fixture.events.length > 0 ? (
+        <div className={`d-flex flex-column align-items-center gap-2`}>
           {[...fixture.events].reverse().map((event, index) => (
             <MatchEvent key={index} event={event} />
           ))}
-        </div> : <p className="text-center">No Events recorded yet</p>}
+        </div>
+      ) : (
+        <p className="text-center">No Events recorded yet</p>
+      )}
     </header>
   );
 };

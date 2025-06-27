@@ -348,7 +348,7 @@ export const resolvers = {
       const liveLeagueIds = getLiveLeagueIds(leagues);
       let endpoint = "fixtures";
       let liveFixtures;
-
+      // CURRENTLY: calling fixtures directly from api
       try {
         const liveFixturesApiRes = await callFootballApi(endpoint, { live: liveLeagueIds });
         liveFixtures = liveFixturesApiRes.map((fixture) => {
@@ -366,12 +366,12 @@ export const resolvers = {
             statistics: [],
             lineups: [],
           };
-          // console.log(updatedFixture)
           return updatedFixture;
         })
       } catch (error) {
         console.error(`Some error occurred when calling api directly: ${error}`)
       }
+      return liveFixtures;
       // // decide if should query api
       // await makeInitialQuery(
       //   "minute",
@@ -417,7 +417,6 @@ export const resolvers = {
       //     `some error occurred when fetching live fixtures from database: ${error}`
       //   );
       // }
-      return liveFixtures;
     },
 
     topFootballStories: async () => {

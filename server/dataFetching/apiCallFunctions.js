@@ -13,7 +13,7 @@ const newsApiKey = process.env.NEWS_API_KEY;
 
 // fixtures, { team: teamId, league: leagueId, season: 2024 }, league
 
-
+// function used for calling live fixtures directly from api
 export async function callFootballApi(endpoint , params) {
   const footballApiClient = axios.create();
 

@@ -24,7 +24,7 @@ const LiveFixture = ({ fixture }: Props) => {
     placement: "top-start",
     delay: {
       show: 400,
-      hide: 400,
+      hide: 0,
     },
   };
 

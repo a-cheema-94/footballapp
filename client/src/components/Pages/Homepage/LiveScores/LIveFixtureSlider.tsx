@@ -8,16 +8,10 @@ type Props = {
   liveFixtures: FixtureType[];
 };
 
-// todo => carousels with css
-
 const LiveFixtureSlider: React.FC<Props> = ({ liveFixtures }: Props) => {
   const {theme} = useContext(ThemeContext)
 
   const defaultSlidesToShow = liveFixtures.length < 3 ? liveFixtures.length : 3;
-
-  const getSlidesToShow = (slidesToShow: number): number => {
-    return slidesToShow > defaultSlidesToShow ? defaultSlidesToShow : slidesToShow
-  }
 
   const sliderSettings = {
     dots: true,
@@ -29,19 +23,19 @@ const LiveFixtureSlider: React.FC<Props> = ({ liveFixtures }: Props) => {
       {
         breakpoint: 1035,
         settings: {
-          slidesToShow: getSlidesToShow(3),
+          slidesToShow: 3,
         },
       },
       {
         breakpoint: 1000,
         settings: {
-          slidesToShow: getSlidesToShow(2),
+          slidesToShow: 2,
         },
       },
       {
         breakpoint: 700,
         settings: {
-          slidesToShow: getSlidesToShow(1),
+          slidesToShow: 1,
         },
       },
     ],

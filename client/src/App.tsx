@@ -4,15 +4,14 @@ import Homepage from "./components/Pages/Homepage/Homepage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Player from "./components/Pages/Player";
 import LiveMatchStats from "./components/Pages/MatchStats/LiveMatchStats/LiveMatchStats";
-import FullTimeMatchStats from "./components/Pages/MatchStats/FullTimeMatchStats/FullTimeMatchStats";
 import { Route, Routes } from "react-router-dom";
 import MainNavbar from "./components/Navbar/MainNavbar";
 import { useContext, useEffect, useState } from "react";
 import SearchPage from "./components/Navbar/searchPage/SearchPage";
 import NavigateUpBtn from "./components/NavigateUpBtn";
 import { ThemeContext } from "./context/ThemeProvider";
+import ErrorPage from "./ErrorPage";
 
 function App() {
   // search state and functions
@@ -62,6 +61,7 @@ function App() {
               path="/fullTimeMatchStats"
               element={<FullTimeMatchStats />}
             /> */}
+            <Route path="*" element={<ErrorPage />}/>
           </Routes>
         )}
 
